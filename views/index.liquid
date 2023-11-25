@@ -1,0 +1,38 @@
+{% layout "layout.liquid" %}
+{% block content %}
+<div class="prose mb-4">
+    <h1 class="mb-2">Welcome to Skymoth</h1>
+    <p>
+        To get started, you'll need to enter your Bluesky handle and token. You can find these by going to your
+        settings and create an app password. You'll need to enter your password as your token.
+    </p>
+    {% if err %}
+    <div role="alert" class="alert alert-error">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span>{{ err }}</span>
+    </div>
+    {% endif %}
+    <h2>Bluesky Credentials
+        {% if blueskyHandle and hasBlueskyToken %}
+            <div class="badge badge-success gap-2">valid</div>
+        {% else %}
+            <div class="badge badge-error gap-2">invalid</div>
+        {% endif %}
+    </h2>
+    <form action="/" method="post" class="flex items-end gap-4">
+    <div class="form-control w-full max-w-xs">
+        <label for="blueskyHandle" class="label">
+            <span class="label-text">Bluesky Handle</span>
+        </label>
+        <input value="{{ blueskyHandle }}" placeholder="@user.example" type="text" name="blueskyHandle" id="blueskyHandle" required class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div class="form-control w-full max-w-xs">
+        <label for="blueskyToken" class="label">
+            <span class="label-text">Bluesky Token</span>
+        </label>
+        <input placeholder="***********" {% if hasBlueskyToken %}value="***********"{% endif %} type="text" name="blueskyToken" id="blueskyToken" required class="input input-bordered w-full max-w-xs" />
+    </div>
+    <input class="btn btn-outline btn-success" type="submit" value="Update!" />
+</form>
+</div>
+{% endblock %}

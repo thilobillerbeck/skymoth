@@ -1,0 +1,19 @@
+services:
+  skymoth:
+    depends_on:
+      - db
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - POSTGRES_HOST=db
+    ports:
+      - "3000:3000"
+    links:
+      - db
+  db:
+    image: postgres
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - /var/lib/skymoth/pgdata:/var/lib/postgresql/data

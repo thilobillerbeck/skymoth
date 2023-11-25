@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Skymoth</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="A simple Mastodon to Bluesky crossposter." />
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="icon" href="/favicon.png">
+</head>
+
+<body class="min-h-screen flex flex-col">
+    <div class="navbar bg-base-300">
+        <div class="flex-1">
+            <a class="btn btn-ghost text-xl">Skymoth</a>
+        </div>
+        <div class="flex-none">
+            {% if userName %}
+                <ul class="menu menu-horizontal px-1">
+                    <li>{{ userName }}@{{ instance }}</li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container flex-1 py-8">
+        {% block content %}{% endblock %}
+    </div>
+    <footer class="footer footer-center p-4 bg-base-300 text-base-content">
+        <aside>
+            <p>Created by Thilo Billerbeck -
+                <a href="https://thilo-billerbeck.com/impressum/">Imprint</a>
+            </p>
+        </aside>
+    </footer>
+</body>
+
+</html>

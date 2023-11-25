@@ -1,0 +1,45 @@
+{
+  "name": "skymoth",
+  "module": "index.ts",
+  "type": "module",
+  "engines.node": "bun",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@atproto/api": "^0.6.23",
+    "@fastify/cookie": "^9.2.0",
+    "@fastify/formbody": "^7.4.0",
+    "@fastify/jwt": "^7.2.3",
+    "@fastify/schedule": "^4.1.1",
+    "@fastify/session": "^10.5.0",
+    "@fastify/static": "^6.12.0",
+    "@fastify/view": "^8.2.0",
+    "@prisma/client": "^5.6.0",
+    "@tailwindcss/typography": "^0.5.10",
+    "autoprefixer": "^10.4.16",
+    "bun-types": "latest",
+    "concurrently": "^8.2.2",
+    "daisyui": "latest",
+    "fastify": "^4.24.3",
+    "html-to-text": "^9.0.5",
+    "liquidjs": "^10.9.4",
+    "megalodon": "^9.1.1",
+    "postcss": "^8.4.31",
+    "postcss-cli": "^10.1.0",
+    "prisma": "^5.6.0",
+    "tailwindcss": "^3.3.5",
+    "toad-scheduler": "^3.0.0"
+  },
+  "trustedDependencies": [
+    "@prisma/client"
+  ],
+  "scripts": {
+    "start": "bunx prisma migrate deploy && bun run index.ts",
+    "dev": "concurrently \"bun run tailwind:css\" \"bun run dev:watch\"",
+    "dev:watch": "bun --hot run index.ts",
+    "tailwind:css": "concurrently \"tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css --watch\"",
+    "tailwind:build": "tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css",
+    "migrate": "bunx drizzle-kit generate:pg --schema ${PWD}/lib/schema.ts & bun run scripts/migrate.ts"
+  }
+}

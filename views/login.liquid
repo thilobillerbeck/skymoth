@@ -1,0 +1,35 @@
+{% layout "layout.liquid" %}
+{% block content %}
+<div class="flex justify-center items-center gap-8">
+    <div class="prose">
+        <h1>Welcome to Skymoth!</h1>
+        <p>Skymoth is a Mastodon to Bluesky crossposter. It allows you to post to both Mastodon and Bluesky at the same time.</p>
+        <p>Skymoth is currently in alpha and bugs can occur.</p>
+        <h2>Some important things</h2>
+        <p>To function correctly, <b>Skymoth will store</b> a <code>read</code> permission authentication token to your Mastodon account
+        as well as a bluesky app password.</p>
+        <h2>How to use it?</h2>
+        <ol>
+            <li>Sign in with your Mastodon account, enter your instance URL in the field on this page</li>
+            <li>Enter your Bluesky credentials</li>
+            <li>Go on posting!</li>
+        </ol>
+    </div>
+    <div class="flex flex-col h-full justify-center items-center">
+        <div class="card w-96 bg-base-100 shadow-xl bg-primary">
+            <div class="card-body">
+                <h2 class="card-title">Login</h2>
+                <form action="/auth" method="get">
+                    <div class="form-control w-full max-w-xs">
+                        <label for="instance" class="label">
+                            <span class="label-text">Mastodon Instance Domain</span>
+                        </label>
+                        <input placeholder="instance.tld" type="text" name="instance" id="instance" required class="input input-bordered w-full max-w-xs" />
+                    </div>
+                    <input class="btn btn-primary w-full mt-2" type="submit" value="Sign In with Mastodon" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
