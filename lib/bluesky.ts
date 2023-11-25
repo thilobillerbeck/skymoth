@@ -30,11 +30,9 @@ export async function generateBueskyPostFromMastodon(status: Entity.Status, clie
         for (const media of media_attachmentsFiltered) {
             const {arrayBuffer, mimeType} = await fetchImageToBytes(media.url)
             let arr = new Uint8Array(arrayBuffer)
-            const origArr = arr;
 
             while (arr.length > 1000000) {
-                console.log('compressing image to ' + quality + '%')
-                const jimpBuffer = await Jimp.read(Buffer.from(origArr));
+                const jimpBuffer = await Jimp.read(Buffer.from(arr));
                 const buffer = await jimpBuffer.quality(50).getBufferAsync(Jimp.MIME_JPEG);
                 arr = new Uint8Array(buffer);
             }
