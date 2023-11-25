@@ -19,6 +19,13 @@ export async function getInstanceByDomain(url: string) {
 }
 
 export async function updateLastPostTime(userId: string, postTime: Date) {
+    let user = await db.user.findFirst({
+        where: {
+            id: userId
+        }
+    })
+    if (!user) return
+    if (user?.lastTootTime > postTime) return
     return await db.user.update({
         where: {
             id: userId

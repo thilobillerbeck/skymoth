@@ -1,5 +1,5 @@
 import { Mastodon } from 'megalodon'
-import { getLatestToot } from '../mastodon'
+import { getLatestToot, getNewToots } from '../mastodon'
 import { generateBueskyPostFromMastodon, intiBlueskyAgent } from '../bluesky'
 import { domainToUrl } from '../utils'
 import { db, updateLastPostTime } from '../db'
@@ -23,40 +23,32 @@ export default async function taskMastodonToBluesky() {
             return
         }
         const userClient = new Mastodon(domainToUrl(user.mastodonInstance.url), user.mastodonToken)
-        const post = await getLatestToot(userClient, user.mastodonUid)
+        let posts = await getNewToots(userClient, user.mastodonUid, user.lastTootTime)
 
-        console.log(post)
-
-        if (!post) {
-            app.log.info({
-                scheduledJob: 'reposter',
-                status: 'no posts',
-                user: user.name,
-                instance: user.mastodonInstance.url
-            })
-            return
-        }
-        const lastPostDate = new Date(user.lastTootTime)
-        const postDate = new Date(post.created_at)
-
-        if (postDate <= lastPostDate) {
+        if(posts.length === 0) {
             app.log.info({
                 scheduledJob: 'reposter',
                 status: 'no new posts',
                 user: user.name,
                 instance: user.mastodonInstance.url
             })
-        } else {
+            return
+        }
+
+        const blueskyClient = await intiBlueskyAgent('https://bsky.social', user.blueskyHandle, user.blueskyToken)
+
+        posts = posts.reverse()
+
+        posts.forEach(async (post) => {
             console.log('new posts')
-            const blueskyClient = await intiBlueskyAgent('https://bsky.social', user.blueskyHandle, user.blueskyToken)
             const postBsky = await generateBueskyPostFromMastodon(post, blueskyClient)
             blueskyClient.post(postBsky).then((res) => {
                 console.log(res)
             }).catch((err) => {
                 console.log(err)
             })
-            await updateLastPostTime(user.id, postDate)
+            await updateLastPostTime(user.id, new Date(post.created_at))
             console.log(postBsky)
-        }
+        })
     })
 }
