@@ -40,6 +40,5 @@
     "dev:watch": "bun --hot run index.ts",
     "tailwind:css": "concurrently \"tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css --watch\"",
     "tailwind:build": "tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css",
-    "migrate": "bunx drizzle-kit generate:pg --schema ${PWD}/lib/schema.ts & bun run scripts/migrate.ts"
   }
 }
