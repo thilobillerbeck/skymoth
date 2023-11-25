@@ -68,7 +68,8 @@ app.get('/', { onRequest: [authenticateJWT] }, async (req, res) => {
         userName: req.user.mastodonHandle,
         instance: req.user.instance,
         blueskyHandle: user?.blueskyHandle,
-        hasBlueskyToken: user?.blueskyToken ? true : false
+        hasBlueskyToken: user?.blueskyToken ? true : false,
+        pollingInterval: parseInt(process.env.POLL_INTERVAL ?? '60')
     })
 })
 
@@ -84,14 +85,13 @@ app.post<{
         err: undefined,
         userName: req.user.mastodonHandle,
         instance: req.user.instance,
-        blueskyHandle: user?.blueskyHandle,
-        hasBlueskyToken: user?.blueskyToken ? true : false
+        pollingInterval: parseInt(process.env.POLL_INTERVAL ?? '60')
     };
 
     const passwordRegex = new RegExp(/^(?:[a-zA-Z0-9]{4}-){3}[a-zA-Z0-9]{4}$/);
     const passwordValid = passwordRegex.test(req.body.blueskyToken)
 
-    if (!passwordValid) res.status(400).view("index", {
+    if (!passwordValid) return res.status(400).view("index", {
         ...response_data,
         err: 'Invalid Bluesky Token'
     })
@@ -99,14 +99,14 @@ app.post<{
     const handleRegex = new RegExp(/^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/);
     const handleValid = handleRegex.test(req.body.blueskyHandle)
 
-    if (!handleValid) res.status(400).view("index", {
+    if (!handleValid) return res.status(400).view("index", {
         ...response_data,
         err: 'Invalid Bluesky Handle'
     })
 
     const agent = await intiBlueskyAgent('https://bsky.social', req.body.blueskyHandle, req.body.blueskyToken).catch((err) => {
         console.log(err)
-        res.status(400).view("index", {
+        return res.status(400).view("index", {
             ...response_data,
             err: 'Could not authenticate to Bluesky'
         })
@@ -122,6 +122,12 @@ app.post<{
         }
     })
 
+    response_data = {
+        ...response_data,
+        blueskyHandle: user?.blueskyHandle,
+        hasBlueskyToken: user?.blueskyToken ? true : false
+    }
+
     return res.redirect('/')
 })
 
@@ -131,6 +137,39 @@ app.get('/login', async (req, res) => {
 
 app.get('/logout', async (req, res) => {
     return res.clearCookie('token').redirect('/login')
+})
+
+app.post('/account/delete', { onRequest: [authenticateJWT] }, async (req, res) => {
+    await db.user.delete({
+        where: {
+            id: req.user.id
+        }
+    })
+    return res.clearCookie('token').redirect('/login')
+})
+
+app.get('/account/downloadData', { onRequest: [authenticateJWT] }, async (req, res) => {
+    const user = await db.user.findFirst(
+        {
+            where: { id: req.user.id },
+            select: {
+                mastodonInstance: {
+                    select: {
+                        url: true,
+                    }
+                },
+                createdAt: true,
+                updatedAt: true,
+                mastodonUid: true,
+                mastodonToken: true,
+                name: true,
+                lastTootTime: true,
+                blueskyHandle: true,
+                blueskyToken: true,
+            }
+        })
+        res.header('Content-Disposition', `attachment; filename=skymoth-userdata-${user?.name}.json`)
+        res.send(user).type('application/json').code(200).redirect('/')
 })
 
 app.get<{

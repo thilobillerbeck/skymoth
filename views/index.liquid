@@ -1,38 +1,85 @@
 {% layout "layout.liquid" %}
 {% block content %}
-<div class="prose mb-4">
-    <h1 class="mb-2">Welcome to Skymoth</h1>
-    <p>
-        To get started, you'll need to enter your Bluesky handle and token. You can find these by going to your
-        settings and create an app password. You'll need to enter your password as your token.
-    </p>
-    {% if err %}
-    <div role="alert" class="alert alert-error">
-        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        <span>{{ err }}</span>
+<div class="flex flex-col items-center gap-4">
+    <div class="card w-full mx-8 md:mx-0 md:w-1/3 bg-base-200 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title">Status</h2>
+            <p>
+                <b>Polling Interval:</b> {{ pollingInterval }}s
+            </p>
+            <p>
+                {% if hasBlueskyToken %}
+                You are currently authenticated to Bluesky as <span class="font-bold">{{ blueskyHandle }}</span>.
+                {% else %}
+                You are currently not authenticated to Bluesky, please enter your credentials below.
+                {% endif %}
+            </p>
+            <p>
+                <b>Repost visibility control WIP - Skymoth will only repost public Toots that are not a reply.</b>
+            </p>
+        </div>
     </div>
-    {% endif %}
-    <h2>Bluesky Credentials
-        {% if blueskyHandle and hasBlueskyToken %}
-            <div class="badge badge-success gap-2">valid</div>
-        {% else %}
-            <div class="badge badge-error gap-2">invalid</div>
-        {% endif %}
-    </h2>
-    <form action="/" method="post" class="flex items-end gap-4">
-    <div class="form-control w-full max-w-xs">
-        <label for="blueskyHandle" class="label">
-            <span class="label-text">Bluesky Handle</span>
-        </label>
-        <input value="{{ blueskyHandle }}" placeholder="@user.example" type="text" name="blueskyHandle" id="blueskyHandle" required class="input input-bordered w-full max-w-xs" />
+    <div class="card w-full mx-8 md:mx-0 md:w-1/3 bg-base-200 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title">Bluesky Credentials {% if blueskyHandle and hasBlueskyToken %}
+                <div class="badge badge-success gap-2">valid</div>
+                {% else %}
+                <div class="badge badge-error gap-2">invalid</div>
+                {% endif %}
+            </h2>
+            <p>
+                To get started, you'll need to enter your Bluesky handle and token. You can find these by going to your
+                settings and create an <a href="https://bsky.app/settings/app-passwords" target="_blank" rel="noopener noreferrer"
+                    class="text-secondary underline" >app password</a>.
+            </p>
+            <form action="/" method="post">
+                <div class="form-control w-full">
+                    <label for="blueskyHandle" class="label">
+                        <span class="label-text">Bluesky Handle</span>
+                    </label>
+                    <input value="{{ blueskyHandle }}" placeholder="user.example" type="text" name="blueskyHandle"
+                        id="blueskyHandle" required class="input input-bordered w-full" />
+                </div>
+                <div class="form-control w-full">
+                    <label for="blueskyToken" class="label">
+                        <span class="label-text">Bluesky App Password</span>
+                    </label>
+                    <input type="password" placeholder="***********" {% if hasBlueskyToken %}value="***********" {% endif %} type="text"
+                        name="blueskyToken" id="blueskyToken" required class="input input-bordered w-full" />
+                </div>
+                <div class="card-actions justify-end mt-4">
+                    <input class="btn btn-outline btn-success" type="submit" value="Update!" />
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="form-control w-full max-w-xs">
-        <label for="blueskyToken" class="label">
-            <span class="label-text">Bluesky Token</span>
-        </label>
-        <input placeholder="***********" {% if hasBlueskyToken %}value="***********"{% endif %} type="text" name="blueskyToken" id="blueskyToken" required class="input input-bordered w-full max-w-xs" />
+    <div class="card w-full mx-8 md:mx-0 md:w-1/3 bg-base-200 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title">Account Actions</h2>
+            <div class="card-actions justify-end">
+                <a class="btn btn-secondary btn-outline" href="/account/downloadData">Download Data</a>
+                <a class="btn btn-warning btn-outline" href="/logout">Logout</a>
+            </div>
+            <h2 class="font-bold">Delete your account</h2>
+            <p>
+                If you want to delete your account, you can do so
+                <button class="text-error underline" onclick="delete_modal.showModal()">here</button>.
+            </p>
+        </div>
     </div>
-    <input class="btn btn-outline btn-success" type="submit" value="Update!" />
-</form>
+    <dialog id="delete_modal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Are you sure you want to delete your account?</h3>
+            <p class="py-4">All your configuration will be lost</p>
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn btn-secondary">No</button>
+                </form>
+                <form action="/account/delete" method="post">
+                    <button class="btn">Yes</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
 </div>
 {% endblock %}

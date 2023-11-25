@@ -10,7 +10,15 @@ module.exports = {
     }
   },
   daisyui: {
-    themes: ["black"],
+    themes: [
+      {
+        black: {
+          ...require("daisyui/src/theming/themes")["dark"],
+          primary: "#6b21ff",
+          secondary: "#1cd6ff",
+        },
+      },
+    ],
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
 }

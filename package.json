@@ -39,6 +39,6 @@
     "dev": "concurrently \"bun run tailwind:css\" \"bun run dev:watch\"",
     "dev:watch": "bun --hot run index.ts",
     "tailwind:css": "concurrently \"tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css --watch\"",
-    "tailwind:build": "tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css",
+    "tailwind:build": "tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css"
   }
 }
