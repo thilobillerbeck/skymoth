@@ -1,6 +1,7 @@
 import { BskyAgent, AppBskyFeedPost, RichText } from "@atproto/api"
 import { Entity } from "megalodon"
 import { fetchImageToBytes, htmlToText } from "./utils"
+import Jimp from "jimp";
 
 export async function intiBlueskyAgent(url: string, handle: string, password: string) {
     const agent = new BskyAgent({
@@ -28,11 +29,16 @@ export async function generateBueskyPostFromMastodon(status: Entity.Status, clie
         let images = [];
         for (const media of media_attachmentsFiltered) {
             const {arrayBuffer, mimeType} = await fetchImageToBytes(media.url)
-            const arr = new Uint8Array(arrayBuffer)
+            let arr = new Uint8Array(arrayBuffer)
+            const origArr = arr;
+            let quality = 70;
 
-            if (arr.length > 1000000) {
-                console.log(`Image too large: ${media.url}`)
-                continue;
+            while (arr.length > 1000000) {
+                console.log('compressing image to ' + quality + '%')
+                const jimpBuffer = await Jimp.read(Buffer.from(origArr));
+                const buffer = await jimpBuffer.quality(70).getBufferAsync(Jimp.MIME_JPEG);
+                arr = new Uint8Array(buffer);
+                quality -= 10;
             }
 
             const res = await client.uploadBlob(arr, {

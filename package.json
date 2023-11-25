@@ -23,6 +23,7 @@
     "daisyui": "latest",
     "fastify": "^4.24.3",
     "html-to-text": "^9.0.5",
+    "jimp": "^0.22.10",
     "liquidjs": "^10.9.4",
     "megalodon": "^9.1.1",
     "postcss": "^8.4.31",
