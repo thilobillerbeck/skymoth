@@ -33,7 +33,10 @@ export async function generateBueskyPostFromMastodon(status: Entity.Status, clie
 
             if (arr.length > 1000000) {
                 const jimpBuffer = await Jimp.read(Buffer.from(arr));
-                const buffer = await jimpBuffer.quality(50).getBufferAsync(Jimp.MIME_JPEG);
+                const buffer = await jimpBuffer
+                    .resize(1920, Jimp.AUTO)
+                    .quality(50)
+                    .getBufferAsync(Jimp.MIME_JPEG);
                 arr = new Uint8Array(buffer);
             }
 
