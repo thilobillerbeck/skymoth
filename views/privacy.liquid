@@ -1,0 +1,50 @@
+{% layout "layout.liquid" %}
+{% block content %}
+<div class="flex flex-col items-center">
+    <div class="card bg-base-200 w-full mx-8 md:mx-0 md:w-2/3 p-4 shadow-xl">
+        <div class="prose">
+            <h1>Privacy Policy</h1>
+            <h2>What data is collected?</h2>
+            <p>When you use this website, we collect the following data:</p>
+            <ul>
+                <li>Your Mastodon username</li>
+                <li>Your Mastodon access token</li>
+                <li>Details about the instance you are logged in to</li>
+                <li>Your Bluesky handle</li>
+                <li>Your Bluesky app password</li>
+                <li>The last time you submitted a toot</li>
+            </ul>
+            <p>
+                If you are logged in, you can download a copy of this data by clicking <a
+                    href="/account/downloadData">here</a>.
+            </p>
+            <h2>
+                How is this data used?
+            </h2>
+            <p>
+                This data is used to get your latest toots from your Mastodon account, and repost them to Bluesky on a
+                scheduled basis.
+            </p>
+            <h2>
+                How is this data stored?
+            </h2>
+            <p>
+                This data is stored in a database on a vServer hosted by <a href="https://www.hetzner.com/">Hetzner</a>
+                in Nürnberg, Germany.
+            </p>
+            <h2>
+                Do we use cookies?
+            </h2>
+            <p>
+                Yes. A http-Cookie is used to store your session. This cookie is deleted when you log out.
+            </p>
+            <h2>
+                Do we disclose any information to outside parties?
+            </h2>
+            <p>
+                No.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

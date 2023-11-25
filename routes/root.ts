@@ -73,4 +73,8 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
 
         return res.redirect('/')
     })
+
+    app.get('/privacy', async (req, res) => {
+        return res.view("privacy", {})
+    })
 }
