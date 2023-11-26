@@ -39,6 +39,7 @@
     "start": "bunx prisma migrate deploy && bun run index.ts",
     "dev": "concurrently \"bun run tailwind:css\" \"bun run dev:watch\"",
     "dev:watch": "bun --hot run index.ts",
+    "scheduler": "bun run --smol lib/tasks/scheduler.ts",
     "tailwind:css": "concurrently \"tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css --watch\"",
     "tailwind:build": "tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css"
   }

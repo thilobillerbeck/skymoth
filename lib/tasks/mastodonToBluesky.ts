@@ -3,7 +3,6 @@ import { getLatestToot, getNewToots } from '../mastodon'
 import { generateBueskyPostFromMastodon, intiBlueskyAgent } from '../bluesky'
 import { domainToUrl } from '../utils'
 import { db, updateLastPostTime } from '../db'
-import { app } from '../..'
 
 export default async function taskMastodonToBluesky() {
     const users = await db.user.findMany({
@@ -14,7 +13,7 @@ export default async function taskMastodonToBluesky() {
 
     users.forEach(async (user) => {
         if (!user.blueskyHandle || !user.blueskyToken) {
-            app.log.info({
+            console.log({
                 scheduledJob: 'reposter',
                 status: 'no bluesky creds',
                 user: user.name,
@@ -26,7 +25,7 @@ export default async function taskMastodonToBluesky() {
         let posts = await getNewToots(userClient, user.mastodonUid, user.lastTootTime)
 
         if(posts.length === 0) {
-            app.log.info({
+            console.log({
                 scheduledJob: 'reposter',
                 status: 'no new posts',
                 user: user.name,
@@ -40,7 +39,12 @@ export default async function taskMastodonToBluesky() {
         posts = posts.reverse()
 
         posts.forEach(async (post) => {
-            console.log('new posts')
+            console.log({
+                scheduledJob: 'reposter',
+                status: `posting ${post.id}`,
+                user: user.name,
+                instance: user.mastodonInstance.url
+            })
             const postBsky = await generateBueskyPostFromMastodon(post, blueskyClient)
             blueskyClient.post(postBsky).then((res) => {
                 console.log(res)

@@ -6,8 +6,6 @@ import path from 'path'
 import fastifyFormbody from '@fastify/formbody'
 import fastifyJwt from '@fastify/jwt'
 import fastifySchedule from '@fastify/schedule'
-import { AsyncTask, SimpleIntervalJob } from 'toad-scheduler'
-import taskMastodonToBluesky from './lib/tasks/mastodonToBluesky';
 import { routesRoot } from './routes/root';
 import { routesUser } from './routes/user';
 
@@ -57,7 +55,6 @@ app.register(fastifyJwt, {
     }
 })
 
-app.register(fastifySchedule)
 app.register(routesRoot)
 app.register(routesUser)
 
@@ -69,9 +66,7 @@ app.listen({ host: ADDRESS, port: parseInt(PORT, 10) }, function (err, address) 
 })
 
 app.ready().then(() => {
-    const job = new SimpleIntervalJob({ seconds: parseInt(process.env.POLL_INTERVAL ?? '60'), }, new AsyncTask(
-        'taskMastodonToBluesky',
-        taskMastodonToBluesky
-    ))
-    app.scheduler.addSimpleIntervalJob(job)
+    Bun.spawn(["bun", "run", "scheduler"],{
+        stdout: "inherit",
+    });
 })
