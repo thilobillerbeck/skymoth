@@ -1,7 +1,9 @@
 const { convert } = require('html-to-text');
 
 export function htmlToText(html: string) {
-    return convert(html);
+    return convert(html, {
+        wordwrap: false,
+    });
 }
 
 export async function fetchImageToBytes(url: string) {
