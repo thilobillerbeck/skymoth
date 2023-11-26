@@ -1,7 +1,9 @@
 import { BskyAgent, AppBskyFeedPost, RichText } from "@atproto/api"
 import { Entity } from "megalodon"
 import { fetchImageToBytes, htmlToText } from "./utils"
-import Jimp from "jimp";
+import { ImagePool } from '@squoosh/lib';
+import { cpus } from 'os';
+const imagePool = new ImagePool(cpus().length);
 
 export async function intiBlueskyAgent(url: string, handle: string, password: string) {
     const agent = new BskyAgent({
@@ -32,12 +34,18 @@ export async function generateBueskyPostFromMastodon(status: Entity.Status, clie
             let arr = new Uint8Array(arrayBuffer)
 
             if (arr.length > 1000000) {
-                const jimpBuffer = await Jimp.read(Buffer.from(arr));
-                const buffer = await jimpBuffer
-                    .resize(1920, Jimp.AUTO)
-                    .quality(50)
-                    .getBufferAsync(Jimp.MIME_JPEG);
-                arr = new Uint8Array(buffer);
+                const image = imagePool.ingestImage(arrayBuffer);
+                image.preprocess({
+                    resize: {
+                        width: 1920
+                    }
+                });
+                const result = await image.encode({
+                    mozjpeg: {
+                        quality: 75
+                    }
+                });
+                arr = result.mozjpeg.binary
             }
 
             const res = await client.uploadBlob(arr, {
