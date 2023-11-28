@@ -1,5 +1,7 @@
 {
   "scripts": {
+    "build": "tsc -p tsconfig.json && cp -r public dist/public && cp -r views dist/views",
+    "start": "node dist/index.js",
     "dev": "tsx watch index.ts",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",
@@ -32,7 +34,9 @@
     "postcss-cli": "^10.1.0",
     "prisma": "^5.6.0",
     "tailwindcss": "^3.3.5",
-    "toad-scheduler": "^3.0.0"
+    "toad-scheduler": "^3.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2"
   },
   "devDependencies": {
     "@types/html-to-text": "^9.0.4",

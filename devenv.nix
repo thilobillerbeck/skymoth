@@ -22,7 +22,7 @@
 
   processes = {
     server.exec = "npm run dev";
-    # tailwind.exec = "${pkgs.bun}/bin/bun run tailwind:css";
+    tailwind.exec = "npm run tailwind:css";
   };
 
   services = {

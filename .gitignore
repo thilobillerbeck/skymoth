@@ -14,3 +14,5 @@ devenv.local.nix
 
 public/styles/style.css
 
+dist
+
