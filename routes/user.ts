@@ -152,7 +152,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
 
         return res
             .setCookie('token', jwt, {
-                domain: Bun.env.APP_DOMAIN,
+                domain: process.env.APP_DOMAIN,
                 path: '/',
                 secure: false,
                 httpOnly: true

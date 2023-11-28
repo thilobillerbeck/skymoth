@@ -1,4 +1,4 @@
-const { convert } = require('html-to-text');
+import { convert } from 'html-to-text';
 
 export function htmlToText(html: string) {
     return convert(html, {
@@ -13,14 +13,6 @@ export async function fetchImageToBytes(url: string) {
     return {arrayBuffer, mimeType};
 }
 
-export const authenticateJWT = async (req, res) => {
-    try {
-        await req.jwtVerify()
-    } catch (err) {
-        res.redirect('/login')
-    }
-}
-
 export function domainToUrl(domain: string) {
     return `https://${domain}/`
 }
@@ -31,4 +23,12 @@ export function genCallBackUrl(instanceDomain: string) {
         return `http://${ADDRESS}:${PORT}/auth/callback/${btoa(instanceDomain)}`
     }
     return `${process.env.APP_URL}/auth/callback/${btoa(instanceDomain)}`
+}
+
+export const authenticateJWT = async (req: any, res: any) => {
+    try {
+        await req.jwtVerify()
+    } catch (err) {
+        res.redirect('/login')
+    }
 }
