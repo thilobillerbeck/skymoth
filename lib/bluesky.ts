@@ -1,19 +1,23 @@
 import { BskyAgent, AppBskyFeedPost, RichText, BlobRef } from "@atproto/api"
 import { Entity } from "megalodon"
-import { fetchImageToBytes, htmlToText } from "./utils";
+import { fetchImageToBytes, mastodonHtmlToText } from "./utils";
+import sharp from "sharp";
 
 export async function intiBlueskyAgent(url: string, handle: string, password: string) {
     const agent = new BskyAgent({
         service: url
     })
+
     await agent.login({ identifier: handle, password: password })
     return agent
 }
 
 export async function generateBueskyPostFromMastodon(status: Entity.Status, client: BskyAgent): Promise<AppBskyFeedPost.Record | undefined> {
     const rt = new RichText({
-        text: htmlToText(status.content)
+        text: mastodonHtmlToText(status.content),
     })
+
+    await rt.detectFacets(client)
 
     let post: AppBskyFeedPost.Record = {
         $type: 'app.bsky.feed.post',
@@ -24,7 +28,7 @@ export async function generateBueskyPostFromMastodon(status: Entity.Status, clie
 
     const media_attachmentsFiltered = status.media_attachments.filter((media) => media.type === 'image')
 
-    if (media_attachmentsFiltered.length > 0) {
+    if (media_attachmentsFiltered.length > 0 && client) {
         const images: {
             image: BlobRef,
             alt: string
@@ -34,7 +38,13 @@ export async function generateBueskyPostFromMastodon(status: Entity.Status, clie
             let arr = new Uint8Array(arrayBuffer)
 
             if (arr.length > 1000000) {
+                const result = await sharp(arrayBuffer)
+                    .jpeg({
+                        quality: 50
+                    })
+                    .toBuffer()
 
+                arr = new Uint8Array(result.buffer)
             }
 
             const res = await client.uploadBlob(arr, {
@@ -55,7 +65,6 @@ export async function generateBueskyPostFromMastodon(status: Entity.Status, clie
             }
         };
     }
-
 
     if(AppBskyFeedPost.isRecord(post)) {
         const res = AppBskyFeedPost.validateRecord(post);

@@ -1,7 +1,22 @@
 import { convert } from 'html-to-text';
+import { parse } from 'node-html-parser';
 
-export function htmlToText(html: string) {
-    return convert(html, {
+export function mastodonHtmlToText(html: string) {
+    const root = parse(html)
+    const invisibles = root.querySelectorAll('.invisible, .ellipsis')
+    for (const invisible of invisibles) {
+        invisible.remove()
+    }
+
+    const hashtags = root.querySelectorAll('a[rel="tag"]')
+    for (const hashtag of hashtags) {
+        hashtag.replaceWith(`<span> ${hashtag.text} </span>`)
+        hashtag.remove()
+    }
+
+    root.removeWhitespace()
+
+    return convert(root.toString(), {
         wordwrap: false,
     });
 }

@@ -11,7 +11,6 @@
 
   packages = with pkgs; [
     prisma-engines
-    openssl
   ];
 
   languages = {
