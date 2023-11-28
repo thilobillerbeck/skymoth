@@ -2,12 +2,12 @@ import Fastify from 'fastify'
 import fastifyCookie from '@fastify/cookie'
 import fastifyView from '@fastify/view'
 const { Liquid } = require("liquidjs");
-import path from 'path'
 import fastifyFormbody from '@fastify/formbody'
 import fastifyJwt from '@fastify/jwt'
-import fastifySchedule from '@fastify/schedule'
 import { routesRoot } from './routes/root';
 import { routesUser } from './routes/user';
+import { join } from 'path'
+import { Worker } from 'worker_threads'
 
 const { ADDRESS = 'localhost', PORT = '3000' } = process.env;
 
@@ -31,11 +31,11 @@ app.register(fastifyFormbody)
 app.register(fastifyView, {
     engine: {
         liquid: new Liquid({
-            root: path.join(import.meta.dir, "views"),
+            root: join(__dirname, "views"),
             extname: ".liquid",
         })
     },
-    root: path.join(import.meta.dir, "views"),
+    root: join(__dirname, "views"),
     production: false,
     maxCache: 0,
     options: {
@@ -44,7 +44,7 @@ app.register(fastifyView, {
 });
 
 app.register(require('@fastify/static'), {
-    root: path.join(import.meta.dir, 'public'),
+    root: join(__dirname, 'public'),
 })
 
 app.register(fastifyJwt, {
@@ -66,7 +66,8 @@ app.listen({ host: ADDRESS, port: parseInt(PORT, 10) }, function (err, address) 
 })
 
 app.ready().then(() => {
-    Bun.spawn(["bun", "run", "scheduler"],{
-        stdout: "inherit",
-    });
+    const worker = new Worker( join(__dirname, "lib/tasks/scheduler"))
+    worker.on('message', (msg) => {
+        console.log(msg)
+    })
 })

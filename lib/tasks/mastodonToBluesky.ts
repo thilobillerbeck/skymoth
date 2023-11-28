@@ -1,5 +1,5 @@
 import { Mastodon } from 'megalodon'
-import { getLatestToot, getNewToots } from '../mastodon'
+import { getNewToots } from '../mastodon'
 import { generateBueskyPostFromMastodon, intiBlueskyAgent } from '../bluesky'
 import { domainToUrl } from '../utils'
 import { db, updateLastPostTime } from '../db'
@@ -46,6 +46,9 @@ export default async function taskMastodonToBluesky() {
                 instance: user.mastodonInstance.url
             })
             const postBsky = await generateBueskyPostFromMastodon(post, blueskyClient)
+
+            if (postBsky === undefined) return
+
             blueskyClient.post(postBsky).then((res) => {
                 console.log(res)
             }).catch((err) => {

@@ -24,7 +24,7 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
     }>('/', { onRequest: [authenticateJWT] }, async (req, res) => {
         const user = await db.user.findFirst({ where: { id: req.user.id } })
 
-        let response_data = {
+        let response_data: any = {
             err: undefined,
             userName: req.user.mastodonHandle,
             instance: req.user.instance,

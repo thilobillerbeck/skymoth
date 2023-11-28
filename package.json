@@ -1,10 +1,13 @@
 {
-  "name": "skymoth",
-  "module": "index.ts",
-  "type": "module",
-  "engines.node": "bun",
-  "peerDependencies": {
-    "typescript": "^5.0.0"
+  "scripts": {
+    "build": "tsc -p tsconfig.json && cp -r public dist/public && cp -r views dist/views",
+    "start": "prisma migrate deploy && node dist/index.js",
+    "dev": "tsx watch index.ts",
+    "migrate": "prisma migrate dev",
+    "generate": "prisma generate",
+    "scheduler": "tsx lib/tasks/scheduler.ts",
+    "tailwind:css": "concurrently \"tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css --watch\"",
+    "tailwind:build": "tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css"
   },
   "dependencies": {
     "@atproto/api": "^0.6.23",
@@ -16,7 +19,6 @@
     "@fastify/static": "^6.12.0",
     "@fastify/view": "^8.2.0",
     "@prisma/client": "^5.6.0",
-    "@squoosh/lib": "^0.5.3",
     "@tailwindcss/typography": "^0.5.10",
     "autoprefixer": "^10.4.16",
     "bun-types": "latest",
@@ -26,21 +28,18 @@
     "html-to-text": "^9.0.5",
     "liquidjs": "^10.9.4",
     "megalodon": "^9.1.1",
+    "node-html-parser": "^6.1.11",
     "postcss": "^8.4.31",
     "postcss-cli": "^10.1.0",
     "prisma": "^5.6.0",
+    "sharp": "^0.32.6",
     "tailwindcss": "^3.3.5",
-    "toad-scheduler": "^3.0.0"
+    "toad-scheduler": "^3.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2"
   },
-  "trustedDependencies": [
-    "@prisma/client"
-  ],
-  "scripts": {
-    "start": "bunx prisma migrate deploy && bun run index.ts",
-    "dev": "concurrently \"bun run tailwind:css\" \"bun run dev:watch\"",
-    "dev:watch": "bun --hot run index.ts",
-    "scheduler": "bun run --smol lib/tasks/scheduler.ts",
-    "tailwind:css": "concurrently \"tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css --watch\"",
-    "tailwind:build": "tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css"
+  "devDependencies": {
+    "@types/html-to-text": "^9.0.4",
+    "tsx": "^3.12.2"
   }
 }

@@ -1,22 +1,23 @@
-import { BskyAgent, AppBskyFeedPost, RichText } from "@atproto/api"
+import { BskyAgent, AppBskyFeedPost, RichText, BlobRef } from "@atproto/api"
 import { Entity } from "megalodon"
-import { fetchImageToBytes, htmlToText } from "./utils"
-import { ImagePool } from '@squoosh/lib';
-import { cpus } from 'os';
-const imagePool = new ImagePool(cpus().length);
+import { fetchImageToBytes, mastodonHtmlToText } from "./utils";
+import sharp from "sharp";
 
 export async function intiBlueskyAgent(url: string, handle: string, password: string) {
     const agent = new BskyAgent({
         service: url
     })
+
     await agent.login({ identifier: handle, password: password })
     return agent
 }
 
-export async function generateBueskyPostFromMastodon(status: Entity.Status, client: BskyAgent): Promise<Partial<AppBskyFeedPost.Record> & Omit<AppBskyFeedPost.Record, "createdAt">> {
+export async function generateBueskyPostFromMastodon(status: Entity.Status, client: BskyAgent): Promise<AppBskyFeedPost.Record | undefined> {
     const rt = new RichText({
-        text: htmlToText(status.content)
+        text: mastodonHtmlToText(status.content),
     })
+
+    await rt.detectFacets(client)
 
     let post: AppBskyFeedPost.Record = {
         $type: 'app.bsky.feed.post',
@@ -27,25 +28,23 @@ export async function generateBueskyPostFromMastodon(status: Entity.Status, clie
 
     const media_attachmentsFiltered = status.media_attachments.filter((media) => media.type === 'image')
 
-    if (media_attachmentsFiltered.length > 0) {
-        let images = [];
+    if (media_attachmentsFiltered.length > 0 && client) {
+        const images: {
+            image: BlobRef,
+            alt: string
+        }[] = [];
         for (const media of media_attachmentsFiltered) {
             const {arrayBuffer, mimeType} = await fetchImageToBytes(media.url)
             let arr = new Uint8Array(arrayBuffer)
 
             if (arr.length > 1000000) {
-                const image = imagePool.ingestImage(arrayBuffer);
-                image.preprocess({
-                    resize: {
-                        width: 1920
-                    }
-                });
-                const result = await image.encode({
-                    mozjpeg: {
-                        quality: 75
-                    }
-                });
-                arr = result.mozjpeg.binary
+                const result = await sharp(arrayBuffer)
+                    .jpeg({
+                        quality: 50
+                    })
+                    .toBuffer()
+
+                arr = new Uint8Array(result.buffer)
             }
 
             const res = await client.uploadBlob(arr, {
@@ -67,13 +66,12 @@ export async function generateBueskyPostFromMastodon(status: Entity.Status, clie
         };
     }
 
-
     if(AppBskyFeedPost.isRecord(post)) {
         const res = AppBskyFeedPost.validateRecord(post);
         if (res.success) {
             return post;
         } else {
-            console.log(res.error)
+            console.log(res)
         }
     }
 }
