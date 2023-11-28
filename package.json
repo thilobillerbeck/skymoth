@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "tsc -p tsconfig.json && cp -r public dist/public && cp -r views dist/views",
-    "start": "node dist/index.js",
+    "start": "prisma migrate deploy && node dist/index.js",
     "dev": "tsx watch index.ts",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",

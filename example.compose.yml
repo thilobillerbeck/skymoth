@@ -1,9 +1,10 @@
 services:
   skymoth:
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     build: .
-    restart: unless-stopped
+    restart: always
     env_file: .env
     environment:
       - POSTGRES_HOST=db
@@ -15,5 +16,10 @@ services:
     image: postgres
     restart: unless-stopped
     env_file: .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
     volumes:
       - /var/lib/skymoth/pgdata:/var/lib/postgresql/data
