@@ -1,8 +1,9 @@
 import { Mastodon } from 'megalodon'
 import { getNewToots } from '../mastodon'
-import { generateBueskyPostFromMastodon, intiBlueskyAgent } from '../bluesky'
+import { generateBlueskyPostsFromMastodon, intiBlueskyAgent } from '../bluesky'
 import { domainToUrl } from '../utils'
 import { db, updateLastPostTime } from '../db'
+import { ReplyRef } from '@atproto/api/dist/client/types/app/bsky/feed/post'
 
 export default async function taskMastodonToBluesky() {
     const users = await db.user.findMany({
@@ -45,17 +46,26 @@ export default async function taskMastodonToBluesky() {
                 user: user.name,
                 instance: user.mastodonInstance.url
             })
-            const postBsky = await generateBueskyPostFromMastodon(post, blueskyClient)
+            const postsBsky = await generateBlueskyPostsFromMastodon(post, blueskyClient)
 
-            if (postBsky === undefined) return
+            if (postsBsky.length === 0) return
 
-            blueskyClient.post(postBsky).then((res) => {
-                console.log(res)
-            }).catch((err) => {
-                console.log(err)
-            })
+            let repRef: ReplyRef = {
+                root: undefined!,
+                parent: undefined!
+            }
+
+            for (const postBsky of postsBsky) {
+                if (repRef.parent !== undefined) postBsky.reply = repRef;
+
+                let result = await blueskyClient.post(postBsky);
+                console.log(result)
+
+                if (repRef.root === undefined) repRef.root = result;
+                repRef.parent = result;
+            }
+
             await updateLastPostTime(user.id, new Date(post.created_at))
-            console.log(postBsky)
         })
     })
 }

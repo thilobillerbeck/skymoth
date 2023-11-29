@@ -93,12 +93,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
     }>('/auth/callback/:id', async (req, res) => {
         const { id } = req.params;
 
-        const instance = await getInstanceByDomain(atob(id)).catch((err) => {
-            console.log(err)
-            res.status(400).view("login", {
-                err: 'A problem occured while authenticating to the instance via token'
-            })
-        })
+        const instance = await getInstanceByDomain(atob(id))
 
         if (instance == null) {
             return res.status(400).view("login", {

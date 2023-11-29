@@ -1,7 +1,8 @@
 import { BskyAgent, AppBskyFeedPost, RichText, BlobRef } from "@atproto/api"
 import { Entity } from "megalodon"
-import { fetchImageToBytes, mastodonHtmlToText } from "./utils";
+import { fetchImageToBytes, mastodonHtmlToText, splitTextBluesky } from "./utils";
 import sharp from "sharp";
+import { Attachment } from "megalodon/lib/src/entities/attachment";
 
 export async function intiBlueskyAgent(url: string, handle: string, password: string) {
     const agent = new BskyAgent({
@@ -12,9 +13,28 @@ export async function intiBlueskyAgent(url: string, handle: string, password: st
     return agent
 }
 
-export async function generateBueskyPostFromMastodon(status: Entity.Status, client: BskyAgent): Promise<AppBskyFeedPost.Record | undefined> {
+export async function generateBlueskyPostsFromMastodon(status: Entity.Status, client: BskyAgent): Promise<Array<AppBskyFeedPost.Record>> {
+    let posts: Array<AppBskyFeedPost.Record> = []
+    const conv = mastodonHtmlToText(status.content);
+    console.log(conv)
+    const split = splitTextBluesky(conv);
+
+    for(const [idx, text] of split.entries()) {
+        console.log(text)
+        let post = await generateBlueskyPostFromMastodon(text, client, idx === 0 ? status.media_attachments : undefined)
+        if (post) {
+            posts.push(post)
+        }
+    }
+
+    console.log(posts)
+
+    return posts
+}
+
+export async function generateBlueskyPostFromMastodon(content: string, client: BskyAgent, media_attachments?: Array<Attachment>): Promise<AppBskyFeedPost.Record | undefined> {
     const rt = new RichText({
-        text: mastodonHtmlToText(status.content),
+        text: content,
     })
 
     await rt.detectFacets(client)
@@ -26,44 +46,46 @@ export async function generateBueskyPostFromMastodon(status: Entity.Status, clie
         createdAt: new Date().toISOString(),
     }
 
-    const media_attachmentsFiltered = status.media_attachments.filter((media) => media.type === 'image')
+    if (media_attachments) {
+        const media_attachmentsFiltered = media_attachments.filter((media) => media.type === 'image')
 
-    if (media_attachmentsFiltered.length > 0 && client) {
-        const images: {
-            image: BlobRef,
-            alt: string
-        }[] = [];
-        for (const media of media_attachmentsFiltered) {
-            const {arrayBuffer, mimeType} = await fetchImageToBytes(media.url)
-            let arr = new Uint8Array(arrayBuffer)
+        if (media_attachmentsFiltered.length > 0 && client) {
+            const images: {
+                image: BlobRef,
+                alt: string
+            }[] = [];
+            for (const media of media_attachmentsFiltered) {
+                const {arrayBuffer, mimeType} = await fetchImageToBytes(media.url)
+                let arr = new Uint8Array(arrayBuffer)
 
-            if (arr.length > 1000000) {
-                const result = await sharp(arrayBuffer)
-                    .jpeg({
-                        quality: 50
-                    })
-                    .toBuffer()
+                if (arr.length > 1000000) {
+                    const result = await sharp(arrayBuffer)
+                        .jpeg({
+                            quality: 50
+                        })
+                        .toBuffer()
 
-                arr = new Uint8Array(result.buffer)
+                    arr = new Uint8Array(result.buffer)
+                }
+
+                const res = await client.uploadBlob(arr, {
+                    encoding: mimeType!
+                })
+
+                images.push({
+                    image: res.data.blob,
+                    alt: media.description ? media.description : '',
+                });
             }
 
-            const res = await client.uploadBlob(arr, {
-                encoding: mimeType!
-            })
-
-            images.push({
-                image: res.data.blob,
-                alt: media.description ? media.description : '',
-            });
+            post = {
+                ...post,
+                embed: {
+                    $type: 'app.bsky.embed.images',
+                    images: images
+                }
+            };
         }
-
-        post = {
-            ...post,
-            embed: {
-                $type: 'app.bsky.embed.images',
-                images: images
-            }
-        };
     }
 
     if(AppBskyFeedPost.isRecord(post)) {
@@ -74,4 +96,5 @@ export async function generateBueskyPostFromMastodon(status: Entity.Status, clie
             console.log(res)
         }
     }
+    return undefined
 }
