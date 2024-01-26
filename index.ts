@@ -61,7 +61,6 @@ app.register(routesUser)
 app.listen({ host: ADDRESS, port: parseInt(PORT, 10) }, function (err, address) {
     if (err) {
         app.log.error(err)
-        process.exit(1)
     }
 })
 
