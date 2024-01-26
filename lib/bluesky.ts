@@ -60,8 +60,9 @@ export async function generateBlueskyPostFromMastodon(content: string, client: B
 
                 if (arr.length > 1000000) {
                     const result = await sharp(arrayBuffer)
+                        .resize({ height: 1080 })
                         .jpeg({
-                            quality: 40
+                            quality: 40,
                         })
                         .toBuffer()
 
