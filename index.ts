@@ -63,10 +63,3 @@ app.listen({ host: ADDRESS, port: parseInt(PORT, 10) }, function (err, address) 
         app.log.error(err)
     }
 })
-
-app.ready().then(() => {
-    const worker = new Worker( join(__dirname, "lib/tasks/scheduler"))
-    worker.on('message', (msg) => {
-        console.log(msg)
-    })
-})

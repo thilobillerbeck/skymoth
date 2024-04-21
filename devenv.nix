@@ -1,6 +1,10 @@
 { pkgs, ... }:
 
 {
+  dotenv.enable = true;
+
+  dotenv.filename = ".env.local";
+
   enterShell = ''
     export PRISMA_SCHEMA_ENGINE_BINARY="${pkgs.prisma-engines}/bin/schema-engine"
     export PRISMA_QUERY_ENGINE_BINARY="${pkgs.prisma-engines}/bin/query-engine"
@@ -16,12 +20,13 @@
   languages = {
     typescript.enable = true;
     javascript.enable = true;
+    javascript.pnpm.enable = true;
   };
 
-
   processes = {
-    server.exec = "npm run dev";
-    tailwind.exec = "npm run tailwind:css";
+    server.exec = "pnpm run dev:server";
+    scheduler.exec = "pnpm run dev:scheduler";
+    tailwind.exec = "pnpm run tailwind:css";
   };
 
   services = {
