@@ -7,7 +7,8 @@ import fastifyJwt from '@fastify/jwt'
 import { routesRoot } from './routes/root';
 import { routesUser } from './routes/user';
 import { join } from 'path'
-import { Worker } from 'worker_threads'
+import * as Sentry from '@sentry/node';
+import { nodeProfilingIntegration } from "@sentry/profiling-node";
 
 const { ADDRESS = 'localhost', PORT = '3000' } = process.env;
 
@@ -25,6 +26,17 @@ declare module "@fastify/jwt" {
 export const app = Fastify({
     logger: true
 })
+
+if (process.env.SENTRY_DSN) {
+    Sentry.init({
+        dsn: process.env.SENTRY_DSN,
+        integrations: [
+            nodeProfilingIntegration(),
+        ],
+        tracesSampleRate: 1.0,
+        profilesSampleRate: 1.0,
+    });
+}
 
 app.register(fastifyCookie)
 app.register(fastifyFormbody)

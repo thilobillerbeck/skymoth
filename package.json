@@ -21,6 +21,8 @@
     "@fastify/static": "^6.12.0",
     "@fastify/view": "^8.2.0",
     "@prisma/client": "^5.6.0",
+    "@sentry/node": "^7.111.0",
+    "@sentry/profiling-node": "^7.111.0",
     "@tailwindcss/typography": "^0.5.10",
     "autoprefixer": "^10.4.16",
     "bun-types": "latest",
@@ -41,7 +43,7 @@
   },
   "devDependencies": {
     "@types/html-to-text": "^9.0.4",
-    "tsx": "^3.12.2",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsx": "^3.12.2"
   }
 }

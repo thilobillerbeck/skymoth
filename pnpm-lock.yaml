@@ -32,6 +32,12 @@ dependencies:
   '@prisma/client':
     specifier: ^5.6.0
     version: 5.12.1(prisma@5.12.1)
+  '@sentry/node':
+    specifier: ^7.111.0
+    version: 7.111.0
+  '@sentry/profiling-node':
+    specifier: ^7.111.0
+    version: 7.111.0
   '@tailwindcss/typography':
     specifier: ^0.5.10
     version: 0.5.12(tailwindcss@3.4.3)
@@ -597,6 +603,55 @@ packages:
     dependencies:
       domhandler: 5.0.3
       selderee: 0.11.0
+    dev: false
+
+  /@sentry-internal/tracing@7.111.0:
+    resolution: {integrity: sha512-CgXly8rsdu4loWVKi2RqpInH3C2cVBuaYsx4ZP5IJpzSinsUAMyyr3Pc0PZzCyoVpBBXGBGj/4HhFsY3q6Z0Vg==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/core': 7.111.0
+      '@sentry/types': 7.111.0
+      '@sentry/utils': 7.111.0
+    dev: false
+
+  /@sentry/core@7.111.0:
+    resolution: {integrity: sha512-/ljeMjZu8CSrLGrseBi/7S2zRIFsqMcvfyG6Nwgfc07J9nbHt8/MqouE1bXZfiaILqDBpK7BK9MLAAph4mkAWg==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/types': 7.111.0
+      '@sentry/utils': 7.111.0
+    dev: false
+
+  /@sentry/node@7.111.0:
+    resolution: {integrity: sha512-bTLZNETT7W89HEk04rwsch02KSpu++Yec/BEyM3AxUNY+ZQ9ZLL/lrNZuCwbe7fURpKoZrvGAhxpPjgs5UcB9w==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry-internal/tracing': 7.111.0
+      '@sentry/core': 7.111.0
+      '@sentry/types': 7.111.0
+      '@sentry/utils': 7.111.0
+    dev: false
+
+  /@sentry/profiling-node@7.111.0:
+    resolution: {integrity: sha512-xJCi2EBf0rQ68kSuQHdKpLDOTjQJUtFGHn0QlaVacchgZZaTiDfJKD5dQhuBJZaul5Nrjq8OOFzwRo2/G8uVIA==}
+    engines: {node: '>=8.0.0'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      detect-libc: 2.0.3
+      node-abi: 3.60.0
+    dev: false
+
+  /@sentry/types@7.111.0:
+    resolution: {integrity: sha512-Oti4pgQ55+FBHKKcHGu51ZUxO1u52G5iVNK4mbtAN+5ArSCy/2s1H8IDJiOMswn3acfUnCR0oB/QsbEgAPZ26g==}
+    engines: {node: '>=8'}
+    dev: false
+
+  /@sentry/utils@7.111.0:
+    resolution: {integrity: sha512-CB5rz1EgCSwj3xoXogsCZ5pQtfERrURc/ItcCuoaijUhkD0iMq5MCNWMHW3mBsBrqx/Oba+XGvDu0t/5+SWwBg==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/types': 7.111.0
     dev: false
 
   /@tailwindcss/typography@0.5.12(tailwindcss@3.4.3):
