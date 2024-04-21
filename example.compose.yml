@@ -12,6 +12,21 @@ services:
       - "3000:3000"
     links:
       - db
+  skymoth-scheduler:
+    depends_on:
+      db:
+        condition: service_healthy
+    build: .
+    restart: always
+    env_file: .env
+    environment:
+      - POSTGRES_HOST=db
+    links:
+      - db
+    command:
+      - /bin/sh
+      - -c
+      - npm run start:scheduler
   db:
     image: postgres
     restart: unless-stopped

@@ -6,6 +6,8 @@ import { db, updateLastPostTime } from '../db'
 import { ReplyRef } from '@atproto/api/dist/client/types/app/bsky/feed/post'
 
 export default async function taskMastodonToBluesky() {
+    console.log("Running scheduled job: reposting to bluesky...");
+
     const users = await db.user.findMany({
         include: {
             mastodonInstance: true
