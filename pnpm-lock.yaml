@@ -80,7 +80,7 @@ importers:
         version: 9.0.1
       daisyui:
         specifier: latest
-        version: 4.10.2(postcss@8.4.47)
+        version: 4.12.10(postcss@8.4.47)
       postcss:
         specifier: ^8.4.47
         version: 8.4.47
@@ -822,8 +822,8 @@ packages:
     resolution: {integrity: sha512-pHJg+jbuFsCjz9iclQBqyL3B2HLCBF71BwVNujUYEvCeQMvV97R59MNK3R2+jgJ3a1fcZgI9B3vYgz8lzr/BFQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  daisyui@4.10.2:
-    resolution: {integrity: sha512-eCWS1W/JPyxW9IvlgW5m0R6rp9ZhRsBTW37rvEUthckkjsV04u8XipV519OoccSA46ixhSJa3q7XLI1WUFtRCA==}
+  daisyui@4.12.10:
+    resolution: {integrity: sha512-jp1RAuzbHhGdXmn957Z2XsTZStXGHzFfF0FgIOZj3Wv9sH7OZgLfXTRZNfKVYxltGUOBsG1kbWAdF5SrqjebvA==}
     engines: {node: '>=16.9.0'}
 
   dayjs@1.11.13:
@@ -2654,11 +2654,11 @@ snapshots:
 
   culori@3.3.0: {}
 
-  daisyui@4.10.2(postcss@8.4.47):
+  daisyui@4.12.10(postcss@8.4.47):
     dependencies:
       css-selector-tokenizer: 0.8.0
       culori: 3.3.0
-      picocolors: 1.0.0
+      picocolors: 1.1.0
       postcss-js: 4.0.1(postcss@8.4.47)
     transitivePeerDependencies:
       - postcss
@@ -3236,7 +3236,7 @@ snapshots:
 
   postcss-reporter@7.1.0(postcss@8.4.47):
     dependencies:
-      picocolors: 1.0.0
+      picocolors: 1.1.0
       postcss: 8.4.47
       thenby: 1.3.4
 
