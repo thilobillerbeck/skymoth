@@ -4,7 +4,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 COPY . /app
 WORKDIR /app
-RUN git rev-parse HEAD > .git-rev
+RUN git rev-parse HEAD --short > .git-rev
 RUN rm -rf .git
 
 FROM base AS prod-deps
