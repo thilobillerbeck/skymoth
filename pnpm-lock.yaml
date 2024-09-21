@@ -41,6 +41,9 @@ importers:
       '@sentry/profiling-node':
         specifier: ^8.30.0
         version: 8.30.0
+      daisyui:
+        specifier: ^4.12.10
+        version: 4.12.10(postcss@8.4.47)
       fastify:
         specifier: ^5.0.0
         version: 5.0.0
@@ -78,9 +81,6 @@ importers:
       concurrently:
         specifier: ^9.0.1
         version: 9.0.1
-      daisyui:
-        specifier: latest
-        version: 4.12.10(postcss@8.4.47)
       postcss:
         specifier: ^8.4.47
         version: 8.4.47
