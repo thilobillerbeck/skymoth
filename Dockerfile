@@ -19,7 +19,7 @@ RUN pnpm run build
 FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/dist /app/dist
-COPY --from=build /app/.git-rev /app/.git-rev
+COPY --from=build /app/.git-rev /app/dist/.git-rev
 ENV NODE_ENV=production
 EXPOSE 3000
 ENV ADDRESS=0.0.0.0 PORT=3000
