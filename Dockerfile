@@ -4,12 +4,13 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 COPY . /app
 WORKDIR /app
+RUN git rev-parse HEAD > .git-rev
+RUN rm -rf .git
 
 FROM base AS prod-deps
 RUN pnpm install --prod --frozen-lockfile
 
 FROM base AS build
-RUN git rev-parse HEAD > .git-rev
 RUN pnpm install --frozen-lockfile
 RUN pnpm run tailwind:build
 RUN pnpm run generate
