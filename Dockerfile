@@ -1,6 +1,7 @@
 FROM node:20 AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+RUN git rev-parse HEAD > /app/.git-rev
 RUN corepack enable
 COPY . /app
 WORKDIR /app
@@ -17,6 +18,7 @@ RUN pnpm run build
 FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/dist /app/dist
+COPY --from=base /app/.git-rev /app/.git-rev
 ENV NODE_ENV=production
 EXPOSE 3000
 ENV ADDRESS=0.0.0.0 PORT=3000

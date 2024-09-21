@@ -9,6 +9,8 @@ import { routesUser } from './routes/user';
 import { join } from 'path'
 import * as Sentry from '@sentry/node';
 import { nodeProfilingIntegration } from "@sentry/profiling-node";
+import { readFileSync } from 'fs';
+import { join as pathJoin } from 'path';
 
 const { ADDRESS = 'localhost', PORT = '3000' } = process.env;
 
@@ -38,6 +40,13 @@ if (process.env.SENTRY_DSN) {
     });
 }
 
+let version = "development"
+
+const gitRevPath = pathJoin(__dirname, '.git-rev')
+if (require('fs').existsSync(gitRevPath)) {
+    version = readFileSync(gitRevPath, 'utf-8').trim()
+}
+
 app.register(fastifyCookie)
 app.register(fastifyFormbody)
 app.register(fastifyView, {
@@ -45,6 +54,9 @@ app.register(fastifyView, {
         liquid: new Liquid({
             root: join(__dirname, "views"),
             extname: ".liquid",
+            globals: {
+                version,
+            }
         })
     },
     root: join(__dirname, "views"),
