@@ -19,7 +19,7 @@
     "@fastify/schedule": "^5.0.0",
     "@fastify/session": "^11.0.0",
     "@fastify/static": "^8.0.0",
-    "@fastify/view": "^10.0.0",
+    "@fastify/view": "^10.0.1",
     "@prisma/client": "^5.19.1",
     "@sentry/node": "^8.30.0",
     "@sentry/profiling-node": "^8.31.0",
