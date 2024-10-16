@@ -25,7 +25,7 @@
     "@sentry/profiling-node": "^8.34.0",
     "fastify": "^5.0.0",
     "html-to-text": "^9.0.5",
-    "liquidjs": "^10.17.0",
+    "liquidjs": "^10.18.0",
     "megalodon": "^10.0.4",
     "node-html-parser": "^6.1.13",
     "prisma": "^5.21.0",
