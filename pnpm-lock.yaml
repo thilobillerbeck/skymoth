@@ -36,11 +36,11 @@ importers:
         specifier: ^5.21.1
         version: 5.21.1(prisma@5.21.1)
       '@sentry/node':
-        specifier: ^8.34.0
-        version: 8.34.0
+        specifier: ^8.35.0
+        version: 8.35.0
       '@sentry/profiling-node':
-        specifier: ^8.34.0
-        version: 8.34.0
+        specifier: ^8.35.0
+        version: 8.35.0
       fastify:
         specifier: ^5.0.0
         version: 5.0.0
@@ -51,8 +51,8 @@ importers:
         specifier: ^10.18.0
         version: 10.18.0
       megalodon:
-        specifier: ^10.0.4
-        version: 10.0.4
+        specifier: ^10.0.5
+        version: 10.0.5
       node-html-parser:
         specifier: ^6.1.13
         version: 6.1.13
@@ -68,7 +68,7 @@ importers:
     devDependencies:
       '@tailwindcss/typography':
         specifier: ^0.5.15
-        version: 0.5.15(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3)))
+        version: 0.5.15(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.7.7)(typescript@5.6.3)))
       '@types/html-to-text':
         specifier: ^9.0.4
         version: 9.0.4
@@ -89,10 +89,10 @@ importers:
         version: 11.0.0(jiti@1.21.6)(postcss@8.4.47)
       tailwindcss:
         specifier: ^3.4.14
-        version: 3.4.14(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3))
+        version: 3.4.14(ts-node@10.9.2(@types/node@22.7.7)(typescript@5.6.3))
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@22.7.5)(typescript@5.6.3)
+        version: 10.9.2(@types/node@22.7.7)(typescript@5.6.3)
       typescript:
         specifier: ^5.6.3
         version: 5.6.3
@@ -361,14 +361,14 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.3.0
 
-  '@opentelemetry/instrumentation-express@0.42.0':
-    resolution: {integrity: sha512-YNcy7ZfGnLsVEqGXQPT+S0G1AE46N21ORY7i7yUQyfhGAL4RBjnZUqefMI0NwqIl6nGbr1IpF0rZGoN8Q7x12Q==}
+  '@opentelemetry/instrumentation-express@0.43.0':
+    resolution: {integrity: sha512-bxTIlzn9qPXJgrhz8/Do5Q3jIlqfpoJrSUtVGqH+90eM1v2PkPHc+SdE+zSqe4q9Y1UQJosmZ4N4bm7Zj/++MA==}
     engines: {node: '>=14'}
     peerDependencies:
       '@opentelemetry/api': ^1.3.0
 
-  '@opentelemetry/instrumentation-fastify@0.39.0':
-    resolution: {integrity: sha512-SS9uSlKcsWZabhBp2szErkeuuBDgxOUlllwkS92dVaWRnMmwysPhcEgHKB8rUe3BHg/GnZC1eo1hbTZv4YhfoA==}
+  '@opentelemetry/instrumentation-fastify@0.40.0':
+    resolution: {integrity: sha512-74qj4nG3zPtU7g2x4sm2T4R3/pBMyrYstTsqSZwdlhQk1SD4l8OSY9sPRX1qkhfxOuW3U4KZQAV/Cymb3fB6hg==}
     engines: {node: '>=14'}
     peerDependencies:
       '@opentelemetry/api': ^1.3.0
@@ -553,16 +553,16 @@ packages:
   '@selderee/plugin-htmlparser2@0.11.0':
     resolution: {integrity: sha512-P33hHGdldxGabLFjPPpaTxVolMrzrcegejx+0GxjrIb9Zv48D8yAIA/QTDR2dFl7Uz7urX8aX6+5bCZslr+gWQ==}
 
-  '@sentry/core@8.34.0':
-    resolution: {integrity: sha512-adrXCTK/zsg5pJ67lgtZqdqHvyx6etMjQW3P82NgWdj83c8fb+zH+K79Z47pD4zQjX0ou2Ws5nwwi4wJbz4bfA==}
+  '@sentry/core@8.35.0':
+    resolution: {integrity: sha512-Ci0Nmtw5ETWLqQJGY4dyF+iWh7PWKy6k303fCEoEmqj2czDrKJCp7yHBNV0XYbo00prj2ZTbCr6I7albYiyONA==}
     engines: {node: '>=14.18'}
 
-  '@sentry/node@8.34.0':
-    resolution: {integrity: sha512-Q7BPp7Y8yCcwD620xoziWSOuPi/PCIdttkczvB0BGzBRYh2s702h+qNusRijRpVNZmzmYOo9m1x7Y1O/b8/v2A==}
+  '@sentry/node@8.35.0':
+    resolution: {integrity: sha512-B0FLOcZEfYe3CJ2t0l1N0HJcHXcIrLlGENQ2kf5HqR2zcOcOzRxyITJTSV5brCnmzVNgkz9PG8VWo3w0HXZQpA==}
     engines: {node: '>=14.18'}
 
-  '@sentry/opentelemetry@8.34.0':
-    resolution: {integrity: sha512-WS91L+HVKGVIzOgt0szGp+24iKOs86BZsAHGt0HWnMR4kqWP6Ak+TLvqWDCxnuzniZMxdewDGA8p5hrBAPsmsA==}
+  '@sentry/opentelemetry@8.35.0':
+    resolution: {integrity: sha512-2mWMpEiIFop/omia9BqTJa+0Khe+tSsiZSUrxbnSpxM0zgw8DFIzJMHbiqw/I7Qaluz9pnO2HZXqgUTwNPsU8A==}
     engines: {node: '>=14.18'}
     peerDependencies:
       '@opentelemetry/api': ^1.9.0
@@ -571,17 +571,17 @@ packages:
       '@opentelemetry/sdk-trace-base': ^1.26.0
       '@opentelemetry/semantic-conventions': ^1.27.0
 
-  '@sentry/profiling-node@8.34.0':
-    resolution: {integrity: sha512-Ta8GWhmKBIo43WeKVwE1YVMBhNb7e7py5pZXlsfEmZ4wL+UZw4Ed0Yf5FEr3LfwiyLkHzpFiq8clxEK1O6DcSg==}
+  '@sentry/profiling-node@8.35.0':
+    resolution: {integrity: sha512-+pkSi8nm02RO2VFgrFFrjn83y6AkN4dcD6qUnOucZlThKivnt2nQe394y53qC5sYCwGwK6muub3yHt1KZ9v/Aw==}
     engines: {node: '>=14.18'}
     hasBin: true
 
-  '@sentry/types@8.34.0':
-    resolution: {integrity: sha512-zLRc60CzohGCo6zNsNeQ9JF3SiEeRE4aDCP9fDDdIVCOKovS+mn1rtSip0qd0Vp2fidOu0+2yY0ALCz1A3PJSQ==}
+  '@sentry/types@8.35.0':
+    resolution: {integrity: sha512-AVEZjb16MlYPifiDDvJ19dPQyDn0jlrtC1PHs6ZKO+Rzyz+2EX2BRdszvanqArldexPoU1p5Bn2w81XZNXThBA==}
     engines: {node: '>=14.18'}
 
-  '@sentry/utils@8.34.0':
-    resolution: {integrity: sha512-W1KoRlFUjprlh3t86DZPFxLfM6mzjRzshVfMY7vRlJFymBelJsnJ3A1lPeBZM9nCraOSiw6GtOWu6k5BAkiGIg==}
+  '@sentry/utils@8.35.0':
+    resolution: {integrity: sha512-MdMb6+uXjqND7qIPWhulubpSeHzia6HtxeJa8jYI09OCvIcmNGPydv/Gx/LZBwosfMHrLdTWcFH7Y7aCxrq7cg==}
     engines: {node: '>=14.18'}
 
   '@sindresorhus/merge-streams@2.3.0':
@@ -614,8 +614,8 @@ packages:
   '@types/mysql@2.15.26':
     resolution: {integrity: sha512-DSLCOXhkvfS5WNNPbfn2KdICAmk8lLc+/PNvnPnF7gOdMZCxopXduqv0OQ13y/yA/zXTSikZZqVgybUxOEg6YQ==}
 
-  '@types/node@22.7.5':
-    resolution: {integrity: sha512-jML7s2NAzMWc//QSJ1a3prpk78cOPchGvXJsC3C6R6PSMoooztvRVQEz89gmBTBY1SPMaqo5teB4uNHPdetShQ==}
+  '@types/node@22.7.7':
+    resolution: {integrity: sha512-SRxCrrg9CL/y54aiMCG3edPKdprgMVGDXjA3gB8UmmBW5TcXzRUYAh8EWzTnSJFAd1rgImPELza+A3bJ+qxz8Q==}
 
   '@types/pg-pool@2.0.6':
     resolution: {integrity: sha512-TaAUE5rq2VQYxab5Ts7WZhKNmuN78Q6PiFonTDdpbx8a1H0M1vhy3rhiMjl+e2iHmogyMw7jZF4FrE6eJUy5HQ==}
@@ -650,8 +650,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  acorn@8.12.1:
-    resolution: {integrity: sha512-tcpGyI9zbizT9JbV6oYE477V6mTlXvvi0T0G3SNIYE2apm/G5huBa1+K89VGeovbg+jycCrfhl3ADxErOuO6Jg==}
+  acorn@8.13.0:
+    resolution: {integrity: sha512-8zSiw54Oxrdym50NlZ9sUusyO1Z1ZchgRLWRaK6c86XJFClyCgFKetdowBg5bKxyp/u+CDBJG4Mpp0m3HLZl9w==}
     engines: {node: '>=0.4.0'}
     hasBin: true
 
@@ -1220,9 +1220,9 @@ packages:
   make-error@1.3.6:
     resolution: {integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==}
 
-  megalodon@10.0.4:
-    resolution: {integrity: sha512-fVJ7uMHhR0E7DPXEDPw6FtawAVxr1mMIELEgwBnYFDCoixcEzTDiNSPef/fOV3oAWONUEYHdXADnmx9uh0MAxQ==}
-    engines: {node: '>=20.17.0'}
+  megalodon@10.0.5:
+    resolution: {integrity: sha512-4JkmM+etcqguD+z8zOSAOpGdq9kiam7dIzQBegMn1bVTnaj5cyIb+Ssf8OxCd29ToYdbEDBreCketPNmqMqzDA==}
+    engines: {node: '>=20.18.0'}
 
   merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
@@ -1280,8 +1280,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  node-abi@3.68.0:
-    resolution: {integrity: sha512-7vbj10trelExNjFSBm5kTvZXXa7pZyKWx9RCKIyqe6I9Ev3IzGpQoqBP3a+cOdxY+pWj6VkP28n/2wWysBHD/A==}
+  node-abi@3.71.0:
+    resolution: {integrity: sha512-SZ40vRiy/+wRTf21hxkkEjPJZpARzUMVcJoQse2EF8qkUWbbO2z7vd5oA/H6bVH6SZQ5STGcu0KRDS7biNRfxw==}
     engines: {node: '>=10'}
 
   node-html-parser@6.1.13:
@@ -2115,7 +2115,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-express@0.42.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-express@0.43.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 1.26.0(@opentelemetry/api@1.9.0)
@@ -2124,7 +2124,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-fastify@0.39.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-fastify@0.40.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 1.26.0(@opentelemetry/api@1.9.0)
@@ -2372,12 +2372,12 @@ snapshots:
       domhandler: 5.0.3
       selderee: 0.11.0
 
-  '@sentry/core@8.34.0':
+  '@sentry/core@8.35.0':
     dependencies:
-      '@sentry/types': 8.34.0
-      '@sentry/utils': 8.34.0
+      '@sentry/types': 8.35.0
+      '@sentry/utils': 8.35.0
 
-  '@sentry/node@8.34.0':
+  '@sentry/node@8.35.0':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/context-async-hooks': 1.26.0(@opentelemetry/api@1.9.0)
@@ -2386,8 +2386,8 @@ snapshots:
       '@opentelemetry/instrumentation-amqplib': 0.42.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation-connect': 0.39.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation-dataloader': 0.12.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-express': 0.42.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-fastify': 0.39.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-express': 0.43.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-fastify': 0.40.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation-fs': 0.15.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation-generic-pool': 0.39.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation-graphql': 0.43.0(@opentelemetry/api@1.9.0)
@@ -2409,51 +2409,51 @@ snapshots:
       '@opentelemetry/sdk-trace-base': 1.26.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.27.0
       '@prisma/instrumentation': 5.19.1
-      '@sentry/core': 8.34.0
-      '@sentry/opentelemetry': 8.34.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.27.0)
-      '@sentry/types': 8.34.0
-      '@sentry/utils': 8.34.0
+      '@sentry/core': 8.35.0
+      '@sentry/opentelemetry': 8.35.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.27.0)
+      '@sentry/types': 8.35.0
+      '@sentry/utils': 8.35.0
       import-in-the-middle: 1.11.2
     transitivePeerDependencies:
       - supports-color
 
-  '@sentry/opentelemetry@8.34.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.27.0)':
+  '@sentry/opentelemetry@8.35.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.27.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 1.26.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation': 0.53.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-base': 1.26.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.27.0
-      '@sentry/core': 8.34.0
-      '@sentry/types': 8.34.0
-      '@sentry/utils': 8.34.0
+      '@sentry/core': 8.35.0
+      '@sentry/types': 8.35.0
+      '@sentry/utils': 8.35.0
 
-  '@sentry/profiling-node@8.34.0':
+  '@sentry/profiling-node@8.35.0':
     dependencies:
-      '@sentry/core': 8.34.0
-      '@sentry/node': 8.34.0
-      '@sentry/types': 8.34.0
-      '@sentry/utils': 8.34.0
+      '@sentry/core': 8.35.0
+      '@sentry/node': 8.35.0
+      '@sentry/types': 8.35.0
+      '@sentry/utils': 8.35.0
       detect-libc: 2.0.3
-      node-abi: 3.68.0
+      node-abi: 3.71.0
     transitivePeerDependencies:
       - supports-color
 
-  '@sentry/types@8.34.0': {}
+  '@sentry/types@8.35.0': {}
 
-  '@sentry/utils@8.34.0':
+  '@sentry/utils@8.35.0':
     dependencies:
-      '@sentry/types': 8.34.0
+      '@sentry/types': 8.35.0
 
   '@sindresorhus/merge-streams@2.3.0': {}
 
-  '@tailwindcss/typography@0.5.15(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3)))':
+  '@tailwindcss/typography@0.5.15(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.7.7)(typescript@5.6.3)))':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.14(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3))
+      tailwindcss: 3.4.14(ts-node@10.9.2(@types/node@22.7.7)(typescript@5.6.3))
 
   '@tsconfig/node10@1.0.11': {}
 
@@ -2465,15 +2465,15 @@ snapshots:
 
   '@types/connect@3.4.36':
     dependencies:
-      '@types/node': 22.7.5
+      '@types/node': 22.7.7
 
   '@types/html-to-text@9.0.4': {}
 
   '@types/mysql@2.15.26':
     dependencies:
-      '@types/node': 22.7.5
+      '@types/node': 22.7.7
 
-  '@types/node@22.7.5':
+  '@types/node@22.7.7':
     dependencies:
       undici-types: 6.19.8
 
@@ -2483,7 +2483,7 @@ snapshots:
 
   '@types/pg@8.6.1':
     dependencies:
-      '@types/node': 22.7.5
+      '@types/node': 22.7.7
       pg-protocol: 1.7.0
       pg-types: 2.2.0
 
@@ -2491,7 +2491,7 @@ snapshots:
 
   '@types/ws@8.5.12':
     dependencies:
-      '@types/node': 22.7.5
+      '@types/node': 22.7.7
 
   abort-controller@3.0.0:
     dependencies:
@@ -2499,15 +2499,15 @@ snapshots:
 
   abstract-logging@2.0.1: {}
 
-  acorn-import-attributes@1.9.5(acorn@8.12.1):
+  acorn-import-attributes@1.9.5(acorn@8.13.0):
     dependencies:
-      acorn: 8.12.1
+      acorn: 8.13.0
 
   acorn-walk@8.3.2: {}
 
   acorn@8.11.3: {}
 
-  acorn@8.12.1: {}
+  acorn@8.13.0: {}
 
   ajv-formats@3.0.1(ajv@8.12.0):
     optionalDependencies:
@@ -2977,8 +2977,8 @@ snapshots:
 
   import-in-the-middle@1.11.2:
     dependencies:
-      acorn: 8.12.1
-      acorn-import-attributes: 1.9.5(acorn@8.12.1)
+      acorn: 8.13.0
+      acorn-import-attributes: 1.9.5(acorn@8.13.0)
       cjs-module-lexer: 1.4.1
       module-details-from-path: 1.0.3
 
@@ -3074,7 +3074,7 @@ snapshots:
 
   make-error@1.3.6: {}
 
-  megalodon@10.0.4:
+  megalodon@10.0.5:
     dependencies:
       '@badgateway/oauth2-client': 2.4.2
       '@types/ws': 8.5.12
@@ -3136,7 +3136,7 @@ snapshots:
 
   nanoid@3.3.7: {}
 
-  node-abi@3.68.0:
+  node-abi@3.71.0:
     dependencies:
       semver: 7.6.3
 
@@ -3263,13 +3263,13 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.4.47
 
-  postcss-load-config@4.0.2(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3)):
+  postcss-load-config@4.0.2(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.7.7)(typescript@5.6.3)):
     dependencies:
       lilconfig: 3.1.2
       yaml: 2.6.0
     optionalDependencies:
       postcss: 8.4.47
-      ts-node: 10.9.2(@types/node@22.7.5)(typescript@5.6.3)
+      ts-node: 10.9.2(@types/node@22.7.7)(typescript@5.6.3)
 
   postcss-load-config@5.0.3(jiti@1.21.6)(postcss@8.4.47):
     dependencies:
@@ -3525,7 +3525,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3)):
+  tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.7.7)(typescript@5.6.3)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -3544,7 +3544,7 @@ snapshots:
       postcss: 8.4.47
       postcss-import: 15.1.0(postcss@8.4.47)
       postcss-js: 4.0.1(postcss@8.4.47)
-      postcss-load-config: 4.0.2(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3))
+      postcss-load-config: 4.0.2(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.7.7)(typescript@5.6.3))
       postcss-nested: 6.2.0(postcss@8.4.47)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.8
@@ -3584,14 +3584,14 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3):
+  ts-node@10.9.2(@types/node@22.7.7)(typescript@5.6.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 22.7.5
+      '@types/node': 22.7.7
       acorn: 8.11.3
       acorn-walk: 8.3.2
       arg: 4.1.3
