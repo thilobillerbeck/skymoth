@@ -29,18 +29,20 @@ model MastodonInstance {
 }
 
 model User {
-  id                 String           @id @default(uuid())
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @updatedAt
-  lastTootTime       DateTime         @default(now())
-  name               String
-  mastodonInstance   MastodonInstance @relation(fields: [mastodonInstanceId], references: [id])
-  mastodonUid        String
-  mastodonToken      String
-  blueskyToken       String?
-  blueskyHandle      String?
-  mastodonInstanceId String
-  UserSettings       UserSettings[]
+  id                  String           @id @default(uuid())
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  lastTootTime        DateTime         @default(now())
+  name                String
+  mastodonInstance    MastodonInstance @relation(fields: [mastodonInstanceId], references: [id])
+  mastodonUid         String
+  mastodonToken       String
+  blueskyToken        String?
+  blueskyHandle       String?
+  blueskySession      Json?
+  blueskySessionEvent String?
+  mastodonInstanceId  String
+  UserSettings        UserSettings[]
 }
 
 model UserSettings {

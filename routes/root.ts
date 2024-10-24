@@ -22,7 +22,7 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
             blueskyToken: string
         }
     }>('/', { onRequest: [authenticateJWT] }, async (req, res) => {
-        const user = await db.user.findFirst({ where: { id: req.user.id } })
+        const user = await db.user.findFirst({ where: { id: req.user.id }, include: { mastodonInstance: true } })
 
         let response_data: any = {
             err: undefined,
@@ -47,8 +47,8 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
             err: 'Invalid Bluesky Handle'
         })
 
-        const agent = await intiBlueskyAgent('https://bsky.social', req.body.blueskyHandle, req.body.blueskyToken).catch((err) => {
-            console.log(err)
+        const agent = await intiBlueskyAgent('https://bsky.social', req.body.blueskyHandle, req.body.blueskyToken, user).catch((err) => {
+            console.error(err)
             return res.status(400).view("index", {
                 ...response_data,
                 err: 'Could not authenticate to Bluesky'

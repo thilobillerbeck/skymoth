@@ -65,3 +65,8 @@ export function splitTextBluesky(text: string) {
     res.push(chunks.join(' '))
     return res
 }
+
+export function logSchedulerEvent(username: string, instance: string, action: string, msg: string) {
+    // create log entry with tabbed columns
+    console.log(`${username}:${instance} \t| ${action} \t| ${msg}`)
+}

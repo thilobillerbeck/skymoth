@@ -1,7 +1,7 @@
 import { Mastodon } from 'megalodon'
 import { getNewToots } from '../mastodon'
 import { generateBlueskyPostsFromMastodon, intiBlueskyAgent } from '../bluesky'
-import { domainToUrl } from '../utils'
+import { domainToUrl, logSchedulerEvent } from '../utils'
 import { db, updateLastPostTime } from '../db'
 import { ReplyRef } from '@atproto/api/dist/client/types/app/bsky/feed/post'
 
@@ -17,38 +17,23 @@ export default async function taskMastodonToBluesky() {
     users.forEach(async (user) => {
         try {
             if (!user.blueskyHandle || !user.blueskyToken) {
-                console.log({
-                    scheduledJob: 'reposter',
-                    status: 'no bluesky creds',
-                    user: user.name,
-                    instance: user.mastodonInstance.url
-                })
+                logSchedulerEvent(user.name, user.mastodonInstance.url, 'CREDENTIAL_CHECK', 'no bluesky creds')
                 return
             }
             const userClient = new Mastodon(domainToUrl(user.mastodonInstance.url), user.mastodonToken)
             let posts = await getNewToots(userClient, user.mastodonUid, user.lastTootTime)
 
             if(posts.length === 0) {
-                console.log({
-                    scheduledJob: 'reposter',
-                    status: 'no new posts',
-                    user: user.name,
-                    instance: user.mastodonInstance.url
-                })
+                logSchedulerEvent(user.name, user.mastodonInstance.url, 'REPOSTER', 'no new posts')
                 return
             }
 
-            const blueskyClient = await intiBlueskyAgent('https://bsky.social', user.blueskyHandle, user.blueskyToken)
+            const blueskyClient = await intiBlueskyAgent('https://bsky.social', user.blueskyHandle, user.blueskyToken, user)
 
             posts = posts.reverse()
 
             posts.forEach(async (post) => {
-                console.log({
-                    scheduledJob: 'reposter',
-                    status: `posting ${post.id}`,
-                    user: user.name,
-                    instance: user.mastodonInstance.url
-                })
+                logSchedulerEvent(user.name, user.mastodonInstance.url, 'REPOSTER', `posting ${post.id}`)
                 const postsBsky = await generateBlueskyPostsFromMastodon(post, blueskyClient)
 
                 if (postsBsky.length === 0) return
@@ -62,7 +47,6 @@ export default async function taskMastodonToBluesky() {
                     if (repRef.parent !== undefined) postBsky.reply = repRef;
 
                     let result = await blueskyClient.post(postBsky);
-                    console.log(result)
 
                     if (repRef.root === undefined) repRef.root = result;
                     repRef.parent = result;
@@ -71,13 +55,8 @@ export default async function taskMastodonToBluesky() {
                 await updateLastPostTime(user.id, new Date(post.created_at))
             })
         } catch (e) {
-            console.log({
-                scheduledJob: 'reposter',
-                status: 'error',
-                user: user.name,
-                instance: user.mastodonInstance.url,
-                error: e
-            })
+            logSchedulerEvent(user.name, user.mastodonInstance.url, 'REPOSTER', "error")
+            console.error(e)
         }
     })
 }
