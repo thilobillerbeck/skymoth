@@ -52,7 +52,6 @@ export function splitTextBluesky(text: string) {
     let res = []
     let letterCount = 0
     let chunks = []
-    console.log(text.split(" "))
     for(const word of text.split(" ")) {
         letterCount += word.length + 1 // +1 for space
         if(letterCount >= 300) {
