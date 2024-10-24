@@ -39,6 +39,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
                     lastTootTime: true,
                     blueskyHandle: true,
                     blueskyToken: true,
+                    blueskySession: true,
                 }
             })
         res.header('Content-Disposition', `attachment; filename=skymoth-userdata-${user?.name}.json`)
