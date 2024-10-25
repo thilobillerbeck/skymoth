@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import { Mastodon } from 'megalodon'
 import { authenticateJWT, domainToUrl, genCallBackUrl } from './../lib/utils'
 import { db, getInstanceByDomain, getUserByMastodonUid } from './../lib/db'
+import { AtpSessionData } from "@atproto/api";
 
 export const routesUser = async (app: FastifyInstance, options: Object) => {
     app.get('/login', async (req, res) => {
@@ -22,7 +23,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
     })
 
     app.get('/account/downloadData', { onRequest: [authenticateJWT] }, async (req, res) => {
-        const user = await db.user.findFirst(
+        let user = await db.user.findFirst(
             {
                 where: { id: req.user.id },
                 select: {
@@ -34,14 +35,27 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
                     createdAt: true,
                     updatedAt: true,
                     mastodonUid: true,
-                    mastodonToken: true,
+                    mastodonToken: false,
                     name: true,
                     lastTootTime: true,
                     blueskyHandle: true,
-                    blueskyToken: true,
+                    blueskyToken: false,
                     blueskySession: true,
                 }
             })
+
+        const blueskySession = user?.blueskySession as unknown as AtpSessionData
+
+        user.blueskySession = {
+            handle: blueskySession?.handle,
+            did: blueskySession?.did,
+            email: blueskySession?.email,
+            emailConfirmed: blueskySession?.emailConfirmed,
+            emailAuthFactor: blueskySession?.emailAuthFactor,
+            active: blueskySession?.active,
+            status: blueskySession?.status,
+        }
+            
         res.header('Content-Disposition', `attachment; filename=skymoth-userdata-${user?.name}.json`)
         res.send(user).type('application/json').code(200).redirect('/')
     })
