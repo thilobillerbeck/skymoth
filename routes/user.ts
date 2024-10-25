@@ -44,17 +44,20 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
                 }
             })
 
-        const blueskySession = user?.blueskySession as unknown as AtpSessionData
+            if(user.blueskySession) {
+                const blueskySession = user?.blueskySession as unknown as AtpSessionData
 
-        user.blueskySession = {
-            handle: blueskySession?.handle,
-            did: blueskySession?.did,
-            email: blueskySession?.email,
-            emailConfirmed: blueskySession?.emailConfirmed,
-            emailAuthFactor: blueskySession?.emailAuthFactor,
-            active: blueskySession?.active,
-            status: blueskySession?.status,
-        }
+                user.blueskySession = {
+                    handle: blueskySession?.handle,
+                    did: blueskySession?.did,
+                    email: blueskySession?.email,
+                    emailConfirmed: blueskySession?.emailConfirmed,
+                    emailAuthFactor: blueskySession?.emailAuthFactor,
+                    active: blueskySession?.active,
+                    status: blueskySession?.status,
+                }
+            }
+
             
         res.header('Content-Disposition', `attachment; filename=skymoth-userdata-${user?.name}.json`)
         res.send(user).type('application/json').code(200).redirect('/')
