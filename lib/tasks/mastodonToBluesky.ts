@@ -153,6 +153,8 @@ export default async function taskMastodonToBluesky() {
         repostsInThisRun[post.id] = repRef;
         await storeRepostRecord(user.id, post.id, repRef);
         await updateLastPostTime(user.id, new Date(post.created_at));
+        // wait for 2 seconds to allow bluesky to process the post before moving to the next one
+        await new Promise((resolve) => setTimeout(resolve, 5000));
       } catch (err) {
         logSchedulerEvent(
           user.name,
