@@ -43,6 +43,7 @@ export default async function taskMastodonToBluesky() {
                     parent: undefined!
                 }
 
+                /*
                 if(post.in_reply_to_id) {
                     const repostRef = await findParentToot(user.id, post.in_reply_to_id);
                     if (repostRef) {
@@ -50,6 +51,7 @@ export default async function taskMastodonToBluesky() {
                         repRef = repostRef;
                     }
                 }
+                */
 
                 for (const postBsky of postsBsky) {
                     if (repRef.parent !== undefined) postBsky.reply = repRef;
