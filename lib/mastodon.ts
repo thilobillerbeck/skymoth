@@ -16,7 +16,7 @@ export async function getNewToots(client: Mastodon, uid: string, lastTootTime: D
     const statusses = await client.getAccountStatuses(uid, {
         limit: 50,
         exclude_reblogs: true,
-        exclude_replies: true,
+        exclude_replies: false,
         only_media: false
     });
     const statusses_data = await statusses.data;

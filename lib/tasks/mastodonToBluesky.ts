@@ -67,7 +67,19 @@ export default async function taskMastodonToBluesky() {
 
     for (const post of posts) {
       try {
-        logSchedulerEvent(
+        if (
+            post.in_reply_to_account_id !== user.mastodonUid &&
+            post.in_reply_to_account_id !== null
+        ) {
+            logSchedulerEvent(
+                user.name,
+                user.mastodonInstance.url,
+                "REPOSTER",
+                `skipping ${post.id} as it is a reply to someone else`
+            );
+            continue
+        };
+        logSchedulerEvent( 
           user.name,
           user.mastodonInstance.url,
           "REPOSTER",
@@ -78,7 +90,7 @@ export default async function taskMastodonToBluesky() {
           blueskyClient
         );
 
-        if (postsBsky.length === 0) return;
+        if (postsBsky.length === 0) continue;
 
         let repRef: ReplyRef = {
           root: undefined!,
