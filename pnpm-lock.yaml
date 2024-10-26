@@ -11,6 +11,9 @@ importers:
       '@atproto/api':
         specifier: ^0.13.12
         version: 0.13.12
+      '@atproto/xrpc':
+        specifier: ^0.6.3
+        version: 0.6.3
       '@fastify/cookie':
         specifier: ^11.0.1
         version: 11.0.1

@@ -5,10 +5,11 @@ import sharp from "sharp";
 import { Attachment } from "megalodon/lib/src/entities/attachment";
 import { db } from "./db";
 import { JsonObject } from "@prisma/client/runtime/library";
+import { ResponseType, XRPCError } from '@atproto/xrpc'
 import { Prisma } from '@prisma/client'
 
 
-export async function intiBlueskyAgent(url: string, handle: string, password: string, user: any) {
+export async function intiBlueskyAgent(url: string, handle: string, password: string, user: any): Promise<AtpAgent | undefined> {
     let session: AtpSessionData | undefined = undefined
     session = user.blueskySession as unknown as AtpSessionData
 
@@ -46,9 +47,37 @@ export async function intiBlueskyAgent(url: string, handle: string, password: st
         logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "no session found")
     }
     
-    await agent.login({ identifier: handle, password: password })
-
-    return agent
+    try {
+        await agent.login({ identifier: handle, password: password })
+        return agent
+    } catch (err) {
+        if((err as XRPCError).status == ResponseType.AuthRequired) {
+            // invalidate creds to prevent further login attempts resulting in rate limiting
+            logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "invalid creds")
+            db.user.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    blueskySession: null,
+                    blueskySessionEvent: null,
+                    blueskyToken: null,
+                    blueskyHandle: null
+                }
+            }).then(() => {
+                logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "bluesky creds invalidated")
+            }).catch((err) => {
+                logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "could not clear creds")
+                console.error(err)
+            })
+        } else if ((err as XRPCError).status == ResponseType.RateLimitExceeded) {
+            logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "login rate limited")
+        } else {
+            logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "login error")
+            console.error(err)
+        }
+        return undefined
+    }
 }
 
 export async function generateBlueskyPostsFromMastodon(status: Entity.Status, client: AtpAgent): Promise<Array<AppBskyFeedPost.Record>> {
