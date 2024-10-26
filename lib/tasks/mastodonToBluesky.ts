@@ -63,6 +63,8 @@ export default async function taskMastodonToBluesky() {
 
     posts = posts.reverse();
 
+    const repostsInThisRun: { [tootId: string]: ReplyRef } = {};
+
     for (const post of posts) {
       try {
         logSchedulerEvent(
@@ -83,18 +85,64 @@ export default async function taskMastodonToBluesky() {
           parent: undefined!,
         };
 
-        /*
-                    if(post.in_reply_to_id) {
-                        const repostRef = await findParentToot(user.id, post.in_reply_to_id);
-                        if (repostRef) {
-                            console.log("FOUND REPLY REF", repostRef)
-                            repRef = repostRef;
-                        }
-                    }
-                    */
+        if (post.in_reply_to_id) {
+          const repostRefCached = repostsInThisRun[post.in_reply_to_id];
+          if (repostRefCached) {
+            logSchedulerEvent(
+              user.name,
+              user.mastodonInstance.url,
+              "REPOSTER",
+              `found parent in cache ${repostRefCached.parent?.uri}`
+            );
+            repRef = repostRefCached;
+          } else {
+            const repostRef = await findParentToot(
+              user.id,
+              post.in_reply_to_id
+            );
+            if (repostRef) {
+              logSchedulerEvent(
+                user.name,
+                user.mastodonInstance.url,
+                "REPOSTER",
+                `found parent in db ${repostRef.parent?.uri}`
+              );
+
+              repRef = repostRef;
+            } else {
+              logSchedulerEvent(
+                user.name,
+                user.mastodonInstance.url,
+                "REPOSTER",
+                `could not find parent in db ${post.in_reply_to_id}`
+              );
+            }
+          }
+        }
 
         for (const postBsky of postsBsky) {
-          if (repRef.parent !== undefined) postBsky.reply = repRef;
+          if (repRef.parent !== undefined) {
+            const discoveredParents = await blueskyClient.getPosts({
+              uris: [repRef.parent?.uri],
+            });
+
+            if (discoveredParents.data.posts.length > 0) {
+              logSchedulerEvent(
+                user.name,
+                user.mastodonInstance.url,
+                "REPOSTER",
+                `discovered parent on bluesky ${repRef.parent?.uri}`
+              );
+              postBsky.reply = repRef;
+            } else {
+              logSchedulerEvent(
+                user.name,
+                user.mastodonInstance.url,
+                "REPOSTER",
+                `could not find parent on bluesky ${repRef.parent?.uri}, posting as root`
+              );
+            }
+          }
 
           let result = await blueskyClient.post(postBsky);
 
@@ -102,6 +150,7 @@ export default async function taskMastodonToBluesky() {
           repRef.parent = result;
         }
 
+        repostsInThisRun[post.id] = repRef;
         await storeRepostRecord(user.id, post.id, repRef);
         await updateLastPostTime(user.id, new Date(post.created_at));
       } catch (err) {
