@@ -2,7 +2,7 @@ import { Mastodon } from 'megalodon'
 import { getNewToots } from '../mastodon'
 import { generateBlueskyPostsFromMastodon, intiBlueskyAgent } from '../bluesky'
 import { domainToUrl, logSchedulerEvent } from '../utils'
-import { db, updateLastPostTime } from '../db'
+import { db, updateLastPostTime, storeRepostRecord, findParentToot } from '../db'
 import { ReplyRef } from '@atproto/api/dist/client/types/app/bsky/feed/post'
 
 export default async function taskMastodonToBluesky() {
@@ -32,7 +32,7 @@ export default async function taskMastodonToBluesky() {
 
             posts = posts.reverse()
 
-            posts.forEach(async (post) => {
+            for (const post of posts) {
                 logSchedulerEvent(user.name, user.mastodonInstance.url, 'REPOSTER', `posting ${post.id}`)
                 const postsBsky = await generateBlueskyPostsFromMastodon(post, blueskyClient)
 
@@ -41,6 +41,14 @@ export default async function taskMastodonToBluesky() {
                 let repRef: ReplyRef = {
                     root: undefined!,
                     parent: undefined!
+                }
+
+                if(post.in_reply_to_id) {
+                    const repostRef = await findParentToot(user.id, post.in_reply_to_id);
+                    if (repostRef) {
+                        console.log("FOUND REPLY REF", repostRef)
+                        repRef = repostRef;
+                    }
                 }
 
                 for (const postBsky of postsBsky) {
@@ -52,8 +60,9 @@ export default async function taskMastodonToBluesky() {
                     repRef.parent = result;
                 }
 
+                await storeRepostRecord(user.id, post.id, repRef)
                 await updateLastPostTime(user.id, new Date(post.created_at))
-            })
+            }
         } catch (e) {
             logSchedulerEvent(user.name, user.mastodonInstance.url, 'REPOSTER', "error")
             console.error(e)

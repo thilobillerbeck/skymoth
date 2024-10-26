@@ -1,3 +1,4 @@
+import { ReplyRef } from '@atproto/api/dist/client/types/app/bsky/feed/post';
 import { PrismaClient } from "@prisma/client";
 export const db = new PrismaClient();
 
@@ -34,4 +35,41 @@ export async function updateLastPostTime(userId: string, postTime: Date) {
             lastTootTime: postTime
         }
     })
+}
+
+export async function storeRepostRecord(userId: string, tootId: string, repRef: ReplyRef) {
+    return await db.repost.create({
+        data: {
+            userId: userId,
+            tootId: tootId,
+            bsParentCid: repRef.parent.cid,
+            bsRootCid: repRef.root.cid,
+            bsRootUri: repRef.root.uri,
+            bsParentUri: repRef.parent.uri
+        },
+    })
+}
+
+export async function findParentToot(userId: string, tootId: string): Promise<ReplyRef | null> {
+    const repost = await db.repost.findFirst({
+        where: {
+            userId: userId,
+            tootId: tootId
+        }
+    })
+
+    if (!repost) return null
+
+    const repRef: ReplyRef = {
+        root: {
+            cid: repost.bsRootCid,
+            uri: repost.bsRootUri
+        },
+        parent: {
+            cid: repost.bsParentCid,
+            uri: repost.bsParentUri
+        }
+    }
+
+    return repRef
 }
