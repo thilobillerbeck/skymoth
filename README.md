@@ -9,7 +9,7 @@ Skymoth is an open source service which allows you to share the content you post
 ## Features
 
 - Reposting toots over to Bluesky in a regular interval
-- Reposting text
+- Reposting text (and handle threads)
 - Reposting (multiple) images with alt descriptions
 
 ## Things to do
@@ -34,7 +34,7 @@ cp .env.local .env
 and modify it to to your needs. Then install all javascript dependencies by executing
 
 ```bash
-bun install
+pnpm install
 ```
 
 Don't worry, if set up correctly the development shell you are in should contain all development tools needed for this project.
@@ -46,7 +46,8 @@ devenv up
 after starting you may need to run
 
 ```bash
-bunx prisma migrate dev
+pnpm migrate
+pnpm generate
 ```
 
 to apply all migrations.
