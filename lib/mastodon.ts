@@ -14,6 +14,7 @@ export async function getUserIdFromMastodonHandle(handle: string, client: Megalo
 }
 
 function verifyThread(uid: string, status: Status, searchSpace: Status[], initialCall: boolean = false): boolean {
+    if (!status) return false;
     if (status.in_reply_to_account_id === uid && (
         status.visibility === 'unlisted' || status.visibility === 'public'
     )) {
