@@ -12,7 +12,7 @@
     "tailwind:build": "tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css"
   },
   "dependencies": {
-    "@atproto/api": "^0.13.12",
+    "@atproto/api": "^0.13.14",
     "@atproto/xrpc": "^0.6.3",
     "@fastify/cookie": "^11.0.1",
     "@fastify/formbody": "^8.0.1",
@@ -22,8 +22,8 @@
     "@fastify/static": "^8.0.2",
     "@fastify/view": "^10.0.1",
     "@prisma/client": "^5.21.1",
-    "@sentry/node": "^8.35.0",
-    "@sentry/profiling-node": "^8.35.0",
+    "@sentry/node": "^8.36.0",
+    "@sentry/profiling-node": "^8.36.0",
     "fastify": "^5.0.0",
     "html-to-text": "^9.0.5",
     "liquidjs": "^10.18.0",
