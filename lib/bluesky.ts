@@ -26,6 +26,12 @@ class StateStore {
 }
 
 class SessionStore {
+    userId: string
+
+    constructor(userId) {
+        this.userId = userId
+    }
+
     async set(key: string, session: NodeSavedSession): Promise<void> {
         return db.blueskySession.upsert({
             where: {
@@ -36,7 +42,8 @@ class SessionStore {
             },
             create: {
                 key: key,
-                value: session
+                value: session,
+                userId: this.userId
             }
         }).then(() => {
             logSchedulerEvent("SYSTEM", "SYSTEM", "SESSION_STORE", "session stored")
@@ -48,7 +55,8 @@ class SessionStore {
     async get(key: string): Promise<NodeSavedSession | undefined> {
         const session = await db.blueskySession.findUnique({
             where: {
-                key: key
+                key: key,
+                userId: this.userId
             }
         })
         
@@ -57,7 +65,8 @@ class SessionStore {
     async del(key: string): Promise<void> {
         return db.blueskySession.delete({
             where: {
-                key: key
+                key: key,
+                userId: this.userId
             }
         }).then(() => {
             logSchedulerEvent("SYSTEM", "SYSTEM", "SESSION_STORE", "session deleted")
@@ -68,31 +77,31 @@ class SessionStore {
     }
 }
 
-const callbackUrl = `${process.env.APP_URL}/bluesky/callback`
+const callbackUrl = `http://localhost:3000/bsky/callback`
 const scope = 'atproto transition:generic'
+const stateStore = new StateStore()
 
-const oauthClient = new NodeOAuthClient({
-    clientMetadata: {
-        client_id: process.env.NODE_ENV === 'development'
-            ? `http://localhost:3000?redirect_uri=${encodeURIComponent(callbackUrl)}&scope=${encodeURIComponent(scope)}`
-            : 'https://skymoth.app/bsky/client-metadata.json',
-        client_name: "Skymoth",
-        client_uri: process.env.APP_URL,
-        logo_uri: `${process.env.APP_URL}/android-chrome-512x512.png`,
-        policy_uri: `${process.env.APP_URL}/privacy`,
-        redirect_uris: [ callbackUrl ],
-        grant_types: ['authorization_code', 'refresh_token'],
-        response_types: ['code'],
-        token_endpoint_auth_method: "none",
-        dpop_bound_access_tokens: true,
-        scope: scope,
-    },
-    stateStore: new StateStore(),
-    sessionStore: new SessionStore(),
-})
 
-export function getBlueskyOauthClient(): NodeOAuthClient {
-    return oauthClient
+export function getBlueskyOauthClient(userid: string): NodeOAuthClient {
+    return new NodeOAuthClient({
+        clientMetadata: {
+            client_id: process.env.NODE_ENV === 'development'
+                ? `http://localhost?redirect_uri=${encodeURIComponent(callbackUrl)}&scope=${encodeURIComponent(scope)}`
+                : 'https://skymoth.app/bsky/client-metadata.json',
+            client_name: "Skymoth",
+            client_uri: process.env.APP_URL,
+            logo_uri: `${process.env.APP_URL}/android-chrome-512x512.png`,
+            policy_uri: `${process.env.APP_URL}/privacy`,
+            redirect_uris: [ callbackUrl ],
+            grant_types: ['authorization_code', 'refresh_token'],
+            response_types: ['code'],
+            token_endpoint_auth_method: "none",
+            dpop_bound_access_tokens: true,
+            scope: scope,
+        },
+        stateStore: stateStore,
+        sessionStore: new SessionStore(userid),
+    })
 }
 
 export async function intiBlueskyAgent(url: string, handle: string, password: string, user: any): Promise<AtpAgent | undefined> {

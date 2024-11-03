@@ -44,6 +44,8 @@ model User {
   mastodonInstanceId  String
   UserSettings        UserSettings[]
   Repost              Repost[]
+  blueskySessionOauth BlueskySession?
+  legacyAuth          Boolean          @default(true)
 }
 
 model Repost {
@@ -70,6 +72,8 @@ model UserSettings {
 }
 
 model BlueskySession {
-  key        String @id
-  value      Json
+  key    String @id
+  userId String @unique @default(cuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  value  Json
 }
