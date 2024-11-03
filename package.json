@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@atproto/api": "^0.13.14",
+    "@atproto/oauth-client-node": "^0.2.0",
     "@atproto/xrpc": "^0.6.3",
     "@fastify/cookie": "^11.0.1",
     "@fastify/formbody": "^8.0.1",

@@ -6,8 +6,94 @@ import { Attachment } from "megalodon/lib/src/entities/attachment";
 import { db } from "./db";
 import { JsonObject } from "@prisma/client/runtime/library";
 import { ResponseType, XRPCError } from '@atproto/xrpc'
-import { Prisma } from '@prisma/client'
+import { NodeOAuthClient, NodeSavedSession, NodeSavedState, Session } from "@atproto/oauth-client-node";
 
+class StateStore {
+    map: Map<string, NodeSavedState>
+
+    constructor() {
+        this.map = new Map<string, NodeSavedState>()
+    }
+    async set(key: string, internalState: NodeSavedState): Promise<void> {
+        this.map.set(key, internalState)
+    }
+    async get(key: string): Promise<NodeSavedState | undefined> {
+        return this.map.get(key)
+    }
+    async del(key: string): Promise<void> {
+        this.map.delete(key)
+    }
+}
+
+class SessionStore {
+    async set(key: string, session: NodeSavedSession): Promise<void> {
+        return db.blueskySession.upsert({
+            where: {
+                key: key
+            },
+            update: {
+                value: session
+            },
+            create: {
+                key: key,
+                value: session
+            }
+        }).then(() => {
+            logSchedulerEvent("SYSTEM", "SYSTEM", "SESSION_STORE", "session stored")
+        }).catch((err) => {
+            logSchedulerEvent("SYSTEM", "SYSTEM", "SESSION_STORE", "could not store session")
+            console.error(err)
+        })
+    }
+    async get(key: string): Promise<NodeSavedSession | undefined> {
+        const session = await db.blueskySession.findUnique({
+            where: {
+                key: key
+            }
+        })
+        
+        return session?.value as NodeSavedSession
+    }
+    async del(key: string): Promise<void> {
+        return db.blueskySession.delete({
+            where: {
+                key: key
+            }
+        }).then(() => {
+            logSchedulerEvent("SYSTEM", "SYSTEM", "SESSION_STORE", "session deleted")
+        }).catch((err) => {
+            logSchedulerEvent("SYSTEM", "SYSTEM", "SESSION_STORE", "could not delete session")
+            console.error(err)
+        })
+    }
+}
+
+const callbackUrl = `${process.env.APP_URL}/bluesky/callback`
+const scope = 'atproto transition:generic'
+
+const oauthClient = new NodeOAuthClient({
+    clientMetadata: {
+        client_id: process.env.NODE_ENV === 'development'
+            ? `http://localhost:3000?redirect_uri=${encodeURIComponent(callbackUrl)}&scope=${encodeURIComponent(scope)}`
+            : 'https://skymoth.app/bsky/client-metadata.json',
+        client_name: "Skymoth",
+        client_uri: process.env.APP_URL,
+        logo_uri: `${process.env.APP_URL}/android-chrome-512x512.png`,
+        policy_uri: `${process.env.APP_URL}/privacy`,
+        redirect_uris: [ callbackUrl ],
+        grant_types: ['authorization_code', 'refresh_token'],
+        response_types: ['code'],
+        token_endpoint_auth_method: "none",
+        dpop_bound_access_tokens: true,
+        scope: scope,
+    },
+    stateStore: new StateStore(),
+    sessionStore: new SessionStore(),
+})
+
+export function getBlueskyOauthClient(): NodeOAuthClient {
+    return oauthClient
+}
 
 export async function intiBlueskyAgent(url: string, handle: string, password: string, user: any): Promise<AtpAgent | undefined> {
     let session: AtpSessionData | undefined = undefined

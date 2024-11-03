@@ -68,3 +68,8 @@ model UserSettings {
   user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           String
 }
+
+model BlueskySession {
+  key        String @id
+  value      Json
+}
