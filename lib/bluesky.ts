@@ -17,20 +17,39 @@ export async function intiBlueskyAgent(url: string, handle: string, password: st
         service: url,
         persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
             logSchedulerEvent(user.name, user.mastodonInstance.url, "SESSION_PERSIST", `${evt}`)
-            db.user.update({
-                where: {
-                    id: user.id
-                },
-                data: {
-                    blueskySession: sess as unknown as JsonObject,
-                    blueskySessionEvent: evt
-                }
-            }).then(() => {
-                logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "session persisted")
-            }).catch((err) => {
-                logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "could not persist session")
-                console.error(err)
-            })
+            if (evt === 'expired' || evt === 'create-failed') {
+                logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "clearing session")
+                db.user.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        blueskySession: null,
+                        blueskySessionEvent: null,
+                    }
+                }).then(() => {
+                    logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "session cleared")
+                }).catch((err) => {
+                    logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "could not clear session")
+                    console.error(err)
+                })
+            } else {
+                logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "persisting session")
+                db.user.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        blueskySession: sess as unknown as JsonObject,
+                        blueskySessionEvent: evt
+                    }
+                }).then(() => {
+                    logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "session persisted")
+                }).catch((err) => {
+                    logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "could not persist session")
+                    console.error(err)
+                })
+            }
         },
     })
 
