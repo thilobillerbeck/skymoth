@@ -9,10 +9,6 @@ updates:
       prefix-development: "fix"
       include: "scope"
     target-branch: "develop"
-    groups:
-      all:
-        patterns:
-          - "*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
