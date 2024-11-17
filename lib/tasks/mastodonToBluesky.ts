@@ -156,10 +156,40 @@ export default async function taskMastodonToBluesky() {
             }
           }
 
-          let result = await blueskyClient.post(postBsky);
+          try {
+            let result = await blueskyClient.post(postBsky);
 
-          if (repRef.root === undefined) repRef.root = result;
-          repRef.parent = result;
+            if (repRef.root === undefined) repRef.root = result;
+            repRef.parent = result;
+          } catch (err) {
+            if(err.error === "AccountDeactivated") {
+              logSchedulerEvent(
+                user.name,
+                user.mastodonInstance.url,
+                "REPOSTER",
+                `Account deactivated, invalidating creds`
+              );
+
+              db.user.update({
+                  where: {
+                      id: user.id
+                  },
+                  data: {
+                      blueskySession: null,
+                      blueskySessionEvent: null,
+                      blueskyToken: null,
+                      blueskyHandle: null
+                  }
+              }).then(() => {
+                  logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "bluesky creds invalidated")
+              }).catch((err) => {
+                  logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "could not clear creds")
+                  console.error(err)
+              })
+
+              return;
+            }
+          }
         }
 
         repostsInThisRun[post.id] = repRef;
