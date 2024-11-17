@@ -25,15 +25,17 @@ jobs:
         run: pnpm install
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           DOCKER_REGISTRY_USER: ${{ github.actor }}
-          DOCKER_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_TOKEN }}
+          DOCKER_REGISTRY_PASSWORD: ${{ secrets.GH_TOKEN }}
         if: github.ref == 'refs/heads/main'
         run: npx semantic-release
       - name: Release Dry
         env:
-          GITHUB_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           DOCKER_REGISTRY_USER: ${{ github.actor }}
-          DOCKER_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_TOKEN }}
+          DOCKER_REGISTRY_PASSWORD: ${{ secrets.GH_TOKEN }}
         if: github.ref == 'refs/heads/develop'
         run: npx semantic-release --dry-run --branches develop
