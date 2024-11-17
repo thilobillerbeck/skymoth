@@ -1,4 +1,5 @@
 {
+  "name": "skymoth",
   "scripts": {
     "build": "tsc -p tsconfig.json && cp -r public dist/public && cp -r views dist/views",
     "start": "prisma migrate deploy && node dist/index.js",
