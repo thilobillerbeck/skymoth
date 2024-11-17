@@ -1,0 +1,9 @@
+logs
+*.log
+node_modules/
+.vscode/
+.github/
+.gitignore
+devenv*
+example.compose.yml
+.envrc
