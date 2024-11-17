@@ -69,3 +69,12 @@ export function logSchedulerEvent(username: string, instance: string, action: st
     // create log entry with tabbed columns
     console.log(`${username}:${instance} \t| ${action} \t| ${msg}`)
 }
+
+// due to the read after write system of bluesky, we need to wait a bit before fetching the post
+export function getBlueskyApiWaittime(): number {
+    return process.env.BLUESKY_API_WAITTIME ? parseInt(process.env.BLUESKY_API_WAITTIME) : 5000
+}
+
+export function printInfo() {
+    console.log(`Waiting time between posts in one run is set to: ${getBlueskyApiWaittime()}`)
+}

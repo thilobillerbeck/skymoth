@@ -11,6 +11,7 @@ import * as Sentry from '@sentry/node';
 import { nodeProfilingIntegration } from "@sentry/profiling-node";
 import { readFileSync } from 'fs';
 import { join as pathJoin } from 'path';
+import { printInfo } from './lib/utils';
 
 const { ADDRESS = 'localhost', PORT = '3000' } = process.env;
 
@@ -87,3 +88,5 @@ app.listen({ host: ADDRESS, port: parseInt(PORT, 10) }, function (err, address) 
         app.log.error(err)
     }
 })
+
+printInfo();

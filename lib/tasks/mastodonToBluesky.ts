@@ -1,7 +1,7 @@
 import { Mastodon } from "megalodon";
 import { getNewToots } from "../mastodon";
 import { generateBlueskyPostsFromMastodon, intiBlueskyAgent } from "../bluesky";
-import { domainToUrl, logSchedulerEvent } from "../utils";
+import { domainToUrl, getBlueskyApiWaittime, logSchedulerEvent } from "../utils";
 import {
   db,
   updateLastPostTime,
@@ -195,8 +195,7 @@ export default async function taskMastodonToBluesky() {
         repostsInThisRun[post.id] = repRef;
         await storeRepostRecord(user.id, post.id, repRef);
         await updateLastPostTime(user.id, new Date(post.created_at));
-        // wait for 2 seconds to allow bluesky to process the post before moving to the next one
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await new Promise((resolve) => setTimeout(resolve, getBlueskyApiWaittime()));
       } catch (err) {
         logSchedulerEvent(
           user.name,
