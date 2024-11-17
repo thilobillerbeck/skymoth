@@ -1,4 +1,4 @@
-name: Build and Push to GHCR
+name: Release
 
 on:
   push:
@@ -18,10 +18,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "lts/*"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
       - name: Install dependencies
-        run: npm clean-install
-      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
-        run: npm audit signatures
+        run: pnpm install
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
