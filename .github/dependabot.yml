@@ -8,6 +8,7 @@ updates:
       prefix: "fix"
       prefix-development: "fix"
       include: "scope"
+    target-branch: "develop"
     groups:
       all:
         patterns:
