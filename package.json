@@ -51,7 +51,19 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      "@semantic-release/github"
+      "@semantic-release/github",
+      [
+        "@codedependant/semantic-release-docker",
+        {
+          "dockerProject": "thilobillerbeck",
+          "dockerImage": "skymoth",
+          "dockerPlatform": [
+            "linux/amd64",
+            "linux/arm64"
+          ],
+          "dockerRegistry": "ghcr.io"
+        }
+      ]
     ]
   }
 }
