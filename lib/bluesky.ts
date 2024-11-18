@@ -6,7 +6,6 @@ import { Attachment } from "megalodon/lib/src/entities/attachment";
 import { db } from "./db";
 import { JsonObject } from "@prisma/client/runtime/library";
 import { ResponseType, XRPCError } from '@atproto/xrpc'
-import { Prisma } from '@prisma/client'
 
 
 export async function intiBlueskyAgent(url: string, handle: string, password: string, user: any): Promise<AtpAgent | undefined> {

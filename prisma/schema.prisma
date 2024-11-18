@@ -39,6 +39,7 @@ model User {
   mastodonToken       String
   blueskyToken        String?
   blueskyHandle       String?
+  blueskyPDS          String?          @default("https://bsky.social")
   blueskySession      Json?
   blueskySessionEvent String?
   mastodonInstanceId  String

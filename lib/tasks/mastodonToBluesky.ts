@@ -51,7 +51,7 @@ export default async function taskMastodonToBluesky() {
     }
 
     const blueskyClient = await intiBlueskyAgent(
-      "https://bsky.social",
+      user.blueskyPDS || "https://bsky.social",
       user.blueskyHandle,
       user.blueskyToken,
       user

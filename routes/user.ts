@@ -41,6 +41,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
                     blueskyHandle: true,
                     blueskyToken: false,
                     blueskySession: true,
+                    blueskyPDS: true,
                 }
             })
 

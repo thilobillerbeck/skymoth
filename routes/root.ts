@@ -11,6 +11,7 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
             userName: req.user.mastodonHandle,
             instance: req.user.instance,
             blueskyHandle: user?.blueskyHandle,
+            blueskyPDS: user?.blueskyPDS,
             hasBlueskyToken: user?.blueskyToken ? true : false,
             pollingInterval: parseInt(process.env.POLL_INTERVAL ?? '60')
         })
@@ -19,7 +20,8 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
     app.post<{
         Body: {
             blueskyHandle: string,
-            blueskyToken: string
+            blueskyToken: string,
+            blueskyPDS: string
         }
     }>('/', { onRequest: [authenticateJWT] }, async (req, res) => {
         const user = await db.user.findFirst({ where: { id: req.user.id }, include: { mastodonInstance: true } })
@@ -47,7 +49,7 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
             err: 'Invalid Bluesky Handle'
         })
 
-        const agent = await intiBlueskyAgent('https://bsky.social', req.body.blueskyHandle, req.body.blueskyToken, user).catch((err) => {
+        const agent = await intiBlueskyAgent(req.body.blueskyPDS, req.body.blueskyHandle, req.body.blueskyToken, user).catch((err) => {
             console.error(err)
             return res.status(400).view("index", {
                 ...response_data,
@@ -61,13 +63,15 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
             },
             data: {
                 blueskyHandle: req.body.blueskyHandle,
-                blueskyToken: req.body.blueskyToken
+                blueskyToken: req.body.blueskyToken,
+                blueskyPDS: req.body.blueskyPDS,
             }
         })
 
         response_data = {
             ...response_data,
             blueskyHandle: user?.blueskyHandle,
+            blueskyPDS: user?.blueskyPDS,
             hasBlueskyToken: user?.blueskyToken ? true : false
         }
 

@@ -37,6 +37,13 @@
             </p>
             <form action="/" method="post">
                 <div class="form-control w-full">
+                    <label for="pollingInterval" class="label">
+                        <span class="label-text">Bluesky PDS</span>
+                    </label>
+                    <input value="{{ blueskyPDS }}" placeholder="https://bsky.social" type="text" name="blueskyPDS"
+                        id="blueskyPDS" required class="input input-bordered w-full" />
+                </div>
+                <div class="form-control w-full">
                     <label for="blueskyHandle" class="label">
                         <span class="label-text">Bluesky Handle</span>
                     </label>
@@ -47,7 +54,7 @@
                     <label for="blueskyToken" class="label">
                         <span class="label-text">Bluesky App Password</span>
                     </label>
-                    <input type="password" placeholder="***********" {% if hasBlueskyToken %}value="***********" {% endif %} type="text"
+                    <input type="password" placeholder="***********" type="text"
                         name="blueskyToken" id="blueskyToken" required class="input input-bordered w-full" />
                 </div>
                 <div class="card-actions justify-end mt-4">
