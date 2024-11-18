@@ -65,7 +65,7 @@ export default async function taskMastodonToBluesky() {
 
     const repostsInThisRun: { [tootId: string]: ReplyRef } = {};
 
-    for (const post of posts) {
+    for (const [postIdx, post] of posts.entries()) {
       try {
         if (
             post.in_reply_to_account_id !== user.mastodonUid &&
@@ -132,7 +132,17 @@ export default async function taskMastodonToBluesky() {
           }
         }
 
-        for (const postBsky of postsBsky) {
+
+        for (const [postBskyIdx, postBsky] of postsBsky.entries()) {
+          if(postsBsky.length > 1) {
+            logSchedulerEvent(
+              user.name,
+              user.mastodonInstance.url,
+              "REPOSTER",
+              `posting ${postBskyIdx + 1}/${postsBsky.length} (${post.id})`
+            );
+          }
+
           if (repRef.parent !== undefined) {
             const discoveredParents = await blueskyClient.getPosts({
               uris: [repRef.parent?.uri],
@@ -190,12 +200,30 @@ export default async function taskMastodonToBluesky() {
               return;
             }
           }
+
+          if(postBskyIdx < postsBsky.length - 1) {
+            logSchedulerEvent(
+              user.name,
+              user.mastodonInstance.url,
+              "REPOSTER",
+              `waiting ${getBlueskyApiWaittime()}ms for next post (split post)`
+            );
+            await new Promise((resolve) => setTimeout(resolve, getBlueskyApiWaittime()));
+          }
         }
 
         repostsInThisRun[post.id] = repRef;
         await storeRepostRecord(user.id, post.id, repRef);
         await updateLastPostTime(user.id, new Date(post.created_at));
-        await new Promise((resolve) => setTimeout(resolve, getBlueskyApiWaittime()));
+        if(postIdx < posts.length - 1) {
+          logSchedulerEvent(
+            user.name,
+            user.mastodonInstance.url,
+            "REPOSTER",
+            `waiting ${getBlueskyApiWaittime()}ms for next post (thread)`
+          );
+          await new Promise((resolve) => setTimeout(resolve, getBlueskyApiWaittime()));
+        }
       } catch (err) {
         logSchedulerEvent(
           user.name,
