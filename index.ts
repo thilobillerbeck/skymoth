@@ -44,8 +44,9 @@ if (process.env.SENTRY_DSN) {
 let version = "development"
 
 const gitRevPath = pathJoin(__dirname, '.git-rev')
-if (require('fs').existsSync(gitRevPath)) {
-    version = readFileSync(gitRevPath, 'utf-8').trim()
+const gitTagPath = pathJoin(__dirname, '.git-tag')
+if (require('fs').existsSync(gitRevPath) && require('fs').existsSync(gitTagPath)) {
+    version = `${readFileSync(gitTagPath, 'utf-8').toString().trim()} (${readFileSync(gitRevPath, 'utf-8').toString().trim()})`
 }
 
 app.register(fastifyCookie)
