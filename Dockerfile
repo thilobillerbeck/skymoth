@@ -1,10 +1,16 @@
 FROM node:20 AS base
+ARG GIT_TAG
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 COPY . /app
 WORKDIR /app
-RUN echo "$(git rev-parse --short HEAD) ($(git describe --tags --abbrev=0))" > .git-rev
+RUN if [ -n "$GIT_TAG" ]; then \
+      VERSION="$GIT_TAG ($(git rev-parse --short HEAD))"; \
+    else \
+      VERSION="$(git describe --tags --abbrev=0) ($(git rev-parse --short HEAD))"; \
+    fi && \
+    echo $VERSION > .git-rev
 RUN rm -rf .git
 
 FROM base AS prod-deps
