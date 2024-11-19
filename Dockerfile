@@ -4,8 +4,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 COPY . /app
 WORKDIR /app
-RUN git rev-parse --short HEAD > .git-rev
-RUN git describe --tags --abbrev=0 > .git-tag
+RUN echo "$(git rev-parse --short HEAD) ($(git describe --tags --abbrev=0))" > .git-rev
 RUN rm -rf .git
 
 FROM base AS prod-deps
