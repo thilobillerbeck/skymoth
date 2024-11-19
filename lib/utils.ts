@@ -78,3 +78,12 @@ export function getBlueskyApiWaittime(): number {
 export function printInfo() {
     console.log(`Waiting time between posts in one run is set to: ${getBlueskyApiWaittime()}`)
 }
+
+export function checkValidHttpsUrl(rwaUrl: string): boolean {
+    try {
+        const url = new URL(rwaUrl);
+        return url.protocol === 'https:';
+    } catch (err) {
+        return false;
+    }
+}

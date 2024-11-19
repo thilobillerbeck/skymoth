@@ -180,3 +180,26 @@ export async function generateBlueskyPostFromMastodon(content: string, client: A
     }
     return undefined
 }
+
+export function validateBlueskyHandle(handle: string): boolean {
+    const handleRegex = new RegExp(/^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/);
+    return handleRegex.test(handle)
+}
+
+export function validateBlueskyAppPassword(password: string): boolean {
+    const passwordRegex = new RegExp(/^(?:[a-zA-Z0-9]{4}-){3}[a-zA-Z0-9]{4}$/);
+    return passwordRegex.test(password)
+}
+
+export async function validateBlueskyCredentials(pds: string, handle: string, token: string): Promise<boolean> {
+    const agent = new AtpAgent({
+        service: pds,
+    })
+    
+    try {
+        const res = await agent.login({ identifier: handle, password: token })
+        return res.success
+    } catch (err) {
+        return false
+    }
+}
