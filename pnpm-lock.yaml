@@ -54,8 +54,8 @@ importers:
         specifier: ^10.19.0
         version: 10.19.0
       megalodon:
-        specifier: ^10.0.6
-        version: 10.0.6
+        specifier: ^10.0.7
+        version: 10.0.7
       node-html-parser:
         specifier: ^6.1.13
         version: 6.1.13
@@ -1734,8 +1734,8 @@ packages:
     engines: {node: '>= 18'}
     hasBin: true
 
-  megalodon@10.0.6:
-    resolution: {integrity: sha512-r2LMuFV3Hl+IU2vEUm7fjFDnju/j7LjfMJz51+DjLppVXqwbCD3Fpjx2L+hzC6UTQClQ1x4qu+QTo+Y/PlD3rQ==}
+  megalodon@10.0.7:
+    resolution: {integrity: sha512-gz8mwfN3sp269fqpkd9znopK8U6rhuJKtlyI7sQyzk4d6VxpVIX730FBjACNz3Io4bWo9DJdQBH5XOO/FCHDzg==}
     engines: {node: '>=22.11.0'}
 
   meow@13.2.0:
@@ -4563,7 +4563,7 @@ snapshots:
 
   marked@12.0.2: {}
 
-  megalodon@10.0.6:
+  megalodon@10.0.7:
     dependencies:
       '@badgateway/oauth2-client': 2.4.2
       '@types/ws': 8.5.13
