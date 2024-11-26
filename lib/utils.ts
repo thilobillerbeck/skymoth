@@ -29,7 +29,7 @@ export async function fetchImageToBytes(url: string) {
 }
 
 export function domainToUrl(domain: string) {
-    return `https://${domain}/`
+    return `https://${domain}`
 }
 
 export function genCallBackUrl(instanceDomain: string) {
