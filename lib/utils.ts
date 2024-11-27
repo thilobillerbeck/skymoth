@@ -52,20 +52,20 @@ export const authenticateJWT = async (req: any, res: any) => {
     }
 }
 
-export function splitTextBluesky(text: string) {
+export function splitTextBluesky(text: string, spoiler: string): string[] {
     let res = []
     let letterCount = 0
     let chunks = []
     for(const word of text.split(" ")) {
         letterCount += word.length + 1 // +1 for space
-        if(letterCount >= 300) {
-            res.push(chunks.join(' '))
+        if(letterCount >= (300 - spoiler.length)) {
             chunks = []
             letterCount = word.length
         }
         chunks.push(word)
     }
     res.push(chunks.join(' '))
+    res = res.map((r) => `${spoiler}${r}`)
     return res
 }
 

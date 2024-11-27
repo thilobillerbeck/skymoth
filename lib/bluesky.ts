@@ -100,8 +100,9 @@ export async function intiBlueskyAgent(url: string, handle: string, password: st
 
 export async function generateBlueskyPostsFromMastodon(status: Entity.Status, client: AtpAgent): Promise<Array<AppBskyFeedPost.Record>> {
     let posts: Array<AppBskyFeedPost.Record> = []
+    const spoiler = status.sensitive ? `CW: ${status.spoiler_text}\n\n` : ''
     const conv = mastodonHtmlToText(status.content);
-    const split = splitTextBluesky(conv);
+    const split = splitTextBluesky(conv, spoiler);
 
     for(const [idx, text] of split.entries()) {
         let post = await generateBlueskyPostFromMastodon(text, client, idx === 0 ? status.media_attachments : undefined)
