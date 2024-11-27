@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { Mastodon } from 'megalodon'
-import { authenticateJWT, domainToUrl, genCallBackUrl } from './../lib/utils'
+import { authenticateJWT, domainToUrl, genCallBackUrl, validateDomain } from './../lib/utils'
 import { db, getInstanceByDomain, getUserByMastodonUid } from './../lib/db'
 import { AtpSessionData } from "@atproto/api";
 
@@ -70,7 +70,14 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
         }
     }>('/auth', async (req, res) => {
         let instanceDomain: string = req.query.instance || "mastodon.social"
-        instanceDomain = instanceDomain.toLowerCase().replace(/https?:\/\//, "")
+        instanceDomain = instanceDomain.toLowerCase().replace(/https?:\/\//, "").replace("/", "")
+
+        if(!validateDomain(instanceDomain)) {
+            return res.status(400).view("login", {
+                err: 'Invalid instance domain'
+            })
+        }
+
         const url = domainToUrl(instanceDomain)
         let client = new Mastodon(url)
 

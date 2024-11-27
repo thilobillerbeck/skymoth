@@ -32,6 +32,10 @@ export function domainToUrl(domain: string) {
     return `https://${domain}`
 }
 
+export function validateDomain(domain: string) {
+    return domain.match(/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/g)
+}
+
 export function genCallBackUrl(instanceDomain: string) {
     if (process.env.NODE_ENV == 'development') {
         const { ADDRESS = 'localhost', PORT = '3000' } = process.env;
