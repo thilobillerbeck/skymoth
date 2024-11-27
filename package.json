@@ -5,8 +5,8 @@
     "start": "prisma migrate deploy && node dist/index.js",
     "start:scheduler": "node dist/lib/tasks/scheduler.js",
     "dev": "pnpm run dev:server",
-    "dev:server": "ts-node index.ts",
-    "dev:scheduler": "ts-node lib/tasks/scheduler.ts",
+    "dev:server": "nodemon --exec ts-node index.ts",
+    "dev:scheduler": "nodemon --exec ts-node lib/tasks/scheduler.ts",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",
     "tailwind:css": "concurrently \"tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css --watch\"",
@@ -41,6 +41,7 @@
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.1.0",
     "daisyui": "^4.12.14",
+    "nodemon": "^3.1.7",
     "postcss": "^8.4.49",
     "postcss-cli": "^11.0.0",
     "semantic-release": "^24.2.0",
@@ -65,6 +66,12 @@
           "dockerRegistry": "ghcr.io"
         }
       ]
+    ]
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "dist",
+      "node_modules"
     ]
   }
 }
