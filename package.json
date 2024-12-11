@@ -40,7 +40,7 @@
     "@types/html-to-text": "^9.0.4",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.1.0",
-    "daisyui": "^4.12.14",
+    "daisyui": "^4.12.20",
     "postcss": "^8.4.49",
     "postcss-cli": "^11.0.0",
     "semantic-release": "^24.2.0",
