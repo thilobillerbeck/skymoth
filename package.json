@@ -30,7 +30,7 @@
     "liquidjs": "^10.19.0",
     "megalodon": "^10.0.7",
     "node-html-parser": "^6.1.13",
-    "prisma": "^5.22.0",
+    "prisma": "^6.0.1",
     "sharp": "^0.33.5",
     "toad-scheduler": "^3.0.1"
   },
