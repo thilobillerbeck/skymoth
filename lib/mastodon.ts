@@ -32,23 +32,23 @@ function verifyThread(uid: string, status: Status, searchSpace: Status[], initia
 }
 
 export async function getNewToots(client: Mastodon, uid: string, lastTootTime: Date) {
-    const statusses = await client.getAccountStatuses(uid, {
+    const statuses = await client.getAccountStatuses(uid, {
         limit: 50,
         exclude_reblogs: true,
         exclude_replies: false,
         only_media: false
     });
-    const statusses_data = await statusses.data;
-    const statusses_filtered = statusses_data.filter((status) => {
+    const statuses_data = await statuses.data;
+    const statuses_filtered = statuses_data.filter((status) => {
         const newPost = new Date(status.created_at) > lastTootTime;
         const isPublic = status.visibility === 'public';
         const isNotMention = status.mentions.length === 0;
 
         // due to the way some mastodon clients handle threads, we need to check if the status may be a thread
-        const isThread = verifyThread(uid, status, statusses_data, true);      
+        const isThread = verifyThread(uid, status, statuses_data, true);
 
         return newPost && (isPublic || isThread) && isNotMention;
     });
 
-    return statusses_filtered;
+    return statuses_filtered;
 }
