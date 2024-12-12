@@ -64,22 +64,22 @@
 
                 <div class="space-y-2">
                     <label class="flex items-center">
-                        <input type="radio" name="relay-option" value="all" class="radio radio-primary mr-2" />
+                        <input type="radio" name="relayCriteria" value="all" class="radio radio-primary mr-2" {% if relayCriteria == 'all' %}checked{% endif %}/>
                         <span>All posts</span>
                     </label>
 
                     <label class="flex items-center">
-                        <input type="radio" name="relay-option" value="if-self-faved" class="radio radio-primary mr-2" />
+                        <input type="radio" name="relayCriteria" value="favedBySelf" class="radio radio-primary mr-2" {% if relayCriteria == 'favedBySelf' %}checked{% endif %}/>
                         <span>Posts which the user ⭐'d</span>
                     </label>
 
                     <label class="flex items-center">
-                        <input type="radio" name="relay-option" value="if-contains-marker" class="radio radio-primary mr-2" data-hashtag-dependent="true" />
+                        <input type="radio" name="relayCriteria" value="containsMarker" class="radio radio-primary mr-2" data-hashtag-dependent="true" {% if relayCriteria == 'containsMarker' %}checked{% endif %}/>
                         <span>Posts which include the marker below</span>
                     </label>
 
                     <label class="flex items-center">
-                        <input type="radio" name="relay-option" value="if-not-contains-marker" class="radio radio-primary mr-2" data-hashtag-dependent="true" />
+                        <input type="radio" name="relayCriteria" value="notContainsMarker" class="radio radio-primary mr-2" data-hashtag-dependent="true" {% if relayCriteria == 'notContainsMarker' %}checked{% endif %}/>
                         <span>Posts which do not include the marker below</span>
                     </label>
                 </div>
@@ -91,21 +91,20 @@
                     <p class="text-sm text-gray-400 mb-2">
                         This text can be any string contained in the toot, for example '#xp' (for crosspost) or 'cc:bluesky'.
                     </p>
-                    <input type="text" placeholder="Enter a marker, eg: #xp" class="input input-bordered w-full" id="marker-text" disabled />
+                    <input type="text" name="relayMarker" placeholder="Enter a marker, eg: #xp" class="input input-bordered w-full" id="relayMarker" value="{{ relayMarker }}"/>
                 </div>
 
 <script>
 // I'm sure this doesn't really live here, but it works for a demo.
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('bsky-relay');
-    const hashtagInput = document.getElementById('marker-text');
-    const radioButtons = form.querySelectorAll('input[name="relay-option"]');
-    radioButtons.forEach(radio => {
-        radio.addEventListener('change', () => {
-            const isHashtagDependent = radio.hasAttribute('data-hashtag-dependent');
-            hashtagInput.disabled = !isHashtagDependent;
-        });
-    });
+    const hashtagInput = document.getElementById('relayMarker');
+    const radioButtons = document.querySelectorAll('input[name="relayCriteria"]');
+    const toggleHashtagInput = () => {
+        const selectedRadio = document.querySelector('input[name="relayCriteria"]:checked');
+        hashtagInput.disabled = !selectedRadio?.hasAttribute('data-hashtag-dependent');
+    };
+    toggleHashtagInput();
+    radioButtons.forEach(radio => radio.addEventListener('change', toggleHashtagInput));
 });
 </script>
 

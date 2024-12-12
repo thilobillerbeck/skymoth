@@ -5,13 +5,20 @@ import { FastifyInstance } from 'fastify'
 
 export const routesRoot = async (app: FastifyInstance, options: Object) => {
     app.get('/', { onRequest: [authenticateJWT] }, async (req, res) => {
-        const user = await db.user.findFirst({ where: { id: req.user.id } })
+        const user = await db.user.findFirst({
+            where: { id: req.user.id },
+            include: {
+                UserSettings: true
+            }
+        })
 
         return res.view("index", {
             userName: req.user.mastodonHandle,
             instance: req.user.instance,
             blueskyHandle: user?.blueskyHandle,
             blueskyPDS: user?.blueskyPDS,
+            relayCriteria: user?.relayCriteria,
+            relayMarker: user?.relayMarker,
             hasBlueskyToken: user?.blueskyToken ? true : false,
             pollingInterval: parseInt(process.env.POLL_INTERVAL ?? '60')
         })
@@ -21,10 +28,18 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
         Body: {
             blueskyHandle: string,
             blueskyToken: string,
-            blueskyPDS: string
+            blueskyPDS: string,
+            relayCriteria: any,
+            relayMarker: string
         }
     }>('/', { onRequest: [authenticateJWT] }, async (req, res) => {
-        const user = await db.user.findFirst({ where: { id: req.user.id }, include: { mastodonInstance: true } })
+        const user = await db.user.findFirst({
+            where: { id: req.user.id },
+            include: {
+                mastodonInstance: true,
+                UserSettings: true
+            }
+        })
 
         let response_data: any = {
             err: undefined,
@@ -48,7 +63,7 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
             ...response_data,
             err: 'Invalid Bluesky PDS'
         })
-        
+
         if(!(await validateBlueskyCredentials(req.body.blueskyPDS, req.body.blueskyHandle, req.body.blueskyToken))) return res.status(400).view("index", {
             ...response_data,
             err: 'Invalid Bluesky Credentials, could not authenticate'
@@ -62,6 +77,8 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
                 blueskyHandle: req.body.blueskyHandle,
                 blueskyToken: req.body.blueskyToken,
                 blueskyPDS: req.body.blueskyPDS,
+                relayCriteria: req.body.relayCriteria,
+                relayMarker: req.body.relayMarker,
             }
         })
 

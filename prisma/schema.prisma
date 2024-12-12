@@ -17,6 +17,13 @@ enum StatusVisibility {
   direct
 }
 
+enum RelayCriteria {
+  all
+  favedBySelf
+  containsMarker
+  notContainsMarker
+}
+
 model MastodonInstance {
   id                String   @id @default(uuid())
   urlEncoded        String   @unique
@@ -43,6 +50,8 @@ model User {
   blueskySession      Json?
   blueskySessionEvent String?
   mastodonInstanceId  String
+  relayCriteria       RelayCriteria    @default(all)
+  relayMarker         String           @default("")
   UserSettings        UserSettings[]
   Repost              Repost[]
 }
