@@ -35,7 +35,7 @@
                 settings and create an <a href="https://bsky.app/settings/app-passwords" target="_blank" rel="noopener noreferrer"
                     class="text-secondary underline" >app password</a>.
             </p>
-            <form action="/" method="post">
+            <form action="/" method="post" id="bsky-relay">
                 <div class="form-control w-full">
                     <label for="blueskyPDS" class="label">
                         <span class="label-text">Bluesky PDS</span>
@@ -57,6 +57,58 @@
                     <input type="password" placeholder="***********" type="text"
                         name="blueskyToken" id="blueskyToken" required class="input input-bordered w-full" />
                 </div>
+
+                <p class="mb-4">
+                    Which posts for this account should be relayed from Mastodon to BlueSky?
+                </p>
+
+                <div class="space-y-2">
+                    <label class="flex items-center">
+                        <input type="radio" name="relay-option" value="all" class="radio radio-primary mr-2" />
+                        <span>All posts</span>
+                    </label>
+
+                    <label class="flex items-center">
+                        <input type="radio" name="relay-option" value="if-self-faved" class="radio radio-primary mr-2" />
+                        <span>Posts which the user ⭐'d</span>
+                    </label>
+
+                    <label class="flex items-center">
+                        <input type="radio" name="relay-option" value="if-contains-marker" class="radio radio-primary mr-2" data-hashtag-dependent="true" />
+                        <span>Posts which include the marker below</span>
+                    </label>
+
+                    <label class="flex items-center">
+                        <input type="radio" name="relay-option" value="if-not-contains-marker" class="radio radio-primary mr-2" data-hashtag-dependent="true" />
+                        <span>Posts which do not include the marker below</span>
+                    </label>
+                </div>
+
+                <div id="hashtag-container" class="form-control mt-4">
+                    <label class="label">
+                        <span class="label-text">Marker for relay</span>
+                    </label>
+                    <p class="text-sm text-gray-400 mb-2">
+                        This text can be any string contained in the toot, for example '#xp' (for crosspost) or 'cc:bluesky'.
+                    </p>
+                    <input type="text" placeholder="Enter a marker, eg: #xp" class="input input-bordered w-full" id="marker-text" disabled />
+                </div>
+
+<script>
+// I'm sure this doesn't really live here, but it works for a demo.
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('bsky-relay');
+    const hashtagInput = document.getElementById('marker-text');
+    const radioButtons = form.querySelectorAll('input[name="relay-option"]');
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', () => {
+            const isHashtagDependent = radio.hasAttribute('data-hashtag-dependent');
+            hashtagInput.disabled = !isHashtagDependent;
+        });
+    });
+});
+</script>
+
                 <div class="card-actions justify-end mt-4">
                     <input class="btn btn-outline btn-success" type="submit" value="Update!" />
                 </div>
