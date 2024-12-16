@@ -24,7 +24,7 @@
     "@fastify/view": "^10.0.1",
     "@prisma/client": "^6.0.1",
     "@sentry/node": "^8.43.0",
-    "@sentry/profiling-node": "^8.40.0",
+    "@sentry/profiling-node": "^8.45.1",
     "fastify": "^5.1.0",
     "html-to-text": "^9.0.5",
     "liquidjs": "^10.19.0",
