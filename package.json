@@ -20,7 +20,7 @@
     "@fastify/jwt": "^9.0.1",
     "@fastify/schedule": "^5.0.2",
     "@fastify/session": "^11.0.1",
-    "@fastify/static": "^8.0.2",
+    "@fastify/static": "^8.0.3",
     "@fastify/view": "^10.0.1",
     "@prisma/client": "^6.0.1",
     "@sentry/node": "^8.45.1",
