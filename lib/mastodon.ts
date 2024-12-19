@@ -1,6 +1,7 @@
 import { MegalodonInterface, Mastodon } from 'megalodon'
 import { Status } from 'megalodon/lib/src/entities/status';
 import { Constraint } from "./constraint";
+import { convert } from 'html-to-text';
 
 export function initMastodonAgent() {
     return new Mastodon('mastodon',
@@ -44,17 +45,20 @@ export async function getNewToots(client: Mastodon, uid: string, lastTootTime: D
         const newPost = new Date(status.created_at) > lastTootTime;
         const isPublic = status.visibility === 'public';
         const isNotMention = status.mentions.length === 0;
+        const text = convert(status.content ?? '', { wordwrap: false, preserveNewlines: false });
+        const regex = new RegExp(`${constraint.relayMarker}`, 'm');
+        const containsMarker = text.match(regex) !== null;
         const isSelfFaved = status.favourited;
 
         if (constraint.relayCriteria === 'favedBySelf' && !isSelfFaved) {
             return false;
         }
 
-        if (constraint.relayCriteria === 'containsMarker' && !status.content.match(/constraint.relayMarker/)) {
+        if (constraint.relayCriteria === 'containsMarker' && !containsMarker) {
             return false;
         }
 
-        if (constraint.relayCriteria === 'notContainsMarker' && status.content.match(/constraint.relayMarker/)) {
+        if (constraint.relayCriteria === 'notContainsMarker' && containsMarker) {
             return false;
         }
 
