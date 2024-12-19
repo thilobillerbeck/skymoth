@@ -5,22 +5,17 @@ import { FastifyInstance } from 'fastify'
 
 export const routesRoot = async (app: FastifyInstance, options: Object) => {
     app.get('/', { onRequest: [authenticateJWT] }, async (req, res) => {
-        const user = await db.user.findFirst({
-            where: { id: req.user.id },
-            include: {
-                UserSettings: true
-            }
-        })
+        const user = await db.user.findFirst({ where: { id: req.user.id } })
 
         return res.view("index", {
             userName: req.user.mastodonHandle,
             instance: req.user.instance,
             blueskyHandle: user?.blueskyHandle,
             blueskyPDS: user?.blueskyPDS,
+            hasBlueskyToken: user?.blueskyToken ? true : false,
+            pollingInterval: parseInt(process.env.POLL_INTERVAL ?? '60'),
             relayCriteria: user?.relayCriteria,
             relayMarker: user?.relayMarker,
-            hasBlueskyToken: user?.blueskyToken ? true : false,
-            pollingInterval: parseInt(process.env.POLL_INTERVAL ?? '60')
         })
     })
 
@@ -33,13 +28,7 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
             relayMarker: string
         }
     }>('/', { onRequest: [authenticateJWT] }, async (req, res) => {
-        const user = await db.user.findFirst({
-            where: { id: req.user.id },
-            include: {
-                mastodonInstance: true,
-                UserSettings: true
-            }
-        })
+        const user = await db.user.findFirst({ where: { id: req.user.id }, include: { mastodonInstance: true } })
 
         let response_data: any = {
             err: undefined,
