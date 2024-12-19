@@ -1,5 +1,7 @@
 import { MegalodonInterface, Mastodon } from 'megalodon'
 import { Status } from 'megalodon/lib/src/entities/status';
+import { Constraint } from "./constraint";
+import { convert } from 'html-to-text';
 
 export function initMastodonAgent() {
     return new Mastodon('mastodon',
@@ -31,7 +33,7 @@ function verifyThread(uid: string, status: Status, searchSpace: Status[], initia
     }
 }
 
-export async function getNewToots(client: Mastodon, uid: string, lastTootTime: Date) {
+export async function getNewToots(client: Mastodon, uid: string, lastTootTime: Date, constraint: Constraint) {
     const statuses = await client.getAccountStatuses(uid, {
         limit: 50,
         exclude_reblogs: true,
@@ -43,6 +45,22 @@ export async function getNewToots(client: Mastodon, uid: string, lastTootTime: D
         const newPost = new Date(status.created_at) > lastTootTime;
         const isPublic = status.visibility === 'public';
         const isNotMention = status.mentions.length === 0;
+        const text = convert(status.content ?? '', { wordwrap: false, preserveNewlines: false });
+        const regex = new RegExp(`${constraint.relayMarker}`, 'm');
+        const containsMarker = text.match(regex) !== null;
+        const isSelfFaved = status.favourited;
+
+        if (constraint.relayCriteria === 'favedBySelf' && !isSelfFaved) {
+            return false;
+        }
+
+        if (constraint.relayCriteria === 'containsMarker' && !containsMarker) {
+            return false;
+        }
+
+        if (constraint.relayCriteria === 'notContainsMarker' && containsMarker) {
+            return false;
+        }
 
         // due to the way some mastodon clients handle threads, we need to check if the status may be a thread
         const isThread = verifyThread(uid, status, statuses_data, true);
