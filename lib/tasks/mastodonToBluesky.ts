@@ -2,6 +2,7 @@ import { Mastodon } from "megalodon";
 import { getNewToots } from "../mastodon";
 import { generateBlueskyPostsFromMastodon, intiBlueskyAgent } from "../bluesky";
 import { domainToUrl, getBlueskyApiWaittime, logSchedulerEvent } from "../utils";
+import { Constraint } from "../constraint";
 import {
   db,
   updateLastPostTime,
@@ -34,10 +35,15 @@ export default async function taskMastodonToBluesky() {
       domainToUrl(user.mastodonInstance.url),
       user.mastodonToken
     );
+    const constraint = new Constraint(
+        user.relayCriteria ?? "all",
+        user.relayMarker ?? ""
+    );
     let posts = await getNewToots(
       userClient,
       user.mastodonUid,
-      user.lastTootTime
+      user.lastTootTime,
+      constraint
     );
 
     if (posts.length === 0) {
