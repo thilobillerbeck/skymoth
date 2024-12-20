@@ -35,7 +35,7 @@
                 settings and create an <a href="https://bsky.app/settings/app-passwords" target="_blank" rel="noopener noreferrer"
                     class="text-secondary underline" >app password</a>.
             </p>
-            <form action="/" method="post" id="bsky-relay">
+            <form action="/" method="post">
                 <div class="form-control w-full">
                     <label for="blueskyPDS" class="label">
                         <span class="label-text">Bluesky PDS</span>
@@ -58,55 +58,36 @@
                         name="blueskyToken" id="blueskyToken" required class="input input-bordered w-full" />
                 </div>
 
-                <p class="mb-4">
-                    Which posts for this account should be relayed from Mastodon to BlueSky?
-                </p>
-
                 <div class="space-y-2">
+                    <p class="mb-4 mt-4">
+                        Which Toots for this account should be relayed from Mastodon to BlueSky?
+                    </p>
                     <label class="flex items-center">
                         <input type="radio" name="relayCriteria" value="all" class="radio radio-primary mr-2" {% if relayCriteria == 'all' %}checked{% endif %}/>
                         <span>All posts</span>
                     </label>
-
                     <label class="flex items-center">
                         <input type="radio" name="relayCriteria" value="favedBySelf" class="radio radio-primary mr-2" {% if relayCriteria == 'favedBySelf' %}checked{% endif %}/>
                         <span>Posts which the user ⭐'d</span>
                     </label>
-
                     <label class="flex items-center">
-                        <input type="radio" name="relayCriteria" value="containsMarker" class="radio radio-primary mr-2" data-hashtag-dependent="true" {% if relayCriteria == 'containsMarker' %}checked{% endif %}/>
+                        <input type="radio" name="relayCriteria" value="containsMarker" class="radio radio-primary mr-2" {% if relayCriteria == 'containsMarker' %}checked{% endif %}/>
                         <span>Posts which include the marker below</span>
                     </label>
-
                     <label class="flex items-center">
-                        <input type="radio" name="relayCriteria" value="notContainsMarker" class="radio radio-primary mr-2" data-hashtag-dependent="true" {% if relayCriteria == 'notContainsMarker' %}checked{% endif %}/>
+                        <input type="radio" name="relayCriteria" value="notContainsMarker" class="radio radio-primary mr-2" {% if relayCriteria == 'notContainsMarker' %}checked{% endif %}/>
                         <span>Posts which do not include the marker below</span>
                     </label>
+                    <div class="form-control mt-4">
+                        <label class="label">
+                            <span class="label-text">Marker for relay</span>
+                        </label>
+                        <p class="text-sm text-gray-400 mb-2">
+                            This text can be any string contained in the toot, for example '#xp' (for crosspost) or 'cc:bluesky'.
+                        </p>
+                        <input type="text" name="relayMarker" placeholder="Enter a marker, eg: #xp" class="input input-bordered w-full" id="relayMarker" value="{{ relayMarker }}"/>
+                    </div>
                 </div>
-
-                <div id="hashtag-container" class="form-control mt-4">
-                    <label class="label">
-                        <span class="label-text">Marker for relay</span>
-                    </label>
-                    <p class="text-sm text-gray-400 mb-2">
-                        This text can be any string contained in the toot, for example '#xp' (for crosspost) or 'cc:bluesky'.
-                    </p>
-                    <input type="text" name="relayMarker" placeholder="Enter a marker, eg: #xp" class="input input-bordered w-full" id="relayMarker" value="{{ relayMarker }}"/>
-                </div>
-
-<script>
-// I'm sure this doesn't really live here, but it works for a demo.
-document.addEventListener('DOMContentLoaded', () => {
-    const hashtagInput = document.getElementById('relayMarker');
-    const radioButtons = document.querySelectorAll('input[name="relayCriteria"]');
-    const toggleHashtagInput = () => {
-        const selectedRadio = document.querySelector('input[name="relayCriteria"]:checked');
-        hashtagInput.disabled = !selectedRadio?.hasAttribute('data-hashtag-dependent');
-    };
-    toggleHashtagInput();
-    radioButtons.forEach(radio => radio.addEventListener('change', toggleHashtagInput));
-});
-</script>
 
                 <div class="card-actions justify-end mt-4">
                     <input class="btn btn-outline btn-success" type="submit" value="Update!" />
