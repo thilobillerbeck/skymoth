@@ -35,7 +35,7 @@
                 settings and create an <a href="https://bsky.app/settings/app-passwords" target="_blank" rel="noopener noreferrer"
                     class="text-secondary underline" >app password</a>.
             </p>
-            <form action="/" method="post">
+            <form action="/settings/blueskyCreds" method="post">
                 <div class="form-control w-full">
                     <label for="blueskyPDS" class="label">
                         <span class="label-text">Bluesky PDS</span>
@@ -58,6 +58,16 @@
                         name="blueskyToken" id="blueskyToken" required class="input input-bordered w-full" />
                 </div>
 
+                <div class="card-actions justify-end mt-4">
+                    <input class="btn btn-outline btn-success" type="submit" value="Update!" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card w-full mx-8 md:mx-0 md:w-1/3 bg-base-200 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title">Post Settings</h2>
+            <form action="/settings/repost" method="post">
                 <div class="space-y-2">
                     <p class="mb-4 mt-4">
                         Which Toots for this account should be relayed from Mastodon to BlueSky?

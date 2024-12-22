@@ -23,11 +23,9 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
         Body: {
             blueskyHandle: string,
             blueskyToken: string,
-            blueskyPDS: string,
-            relayCriteria: any,
-            relayMarker: string
+            blueskyPDS: string
         }
-    }>('/', { onRequest: [authenticateJWT] }, async (req, res) => {
+    }>('/settings/blueskyCreds', { onRequest: [authenticateJWT] }, async (req, res) => {
         const user = await db.user.findFirst({ where: { id: req.user.id }, include: { mastodonInstance: true } })
 
         let response_data: any = {
@@ -35,6 +33,8 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
             blueskyPDS: req.body.blueskyPDS,
             userName: req.user.mastodonHandle,
             instance: req.user.instance,
+            relayCriteria: user?.relayCriteria,
+            relayMarker: user?.relayMarker,
             pollingInterval: parseInt(process.env.POLL_INTERVAL ?? '60')
         };
 
@@ -66,17 +66,27 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
                 blueskyHandle: req.body.blueskyHandle,
                 blueskyToken: req.body.blueskyToken,
                 blueskyPDS: req.body.blueskyPDS,
+            }
+        })
+
+        return res.redirect('/')
+    })
+
+    app.post<{
+        Body: {
+            relayCriteria: any,
+            relayMarker: string
+        }
+    }>('/settings/repost', { onRequest: [authenticateJWT] }, async (req, res) => {
+        await db.user.update({
+            where: {
+                id: req.user.id
+            },
+            data: {
                 relayCriteria: req.body.relayCriteria,
                 relayMarker: req.body.relayMarker,
             }
         })
-
-        response_data = {
-            ...response_data,
-            blueskyHandle: user?.blueskyHandle,
-            blueskyPDS: user?.blueskyPDS,
-            hasBlueskyToken: user?.blueskyToken ? true : false
-        }
 
         return res.redirect('/')
     })
