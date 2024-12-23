@@ -20,7 +20,10 @@
   languages = {
     typescript.enable = true;
     javascript.enable = true;
-    javascript.pnpm.enable = true;
+    javascript.pnpm = {
+      enable = true;
+      install.enable = true;
+    };
   };
 
   processes = {
