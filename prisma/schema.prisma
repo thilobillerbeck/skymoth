@@ -52,7 +52,7 @@ model User {
   mastodonInstanceId  String
   relayCriteria       RelayCriteria    @default(all)
   relayMarker         String           @default("")
-  UserSettings        UserSettings[]
+  relayVisibility     StatusVisibility[]  @default([public])
   Repost              Repost[]
 }
 
@@ -66,15 +66,4 @@ model Repost {
   bsRootCid   String
   bsParentUri String
   bsParentCid String
-}
-
-model UserSettings {
-  id               String           @id @default(uuid())
-  statusVisibility StatusVisibility @default(public)
-  excludeReplies   Boolean          @default(false)
-  excludeReblogs   Boolean          @default(false)
-  excludeMentions  Boolean          @default(false)
-  excludeSensitive Boolean          @default(false)
-  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           String
 }

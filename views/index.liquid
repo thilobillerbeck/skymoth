@@ -70,6 +70,25 @@
             <form action="/settings/repost" method="post">
                 <div class="space-y-2">
                     <p class="mb-4 mt-4">
+                        Toot visibility control
+                    </p>
+                    <div class="inline-flex gap-4 w-full">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="relayVisibility" value="public" class="checkbox checkbox-primary mr-2" {% if relayVisibility contains 'public' %}checked{% endif %}/>
+                            <span>Public</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="relayVisibility" value="unlisted" class="checkbox checkbox-primary mr-2" {% if relayVisibility contains 'unlisted' %}checked{% endif %}/>
+                            <span>Unlisted</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="relayVisibility" value="private" class="checkbox checkbox-primary mr-2" {% if relayVisibility contains 'private' %}checked{% endif %}/>
+                            <span>Private</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <p class="mb-4 mt-4">
                         Which Toots for this account should be relayed from Mastodon to BlueSky?
                     </p>
                     <label class="flex items-center">
