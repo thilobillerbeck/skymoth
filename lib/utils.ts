@@ -59,6 +59,7 @@ export function splitTextBluesky(text: string, spoiler: string): string[] {
     for(const word of text.split(" ")) {
         letterCount += word.length + 1 // +1 for space
         if(letterCount >= (300 - spoiler.length)) {
+            res.push(chunks.join(' '))
             chunks = []
             letterCount = word.length
         }

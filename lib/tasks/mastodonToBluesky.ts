@@ -132,9 +132,6 @@ export default async function taskMastodonToBluesky() {
           }
         }
 
-        console.log(postsBsky);
-
-        /*
         for (const [postBskyIdx, postBsky] of postsBsky.entries()) {
           if(postsBsky.length > 1) {
             logSchedulerEvent(
@@ -226,7 +223,6 @@ export default async function taskMastodonToBluesky() {
           );
           await new Promise((resolve) => setTimeout(resolve, getBlueskyApiWaittime()));
         }
-      */
       } catch (err) {
         logSchedulerEvent(
           user.name,
