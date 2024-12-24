@@ -14,6 +14,12 @@ export function mastodonHtmlToText(html: string) {
         hashtag.remove()
     }
 
+    const links = root.querySelectorAll('a')
+    for (const link of links) {
+        link.replaceWith(`<span> ${link.attributes.href} </span>`)
+        link.remove()
+    }
+
     root.removeWhitespace()
 
     return convert(root.toString(), {
