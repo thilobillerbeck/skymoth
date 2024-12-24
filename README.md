@@ -14,7 +14,6 @@ Skymoth is an open source service which allows you to share the content you post
 
 ## Things to do
 
-- Control which toots get reposted (currently only public "root" toots are reposted)
 - More media reposting options
 - Taking Bluesky posts over to Mastodon (this is quite rough thanks to rate limits)
 - A better frontend (I know, I usually do UI/UX myself but this was not the priority here)
