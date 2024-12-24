@@ -14,12 +14,6 @@
                 You are currently not authenticated to Bluesky, please enter your credentials below.
                 {% endif %}
             </p>
-            <p>
-                <b>
-                    Repost visibility control WIP - Skymoth will only repost public Toots that are not a reply.
-                    With the exception of direct unlisted replies, which will counted as a thread.
-                </b>
-            </p>
         </div>
     </div>
     <div class="card w-full mx-8 md:mx-0 md:w-1/3 bg-base-200 shadow-xl">
@@ -59,7 +53,7 @@
                 </div>
 
                 <div class="card-actions justify-end mt-4">
-                    <input class="btn btn-outline btn-success" type="submit" value="Update!" />
+                    <input class="btn btn-outline btn-success" type="submit" value="Update" />
                 </div>
             </form>
         </div>
@@ -69,12 +63,37 @@
             <h2 class="card-title">Post Settings</h2>
             <form action="/settings/repost" method="post">
                 <div class="space-y-2">
-                    <p class="mb-4 mt-4">
-                        Which Toots for this account should be relayed from Mastodon to BlueSky?
+                    <p class="mt-4 font-bold">
+                        Toot visibility
+                    </p>
+                    <p class="mb-4">
+                        Choose the visibility of the toots that Skymoth will repost.
+                    </p>
+                    <div class="inline-flex gap-4 w-full">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="relayVisibility" value="public" class="checkbox checkbox-primary mr-2" {% if relayVisibility contains 'public' %}checked{% endif %}/>
+                            <span>Public</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="relayVisibility" value="unlisted" class="checkbox checkbox-primary mr-2" {% if relayVisibility contains 'unlisted' %}checked{% endif %}/>
+                            <span>Unlisted</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="relayVisibility" value="private" class="checkbox checkbox-primary mr-2" {% if relayVisibility contains 'private' %}checked{% endif %}/>
+                            <span>Private</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <p class="mt-4 font-bold">
+                        Toot markers
+                    </p>
+                    <p class="mb-4">
+                        Choose if Skymoth should relay toots based on the presence of a marker.
                     </p>
                     <label class="flex items-center">
                         <input type="radio" name="relayCriteria" value="all" class="radio radio-primary mr-2" {% if relayCriteria == 'all' %}checked{% endif %}/>
-                        <span>All posts</span>
+                        <span>None</span>
                     </label>
                     <label class="flex items-center">
                         <input type="radio" name="relayCriteria" value="favedBySelf" class="radio radio-primary mr-2" {% if relayCriteria == 'favedBySelf' %}checked{% endif %}/>
@@ -89,18 +108,18 @@
                         <span>Posts which do not include the marker below</span>
                     </label>
                     <div class="form-control mt-4">
-                        <label class="label">
+                        <label class="mb-2">
                             <span class="label-text">Marker for relay</span>
                         </label>
-                        <p class="text-sm text-gray-400 mb-2">
+                        <input type="text" name="relayMarker" placeholder="Enter a marker, eg: #xp" class="input input-bordered w-full" id="relayMarker" value="{{ relayMarker }}"/>
+                        <p class="text-sm text-gray-400 mt-2">
                             This text can be any string contained in the toot, for example '#xp' (for crosspost) or 'cc:bluesky'.
                         </p>
-                        <input type="text" name="relayMarker" placeholder="Enter a marker, eg: #xp" class="input input-bordered w-full" id="relayMarker" value="{{ relayMarker }}"/>
                     </div>
                 </div>
 
                 <div class="card-actions justify-end mt-4">
-                    <input class="btn btn-outline btn-success" type="submit" value="Update!" />
+                    <input class="btn btn-outline btn-success" type="submit" value="Update" />
                 </div>
             </form>
         </div>

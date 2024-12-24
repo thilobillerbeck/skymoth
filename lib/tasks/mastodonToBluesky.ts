@@ -43,7 +43,8 @@ export default async function taskMastodonToBluesky() {
       userClient,
       user.mastodonUid,
       user.lastTootTime,
-      constraint
+      constraint,
+      user.relayVisibility
     );
 
     if (posts.length === 0) {

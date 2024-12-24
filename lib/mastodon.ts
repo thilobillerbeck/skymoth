@@ -2,6 +2,7 @@ import { MegalodonInterface, Mastodon } from 'megalodon'
 import { Status } from 'megalodon/lib/src/entities/status';
 import { Constraint } from "./constraint";
 import { convert } from 'html-to-text';
+import { StatusVisibility } from '@prisma/client';
 
 export function initMastodonAgent() {
     return new Mastodon('mastodon',
@@ -15,15 +16,16 @@ export async function getUserIdFromMastodonHandle(handle: string, client: Megalo
     return a_data[0].id;
 }
 
-function verifyThread(uid: string, status: Status, searchSpace: Status[], initialCall: boolean = false): boolean {
+function verifyThread(uid: string, status: Status, searchSpace: Status[], relayVisibility: StatusVisibility[], initialCall: boolean = false): boolean {
     if (!status) return false;
     if (status.in_reply_to_account_id === uid && (
-        status.visibility === 'unlisted' || status.visibility === 'public'
+        status.visibility === 'unlisted' || relayVisibility.includes(status.visibility)
     )) {
         return verifyThread(
             uid,
             searchSpace.find((s) => s.id === status.in_reply_to_id),
             searchSpace,
+            relayVisibility,
             false
         )
     } else if (!status.in_reply_to_account_id && !initialCall && status.visibility === 'public') {
@@ -33,7 +35,7 @@ function verifyThread(uid: string, status: Status, searchSpace: Status[], initia
     }
 }
 
-export async function getNewToots(client: Mastodon, uid: string, lastTootTime: Date, constraint: Constraint) {
+export async function getNewToots(client: Mastodon, uid: string, lastTootTime: Date, constraint: Constraint, relayVisibility: StatusVisibility[]) {
     const statuses = await client.getAccountStatuses(uid, {
         limit: 50,
         exclude_reblogs: true,
@@ -43,7 +45,7 @@ export async function getNewToots(client: Mastodon, uid: string, lastTootTime: D
     const statuses_data = await statuses.data;
     const statuses_filtered = statuses_data.filter((status) => {
         const newPost = new Date(status.created_at) > lastTootTime;
-        const isPublic = status.visibility === 'public';
+        const isInVisibilityScope = relayVisibility.includes(status.visibility);
         const isNotMention = status.mentions.length === 0;
         const text = convert(status.content ?? '', { wordwrap: false, preserveNewlines: false });
         const regex = new RegExp(`${constraint.relayMarker}`, 'm');
@@ -63,9 +65,9 @@ export async function getNewToots(client: Mastodon, uid: string, lastTootTime: D
         }
 
         // due to the way some mastodon clients handle threads, we need to check if the status may be a thread
-        const isThread = verifyThread(uid, status, statuses_data, true);
+        const isThread = verifyThread(uid, status, statuses_data, relayVisibility, true);
 
-        return newPost && (isPublic || isThread) && isNotMention;
+        return newPost && (isInVisibilityScope || isThread) && isNotMention;
     });
 
     return statuses_filtered;

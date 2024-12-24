@@ -2,6 +2,7 @@ import { intiBlueskyAgent, validateBlueskyAppPassword, validateBlueskyCredential
 import { authenticateJWT, checkValidHttpsUrl } from './../lib/utils'
 import { db } from './../lib/db'
 import { FastifyInstance } from 'fastify'
+import { StatusVisibility } from '@prisma/client'
 
 export const routesRoot = async (app: FastifyInstance, options: Object) => {
     app.get('/', { onRequest: [authenticateJWT] }, async (req, res) => {
@@ -16,6 +17,7 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
             pollingInterval: parseInt(process.env.POLL_INTERVAL ?? '60'),
             relayCriteria: user?.relayCriteria,
             relayMarker: user?.relayMarker,
+            relayVisibility: user?.relayVisibility,
         })
     })
 
@@ -75,9 +77,31 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
     app.post<{
         Body: {
             relayCriteria: any,
-            relayMarker: string
+            relayMarker: string,
+            relayVisibility: StatusVisibility[]
         }
     }>('/settings/repost', { onRequest: [authenticateJWT] }, async (req, res) => {
+        const user = await db.user.findFirst({ where: { id: req.user.id }, include: { mastodonInstance: true } })
+
+        let response_data: any = {
+            err: undefined,
+            blueskyPDS: user?.blueskyPDS,
+            userName: req.user.mastodonHandle,
+            instance: req.user.instance,
+            relayCriteria: user?.relayCriteria,
+            relayMarker: user?.relayMarker,
+            pollingInterval: parseInt(process.env.POLL_INTERVAL ?? '60')
+        };
+
+        if(req.body.relayVisibility === undefined) return res.status(400).view("index", {
+            ...response_data,
+            err: 'Invalid Relay Visibility'
+        })
+        
+        const relayVisibility = !Array.isArray(req.body.relayVisibility) ? [req.body.relayVisibility] : req.body.relayVisibility;
+
+        console.log(relayVisibility)
+
         await db.user.update({
             where: {
                 id: req.user.id
@@ -85,6 +109,7 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
             data: {
                 relayCriteria: req.body.relayCriteria,
                 relayMarker: req.body.relayMarker,
+                relayVisibility: relayVisibility
             }
         })
 
