@@ -134,7 +134,11 @@ export async function generateBlueskyPostFromMastodon(content: string, client: A
         if (media_attachmentsFiltered.length > 0 && client) {
             const images: {
                 image: BlobRef,
-                alt: string
+                alt: string,
+                aspectRatio: {
+                    width: number,
+                    height: number,
+                }
             }[] = [];
             for (const media of media_attachmentsFiltered) {
                 const {arrayBuffer, mimeType} = await fetchImageToBytes(media.url)
@@ -158,6 +162,10 @@ export async function generateBlueskyPostFromMastodon(content: string, client: A
                 images.push({
                     image: res.data.blob,
                     alt: media.description ? media.description : '',
+                    aspectRatio: {
+                        width: media.meta.width || media.meta.original.width,
+                        height: media.meta.height || media.meta.original.height,
+                    }
                 });
             }
 
