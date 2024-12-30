@@ -39,7 +39,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "@types/html-to-text": "^9.0.4",
     "autoprefixer": "^10.4.20",
-    "concurrently": "^9.1.0",
+    "concurrently": "^9.1.1",
     "daisyui": "^4.12.20",
     "nodemon": "^3.1.7",
     "postcss": "^8.4.49",
