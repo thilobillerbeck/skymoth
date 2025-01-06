@@ -28,7 +28,7 @@
     "fastify": "^5.2.0",
     "html-to-text": "^9.0.5",
     "liquidjs": "^10.19.0",
-    "megalodon": "^10.0.7",
+    "megalodon": "^10.1.0",
     "node-html-parser": "^6.1.13",
     "prisma": "^6.0.1",
     "sharp": "^0.33.5",
