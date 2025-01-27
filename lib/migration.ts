@@ -66,7 +66,7 @@ export async function migrationHelper() {
     console.log("Created Drizzle migrations table.");
   } else if (prismaTablesExist && !lastPrismaMigrationApplied) {
     console.error(
-      "Please apply the latest Prisma migration before starting the server."
+      "Please upgrade to v0.3.2 with all migrations applied before running upgrading to this version."
     );
     process.exit(1);
   } else {
