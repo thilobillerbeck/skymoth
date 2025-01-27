@@ -1,7 +1,7 @@
 {
   "name": "skymoth",
   "scripts": {
-    "build": "tsc -p tsconfig.json && cp -r public dist/public && cp -r views dist/views",
+    "build": "tsc -p tsconfig.json && cp -r public dist/public && cp -r views dist/views && cp -r drizzle/*.sql dist/drizzle && cp -r drizzle/meta dist/drizzle/meta",
     "start": "node dist/index.js",
     "start:scheduler": "node dist/lib/tasks/scheduler.js",
     "dev": "pnpm run dev:server",

@@ -1,11 +1,11 @@
 import { resolve } from "node:path";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { sql } from "drizzle-orm";
-import { db, client } from "./db";
+import { db } from "./db";
 
 const runPrismaToDrizzleMigrationScript = async (db: any) => {
   return db.execute(sql`
-        CREATE SCHEMA drizzle AUTHORIZATION ${client.user || "skymoth"};
+        CREATE SCHEMA drizzle;
 
         CREATE SEQUENCE drizzle."__drizzle_migrations_id_seq"
             INCREMENT BY 1

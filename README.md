@@ -12,26 +12,20 @@ Skymoth is an open source service which allows you to share the content you post
 - Reposting text (and handle threads)
 - Reposting (multiple) images with alt descriptions
 
-## Things to do
+## Migrating from <= v0.3.2 to > v0.4.0
 
-- Control which toots get reposted (currently only public "root" toots are reposted)
-- More media reposting options
-- Taking Bluesky posts over to Mastodon (this is quite rough thanks to rate limits)
-- A better frontend (I know, I usually do UI/UX myself but this was not the priority here)
-- Per instance polling intervals
+With v0.4.0 Drizzle will be the new ORM of choice. Thus Prisma and its migration tracking table
+will be dropped accordingly. To make the upgrading process go smoothly, Skymoth checks if all migrations
+from Prisma have been applied before migrating. If you have an instance running on a version below v0.3.2 
+upgrade to v0.3.2 first before upgrading to v0.4.0 and above.
+
+Additionally, Drizzle will execute its migrations automatically on app startup, so there is no need to run `pnpm migrate`
+after an update.
 
 ## Development
 
 For development using [Cachix Devenv](https://devenv.sh/) is strongly advised.
-After setting up, you can just enter this projects shell.
-
-Before starting the project you need to copy the `.env.local` over to `.env`:
-
-```bash
-cp .env.local .env
-```
-
-and modify it to to your needs. Then install all javascript dependencies by executing
+After setting up, you can just enter this projects shell just run:
 
 ```bash
 pnpm install
@@ -42,15 +36,6 @@ Don't worry, if set up correctly the development shell you are in should contain
 ```bash
 devenv up
 ```
-
-after starting you may need to run
-
-```bash
-pnpm migrate
-pnpm generate
-```
-
-to apply all migrations.
 
 ## FAQ
 
