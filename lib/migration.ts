@@ -1,0 +1,77 @@
+import { resolve } from "node:path";
+import { migrate } from "drizzle-orm/node-postgres/migrator";
+import { sql } from "drizzle-orm";
+import { db, client } from "./db";
+
+const runPrismaToDrizzleMigrationScript = async (db: any) => {
+  return db.execute(sql`
+        CREATE SCHEMA drizzle AUTHORIZATION ${client.user || "skymoth"};
+
+        CREATE SEQUENCE drizzle."__drizzle_migrations_id_seq"
+            INCREMENT BY 1
+            MINVALUE 1
+            MAXVALUE 2147483647
+            START 1
+            CACHE 1
+            NO CYCLE;
+
+        CREATE TABLE drizzle."__drizzle_migrations" (
+            id serial4 NOT NULL,
+            hash text NOT NULL,
+            created_at int8 NULL,
+            CONSTRAINT "__drizzle_migrations_pkey" PRIMARY KEY (id)
+        );   
+
+        INSERT INTO drizzle."__drizzle_migrations"
+            (id, hash, created_at)
+            VALUES(1, '1ec46a86de694b1955fc7147a85248e628a60f4c7b8a4066125479d793ea4477', 1737818942346);
+
+        ALTER TABLE "_prisma_migrations" DISABLE ROW LEVEL SECURITY;
+        
+        DROP TABLE "_prisma_migrations" CASCADE;
+    `);
+};
+
+const checkPrismaMigrationsTable = async (db: any) => {
+  try {
+    const result = await db.execute(sql`
+            SELECT FROM information_schema.tables 
+            WHERE  table_schema = 'public'
+            AND    table_name   = '_prisma_migrations';
+        `);
+    return result.rows.length > 0;
+  } catch (e) {
+    return false;
+  }
+};
+
+const checkLastMigrationApplied = async (db: any) => {
+  const result = await db.execute(sql`
+      SELECT * FROM _prisma_migrations WHERE migration_name = '20241223001124_orphan_user_settings';
+    `);
+  return result.rows.length > 0;
+};
+
+export async function migrationHelper() {
+  console.log("Migration helper started.");
+
+  const prismaTablesExist = await checkPrismaMigrationsTable(db);
+  const lastPrismaMigrationApplied = prismaTablesExist
+    ? await checkLastMigrationApplied(db)
+    : false;
+
+  if (prismaTablesExist && lastPrismaMigrationApplied) {
+    console.log("Migrating from Prisma to Drizzle!");
+    await runPrismaToDrizzleMigrationScript(db);
+    console.log("Created Drizzle migrations table.");
+  } else if (prismaTablesExist && !lastPrismaMigrationApplied) {
+    console.error(
+      "Please apply the latest Prisma migration before starting the server."
+    );
+    process.exit(1);
+  } else {
+    console.log("Applying fresh migration.");
+  }
+  migrate(db, { migrationsFolder: resolve(__dirname, "./../drizzle") });
+  return;
+}

@@ -1,12 +1,11 @@
 import { intiBlueskyAgent, validateBlueskyAppPassword, validateBlueskyCredentials, validateBlueskyHandle } from './../lib/bluesky'
 import { authenticateJWT, checkValidHttpsUrl } from './../lib/utils'
-import { db } from './../lib/db'
+import { db, findUserById, persistBlueskyCreds, updateRelaySettings } from './../lib/db'
 import { FastifyInstance } from 'fastify'
-import { StatusVisibility } from '@prisma/client'
 
 export const routesRoot = async (app: FastifyInstance, options: Object) => {
     app.get('/', { onRequest: [authenticateJWT] }, async (req, res) => {
-        const user = await db.user.findFirst({ where: { id: req.user.id } })
+        const user = await findUserById(req.user.id);
 
         return res.view("index", {
             userName: req.user.mastodonHandle,
@@ -28,7 +27,7 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
             blueskyPDS: string
         }
     }>('/settings/blueskyCreds', { onRequest: [authenticateJWT] }, async (req, res) => {
-        const user = await db.user.findFirst({ where: { id: req.user.id }, include: { mastodonInstance: true } })
+        const user = await findUserById(req.user.id, true);
 
         let response_data: any = {
             err: undefined,
@@ -60,16 +59,7 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
             err: 'Invalid Bluesky Credentials, could not authenticate'
         })
 
-        await db.user.update({
-            where: {
-                id: req.user.id
-            },
-            data: {
-                blueskyHandle: req.body.blueskyHandle,
-                blueskyToken: req.body.blueskyToken,
-                blueskyPDS: req.body.blueskyPDS,
-            }
-        })
+        await persistBlueskyCreds(req.user.id, req.body.blueskyHandle, req.body.blueskyToken, req.body.blueskyPDS)
 
         return res.redirect('/')
     })
@@ -78,10 +68,10 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
         Body: {
             relayCriteria: any,
             relayMarker: string,
-            relayVisibility: StatusVisibility[]
+            relayVisibility: string[]
         }
     }>('/settings/repost', { onRequest: [authenticateJWT] }, async (req, res) => {
-        const user = await db.user.findFirst({ where: { id: req.user.id }, include: { mastodonInstance: true } })
+        const user = await findUserById(req.user.id, true);
 
         let response_data: any = {
             err: undefined,
@@ -102,21 +92,16 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
 
         console.log(relayVisibility)
 
-        await db.user.update({
-            where: {
-                id: req.user.id
-            },
-            data: {
-                relayCriteria: req.body.relayCriteria,
-                relayMarker: req.body.relayMarker,
-                relayVisibility: relayVisibility
-            }
-        })
+        await updateRelaySettings(req.user.id, req.body.relayCriteria, req.body.relayMarker, relayVisibility)
 
         return res.redirect('/')
     })
 
     app.get('/privacy', async (req, res) => {
         return res.view("privacy", {})
+    })
+
+    app.get('/health', async (req, res) => {
+        return res.send({ status: "ok" })
     })
 }
