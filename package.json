@@ -11,7 +11,7 @@
     "tailwind:build": "tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css"
   },
   "dependencies": {
-    "@atproto/api": "^0.13.23",
+    "@atproto/api": "^0.13.31",
     "@atproto/xrpc": "^0.6.5",
     "@fastify/cookie": "^11.0.2",
     "@fastify/formbody": "^8.0.2",
