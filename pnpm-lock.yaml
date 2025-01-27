@@ -33,8 +33,8 @@ importers:
         specifier: ^8.0.3
         version: 8.0.3
       '@fastify/view':
-        specifier: ^10.0.1
-        version: 10.0.1
+        specifier: ^10.0.2
+        version: 10.0.2
       '@sentry/node':
         specifier: ^8.47.0
         version: 8.47.0
@@ -506,8 +506,8 @@ packages:
   '@fastify/static@8.0.3':
     resolution: {integrity: sha512-GHSoOVDIxEYEeVR5l044bRCuAKDErD/+9VE+Z9fnaTRr+DDz0Avrm4kKai1mHbPx6C0U7BVNthjd/gcMquZZUA==}
 
-  '@fastify/view@10.0.1':
-    resolution: {integrity: sha512-rXtBN0oVDmoRZAS7lelrCIahf+qFtlMOOas8VPdA7JvrJ9ChcF7e36pIUPU0Vbs3KmHxESUb7XatavUZEe/k5Q==}
+  '@fastify/view@10.0.2':
+    resolution: {integrity: sha512-tGjXFyDUMj5a+E8BBrQ2wpsVnpOfMq3cqy4WD8pnjWPE/HGNItBASUPoPUcX/QjPhxfuZZTYv2XdCmKXdcMZPw==}
 
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
@@ -3568,7 +3568,7 @@ snapshots:
       fastq: 1.17.1
       glob: 11.0.0
 
-  '@fastify/view@10.0.1':
+  '@fastify/view@10.0.2':
     dependencies:
       fastify-plugin: 5.0.1
       toad-cache: 3.7.0
