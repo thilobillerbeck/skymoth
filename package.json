@@ -37,7 +37,7 @@
     "@codedependant/semantic-release-docker": "^5.1.0",
     "@tailwindcss/typography": "^0.5.15",
     "@types/html-to-text": "^9.0.4",
-    "@types/pg": "^8.11.10",
+    "@types/pg": "^8.11.11",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.1.2",
     "daisyui": "^4.12.23",
