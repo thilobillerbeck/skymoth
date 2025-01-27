@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { Mastodon } from 'megalodon'
 import { authenticateJWT, domainToUrl, genCallBackUrl, validateDomain } from './../lib/utils'
-import { db, getInstanceByDomain, getUserByMastodonUid } from './../lib/db'
+import { createMastodonInstance, createUser, db, deleteUser, getAllUserInformation, getInstanceByDomain, getUserByMastodonUid, updateUser } from './../lib/db'
 import { AtpSessionData } from "@atproto/api";
 
 export const routesUser = async (app: FastifyInstance, options: Object) => {
@@ -14,37 +14,13 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
     })
 
     app.post('/account/delete', { onRequest: [authenticateJWT] }, async (req, res) => {
-        await db.user.delete({
-            where: {
-                id: req.user.id
-            }
-        })
+        deleteUser(req.user)
         return res.clearCookie('token').redirect('/login')
     })
 
     app.get('/account/downloadData', { onRequest: [authenticateJWT] }, async (req, res) => {
-        let user = await db.user.findFirst(
-            {
-                where: { id: req.user.id },
-                select: {
-                    mastodonInstance: {
-                        select: {
-                            url: true,
-                        }
-                    },
-                    createdAt: true,
-                    updatedAt: true,
-                    mastodonUid: true,
-                    mastodonToken: false,
-                    name: true,
-                    lastTootTime: true,
-                    blueskyHandle: true,
-                    blueskyToken: false,
-                    blueskySession: true,
-                    blueskyPDS: true,
-                }
-            })
-
+        let user = await getAllUserInformation(req.user.id);
+        if (user) {
             if(user.blueskySession) {
                 const blueskySession = user?.blueskySession as unknown as AtpSessionData
 
@@ -58,10 +34,11 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
                     status: blueskySession?.status,
                 }
             }
-
-            
-        res.header('Content-Disposition', `attachment; filename=skymoth-userdata-${user?.name}.json`)
-        res.send(user).type('application/json').code(200).redirect('/')
+            res.header('Content-Disposition', `attachment; filename=skymoth-userdata-${user?.name}.json`)
+            res.send(user).type('application/json').code(200).redirect('/')    
+        } else {
+            return res.status(404).send('User not found')
+        }
     })
 
     app.get<{
@@ -92,14 +69,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
                 redirect_uris: genCallBackUrl(instanceDomain)
             })
 
-            knownInstance = await db.mastodonInstance.create({
-                data: {
-                    url: instanceDomain,
-                    urlEncoded: btoa(instanceDomain),
-                    applicationId: appData.client_id,
-                    applicationSecret: appData.client_secret
-                }
-            })
+            knownInstance = (await createMastodonInstance(instanceDomain, appData))[0]
         }
 
         const authUrl = await client.generateAuthUrl(knownInstance.applicationId, knownInstance.applicationSecret, {
@@ -134,34 +104,12 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
         const userClient = new Mastodon(domainToUrl(instance.url), token.access_token)
         const verifiedCredentials = await userClient.verifyAccountCredentials();
 
-        let user = await getUserByMastodonUid(verifiedCredentials.data.id, instance.id)
+        let user: any = await getUserByMastodonUid(verifiedCredentials.data.id, instance.id)
 
         if (!user) {
-            user = await db.user.create({
-                data: {
-                    mastodonInstance: {
-                        connect: {
-                            id: instance.id
-                        }
-                    },
-                    mastodonUid: verifiedCredentials.data.id,
-                    mastodonToken: token.access_token,
-                    name: verifiedCredentials.data.username,
-                    lastTootTime: new Date()
-                }
-            })
+            user = (await createUser(instance.id, verifiedCredentials, token))[0]
         } else {
-            console.log('updating user')
-
-            user = await db.user.update({
-                where: {
-                    id: user.id
-                },
-                data: {
-                    mastodonToken: token.access_token,
-                    name: verifiedCredentials.data.username,
-                }
-            })
+            user = (await updateUser(user.id, token, verifiedCredentials.data.username))[0]
         }
 
         const jwt = app.jwt.sign({

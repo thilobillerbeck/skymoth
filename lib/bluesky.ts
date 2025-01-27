@@ -3,8 +3,7 @@ import { Entity } from "megalodon"
 import { fetchImageToBytes, logSchedulerEvent, mastodonHtmlToText, splitTextBluesky } from "./utils";
 import sharp from "sharp";
 import { Attachment } from "megalodon/lib/src/entities/attachment";
-import { db } from "./db";
-import { JsonObject } from "@prisma/client/runtime/library";
+import { clearBlueskyCreds, clearBluskySession, db, persistBlueskySession } from "./db";
 import { ResponseType, XRPCError } from '@atproto/xrpc'
 
 
@@ -18,36 +17,10 @@ export async function intiBlueskyAgent(url: string, handle: string, password: st
             logSchedulerEvent(user.name, user.mastodonInstance.url, "SESSION_PERSIST", `${evt}`)
             if (evt === 'expired' || evt === 'create-failed') {
                 logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "clearing session")
-                db.user.update({
-                    where: {
-                        id: user.id
-                    },
-                    data: {
-                        blueskySession: null,
-                        blueskySessionEvent: null,
-                    }
-                }).then(() => {
-                    logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "session cleared")
-                }).catch((err) => {
-                    logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "could not clear session")
-                    console.error(err)
-                })
+                clearBluskySession(user);
             } else {
                 logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "persisting session")
-                db.user.update({
-                    where: {
-                        id: user.id
-                    },
-                    data: {
-                        blueskySession: sess as unknown as JsonObject,
-                        blueskySessionEvent: evt
-                    }
-                }).then(() => {
-                    logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "session persisted")
-                }).catch((err) => {
-                    logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "could not persist session")
-                    console.error(err)
-                })
+                persistBlueskySession(user, evt, sess);
             }
         },
     })
@@ -72,22 +45,7 @@ export async function intiBlueskyAgent(url: string, handle: string, password: st
         if((err as XRPCError).status == ResponseType.AuthRequired) {
             // invalidate creds to prevent further login attempts resulting in rate limiting
             logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "invalid creds")
-            db.user.update({
-                where: {
-                    id: user.id
-                },
-                data: {
-                    blueskySession: null,
-                    blueskySessionEvent: null,
-                    blueskyToken: null,
-                    blueskyHandle: null
-                }
-            }).then(() => {
-                logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "bluesky creds invalidated")
-            }).catch((err) => {
-                logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "could not clear creds")
-                console.error(err)
-            })
+            clearBlueskyCreds(user)
         } else if ((err as XRPCError).status == ResponseType.RateLimitExceeded) {
             logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "login rate limited")
         } else {
@@ -159,12 +117,25 @@ export async function generateBlueskyPostFromMastodon(content: string, client: A
                     encoding: mimeType!
                 })
 
+                let width = 1200;
+                let height = 1200;
+                if (media.meta) {
+                    if (media.meta.original) {
+                        width = media.meta.original.width || width;
+                        height = media.meta.original.height || height;
+                    } else {
+                        width = media.meta.width || width;
+                        height = media.meta.height || height;
+                    }
+                }
+
+
                 images.push({
                     image: res.data.blob,
                     alt: media.description ? media.description : '',
                     aspectRatio: {
-                        width: media.meta.width || media.meta.original.width,
-                        height: media.meta.height || media.meta.original.height,
+                        width: width,
+                        height: height
                     }
                 });
             }

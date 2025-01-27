@@ -2,18 +2,18 @@ import { Mastodon } from "megalodon";
 import { domainToUrl, logSchedulerEvent } from "../utils";
 import {
   db,
+  deleteMastodonInstance,
+  deleteUser,
+  findUsers,
+  getMastodonInstanceUsers,
 } from "../db";
 
 export default async function cleanupJob() {
   console.log("Running scheduled job: verify instance app credentials...");
 
-  const users = await db.user.findMany({
-    include: {
-      mastodonInstance: true,
-    },
-  });
+  const users = await findUsers();
 
-  users.forEach((user) => {
+  users.forEach((user: any) => {
     const userClient = new Mastodon(
       domainToUrl(user.mastodonInstance.url),
       user.mastodonToken
@@ -41,50 +41,23 @@ export default async function cleanupJob() {
           "CREDENTIAL_CHECK",
           "Deleting user due to invalid credentials"
         );
-        db.user.delete({
-          where: {
-            id: user.id,
-          },
-        }).then((res) => {
-          logSchedulerEvent(
-            user.name,
-            user.mastodonInstance.url,
-            "CREDENTIAL_CHECK",
-            "User deleted"
-          );
-        }).catch((err) => {
-          logSchedulerEvent(
-            user.name,
-            user.mastodonInstance.url,
-            "CREDENTIAL_CHECK",
-            "Could not delete user"
-          );
-          console.error(err);
-        });
+        deleteUser(user);
       }
     });
   });
 
-  const instances = await db.mastodonInstance.findMany({
-    include: {
-      _count: {
-        select: {
-          users: true,
-        },
-      }
-    }
-  })
+  const instances = await getMastodonInstanceUsers();
 
   instances.forEach((instance) => {
     logSchedulerEvent(
       "SYSTEM",
       instance.url,
       "INSTANCE_USERS",
-      `${instance._count.users
+      `${instance.count
       } users`
     );
     
-    if (instance._count.users === 0) {
+    if (instance.count === 0) {
       logSchedulerEvent(
         "SYSTEM",
         instance.url,
@@ -92,26 +65,7 @@ export default async function cleanupJob() {
         "Deleting instance due to no users"
       );
 
-      db.mastodonInstance.delete({
-        where: {
-          id: instance.id,
-        },
-      }).then((res) => {
-        logSchedulerEvent(
-          "SYSTEM",
-          instance.url,
-          "INSTANCE_USERS",
-          "Instance deleted"
-        );
-      }).catch((err) => {
-        logSchedulerEvent(
-          "SYSTEM",
-          instance.url,
-          "INSTANCE_USERS",
-          "Could not delete instance"
-        );
-        console.error(err);
-      });
+      deleteMastodonInstance(instance);
     }
   });
 }

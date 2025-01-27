@@ -3,7 +3,9 @@ import taskMastodonToBluesky from "./mastodonToBluesky"
 import * as Sentry from '@sentry/node';
 import { nodeProfilingIntegration } from "@sentry/profiling-node";
 import cleanupJob from "./cleanup";
+import { client } from './../db';
 
+client.connect()
 
 if (process.env.SENTRY_DSN) {
     Sentry.init({

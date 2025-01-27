@@ -19,7 +19,6 @@ RUN pnpm install --prod --frozen-lockfile
 FROM base AS build
 RUN pnpm install --frozen-lockfile
 RUN pnpm run tailwind:build
-RUN pnpm run generate
 RUN pnpm run build
 
 FROM base

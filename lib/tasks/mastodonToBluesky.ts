@@ -8,19 +8,17 @@ import {
   updateLastPostTime,
   storeRepostRecord,
   findParentToot,
+  findUsers,
+  clearBlueskyCreds,
 } from "../db";
 import { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
 
 export default async function taskMastodonToBluesky() {
   console.log("Running scheduled job: reposting to bluesky...");
 
-  const users = await db.user.findMany({
-    include: {
-      mastodonInstance: true,
-    },
-  });
+  const users = await findUsers()
 
-  users.forEach(async (user) => {
+  users.forEach(async (user: any) => {
     if (!user.blueskyHandle || !user.blueskyToken) {
       logSchedulerEvent(
         user.name,
@@ -177,7 +175,7 @@ export default async function taskMastodonToBluesky() {
 
             if (repRef.root === undefined) repRef.root = result;
             repRef.parent = result;
-          } catch (err) {
+          } catch (err: any) {
             if(err.error === "AccountDeactivated") {
               logSchedulerEvent(
                 user.name,
@@ -186,22 +184,7 @@ export default async function taskMastodonToBluesky() {
                 `Account deactivated, invalidating creds`
               );
 
-              db.user.update({
-                  where: {
-                      id: user.id
-                  },
-                  data: {
-                      blueskySession: null,
-                      blueskySessionEvent: null,
-                      blueskyToken: null,
-                      blueskyHandle: null
-                  }
-              }).then(() => {
-                  logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "bluesky creds invalidated")
-              }).catch((err) => {
-                  logSchedulerEvent(user.name, user.mastodonInstance.url, "AGENT", "could not clear creds")
-                  console.error(err)
-              })
+              clearBlueskyCreds(user)
 
               return;
             }
