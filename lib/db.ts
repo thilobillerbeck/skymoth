@@ -15,8 +15,10 @@ export const db = drizzle(client, { schema: { ...schema, ...relations } });
 
 export async function getUserByMastodonUid(userId: string, instanceId: string) {
   return await db.query.user.findFirst({
-    where: (user, { eq }) =>
-      eq(user.mastodonUid, userId) && eq(user.mastodonInstanceId, instanceId),
+    where: (user, { eq, and }) => and(
+      eq(user.mastodonUid, userId), 
+      eq(user.mastodonInstanceId, instanceId),
+    )
   });
 }
 
@@ -61,8 +63,10 @@ export async function findParentToot(
   tootId: string
 ): Promise<ReplyRef | null> {
   const repost = await db.query.repost.findFirst({
-    where: (repost, { eq }) =>
-      eq(repost.userId, userId) && eq(repost.tootId, tootId),
+    where: (repost, { eq, and }) => and(
+      eq(repost.userId, userId),
+      eq(repost.tootId, tootId),
+    )
   });
 
   if (!repost) return null;
