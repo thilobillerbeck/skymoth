@@ -1,6 +1,6 @@
 {
-    "files.exclude": {
-        ".devenv*": true,
-        ".direnv": true,
-    }
+	"files.exclude": {
+		".devenv*": true,
+		".direnv": true
+	}
 }
