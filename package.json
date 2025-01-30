@@ -34,6 +34,7 @@
     "toad-scheduler": "^3.0.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@codedependant/semantic-release-docker": "^5.1.0",
     "@tailwindcss/typography": "^0.5.15",
     "@types/html-to-text": "^9.0.4",
