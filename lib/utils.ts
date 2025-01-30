@@ -45,7 +45,7 @@ export function validateDomain(domain: string) {
 }
 
 export function genCallBackUrl(instanceDomain: string) {
-	if (process.env.NODE_ENV == "development") {
+	if (process.env.NODE_ENV === "development") {
 		const { ADDRESS = "localhost", PORT = "3000" } = process.env;
 		return `http://${ADDRESS}:${PORT}/auth/callback/${btoa(instanceDomain)}`;
 	}
@@ -91,7 +91,7 @@ export function logSchedulerEvent(
 // due to the read after write system of bluesky, we need to wait a bit before fetching the post
 export function getBlueskyApiWaittime(): number {
 	return process.env.BLUESKY_API_WAITTIME
-		? parseInt(process.env.BLUESKY_API_WAITTIME)
+		? Number.parseInt(process.env.BLUESKY_API_WAITTIME)
 		: 5000;
 }
 

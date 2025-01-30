@@ -1,4 +1,4 @@
-import { FastifyInstance } from "fastify";
+import type { FastifyInstance } from "fastify";
 import { Mastodon } from "megalodon";
 import {
 	authenticateJWT,
@@ -16,7 +16,9 @@ import {
 	getUserByMastodonUid,
 	updateUser,
 } from "./../lib/db";
-import { AtpSessionData } from "@atproto/api";
+import type { AtpSessionData } from "@atproto/api";
+import { InferSelectModel } from "drizzle-orm";
+import { user } from "../drizzle/schema";
 
 export const routesUser = async (app: FastifyInstance, options: Object) => {
 	app.get("/login", async (req, res) => {
@@ -40,7 +42,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
 		"/account/downloadData",
 		{ onRequest: [authenticateJWT] },
 		async (req, res) => {
-			let user = await getAllUserInformation(req.user.id);
+			const user = await getAllUserInformation(req.user.id);
 			if (user) {
 				if (user.blueskySession) {
 					const blueskySession =
@@ -85,7 +87,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
 		}
 
 		const url = domainToUrl(instanceDomain);
-		let client = new Mastodon(url);
+		const client = new Mastodon(url);
 
 		let knownInstance = await getInstanceByDomain(instanceDomain);
 
@@ -135,7 +137,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
 			});
 		}
 
-		let client = new Mastodon(domainToUrl(instance.url));
+		const client = new Mastodon(domainToUrl(instance.url));
 
 		const token = await client.fetchAccessToken(
 			instance.applicationId,
@@ -150,7 +152,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
 		);
 		const verifiedCredentials = await userClient.verifyAccountCredentials();
 
-		let user: any = await getUserByMastodonUid(
+		let user = await getUserByMastodonUid(
 			verifiedCredentials.data.id,
 			instance.id,
 		);

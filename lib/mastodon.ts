@@ -1,6 +1,6 @@
-import { MegalodonInterface, Mastodon } from "megalodon";
-import { Status } from "megalodon/lib/src/entities/status";
-import { Constraint } from "./constraint";
+import { type MegalodonInterface, Mastodon } from "megalodon";
+import type { Status } from "megalodon/lib/src/entities/status";
+import type { Constraint } from "./constraint";
 import { convert } from "html-to-text";
 
 export function initMastodonAgent() {
@@ -25,7 +25,7 @@ function verifyThread(
 	status: Status,
 	searchSpace: Status[],
 	relayVisibility: string[],
-	initialCall: boolean = false,
+	initialCall = false,
 ): boolean {
 	if (!status) return false;
 	if (

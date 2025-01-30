@@ -6,11 +6,11 @@ import fastifyFormbody from "@fastify/formbody";
 import fastifyJwt from "@fastify/jwt";
 import { routesRoot } from "./routes/root";
 import { routesUser } from "./routes/user";
-import { join } from "path";
+import { join } from "node:path";
 import * as Sentry from "@sentry/node";
 import { nodeProfilingIntegration } from "@sentry/profiling-node";
-import { readFileSync } from "fs";
-import { join as pathJoin } from "path";
+import { existsSync, readFileSync } from "node:fs";
+import { join as pathJoin } from "node:path";
 import { printInfo } from "./lib/utils";
 import { client, db } from "./lib/db";
 import { migrationHelper } from "./lib/migration";
@@ -48,7 +48,7 @@ migrationHelper()
 		let version = "development";
 
 		const gitRevPath = pathJoin(__dirname, ".git-rev");
-		if (require("fs").existsSync(gitRevPath)) {
+		if (existsSync(gitRevPath)) {
 			version = readFileSync(gitRevPath, "utf-8").trim();
 		}
 
@@ -88,8 +88,8 @@ migrationHelper()
 		app.register(routesUser);
 
 		app.listen(
-			{ host: ADDRESS, port: parseInt(PORT, 10) },
-			function (err, address) {
+			{ host: ADDRESS, port: Number.parseInt(PORT, 10) },
+			(err, address) => {
 				if (err) {
 					app.log.error(err);
 				}

@@ -15,7 +15,7 @@ import {
 	findUsers,
 	clearBlueskyCreds,
 } from "../db";
-import { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
+import type { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
 
 export default async function taskMastodonToBluesky() {
 	console.log("Running scheduled job: reposting to bluesky...");
@@ -175,7 +175,7 @@ export default async function taskMastodonToBluesky() {
 					}
 
 					try {
-						let result = await blueskyClient.post(postBsky);
+						const result = await blueskyClient.post(postBsky);
 
 						if (repRef.root === undefined) repRef.root = result;
 						repRef.parent = result;

@@ -1,11 +1,11 @@
-import { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
+import type { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
 import { logSchedulerEvent } from "./utils";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
 import * as schema from "./../drizzle/schema";
 import * as relations from "./../drizzle/relations";
-import { count, eq } from "drizzle-orm";
-import { AtpSessionData } from "@atproto/api";
+import { count, eq, type InferSelectModel } from "drizzle-orm";
+import type { AtpSessionData } from "@atproto/api";
 
 export const client = new Client({
 	connectionString: process.env.POSTGRES_URL,
@@ -88,7 +88,9 @@ export async function findParentToot(
 }
 
 export async function persistBlueskySession(
-	user: any,
+	user: InferSelectModel<typeof schema.user> & {
+		mastodonInstance: InferSelectModel<typeof schema.mastodonInstance>;
+	},
 	evt: string,
 	sess?: AtpSessionData,
 ) {
@@ -119,7 +121,9 @@ export async function persistBlueskySession(
 		});
 }
 
-export async function clearBluskySession(user: any) {
+export async function clearBluskySession(user: InferSelectModel<typeof schema.user> & {
+	mastodonInstance: InferSelectModel<typeof schema.mastodonInstance>;
+}) {
 	return await db
 		.update(schema.user)
 		.set({
@@ -147,7 +151,9 @@ export async function clearBluskySession(user: any) {
 		});
 }
 
-export async function clearBlueskyCreds(user: any) {
+export async function clearBlueskyCreds(user: InferSelectModel<typeof schema.user> & {
+	mastodonInstance: InferSelectModel<typeof schema.mastodonInstance>;
+}) {
 	return await db
 		.update(schema.user)
 		.set({
@@ -187,7 +193,7 @@ export async function findUsers() {
 
 export async function findUserById(
 	userid: any,
-	withMastodonInstance: boolean = false,
+	withMastodonInstance = false,
 ) {
 	return await db.query.user.findFirst({
 		where: (user, { eq }) => eq(user.id, userid),
@@ -213,7 +219,9 @@ export async function getAllUserInformation(userId: string) {
 	});
 }
 
-export async function deleteUser(user: any) {
+export async function deleteUser(user: InferSelectModel<typeof schema.user> & {
+	mastodonInstance: InferSelectModel<typeof schema.mastodonInstance>;
+}) {
 	return await db
 		.delete(schema.user)
 		.where(eq(schema.user.id, user.id))
@@ -246,7 +254,7 @@ export async function getMastodonInstanceUsers() {
 		.groupBy(schema.mastodonInstance.id);
 }
 
-export async function deleteMastodonInstance(instance: any) {
+export async function deleteMastodonInstance(instance: InferSelectModel<typeof schema.mastodonInstance>) {
 	return await db
 		.delete(schema.mastodonInstance)
 		.where(eq(schema.mastodonInstance.id, instance.id))

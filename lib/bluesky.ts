@@ -2,11 +2,11 @@ import {
 	AtpAgent,
 	AppBskyFeedPost,
 	RichText,
-	BlobRef,
-	AtpSessionData,
-	AtpSessionEvent,
+	type BlobRef,
+	type AtpSessionData,
+	type AtpSessionEvent,
 } from "@atproto/api";
-import { Entity } from "megalodon";
+import type { Entity } from "megalodon";
 import {
 	fetchImageToBytes,
 	logSchedulerEvent,
@@ -14,20 +14,22 @@ import {
 	splitTextBluesky,
 } from "./utils";
 import sharp from "sharp";
-import { Attachment } from "megalodon/lib/src/entities/attachment";
+import type { Attachment } from "megalodon/lib/src/entities/attachment";
 import {
 	clearBlueskyCreds,
 	clearBluskySession,
 	db,
 	persistBlueskySession,
 } from "./db";
-import { ResponseType, XRPCError } from "@atproto/xrpc";
+import { ResponseType, type XRPCError } from "@atproto/xrpc";
+import type { InferSelectModel } from "drizzle-orm";
+import type { mastodonInstance, user as User } from "../drizzle/schema";
 
 export async function intiBlueskyAgent(
 	url: string,
 	handle: string,
 	password: string,
-	user: any,
+	user: InferSelectModel<typeof User> & { mastodonInstance: InferSelectModel<typeof mastodonInstance> },
 ): Promise<AtpAgent | undefined> {
 	let session: AtpSessionData | undefined = undefined;
 	session = user.blueskySession as unknown as AtpSessionData;
@@ -126,13 +128,13 @@ export async function generateBlueskyPostsFromMastodon(
 	status: Entity.Status,
 	client: AtpAgent,
 ): Promise<Array<AppBskyFeedPost.Record>> {
-	let posts: Array<AppBskyFeedPost.Record> = [];
+	const posts: Array<AppBskyFeedPost.Record> = [];
 	const spoiler = status.sensitive ? `CW: ${status.spoiler_text}\n\n` : "";
 	const conv = mastodonHtmlToText(status.content);
 	const split = splitTextBluesky(conv, spoiler);
 
 	for (const [idx, text] of split.entries()) {
-		let post = await generateBlueskyPostFromMastodon(
+		const post = await generateBlueskyPostFromMastodon(
 			text,
 			client,
 			idx === 0 ? status.media_attachments : undefined,

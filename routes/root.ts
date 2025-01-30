@@ -1,17 +1,15 @@
 import {
-	intiBlueskyAgent,
 	validateBlueskyAppPassword,
 	validateBlueskyCredentials,
 	validateBlueskyHandle,
 } from "./../lib/bluesky";
 import { authenticateJWT, checkValidHttpsUrl } from "./../lib/utils";
 import {
-	db,
 	findUserById,
 	persistBlueskyCreds,
 	updateRelaySettings,
 } from "./../lib/db";
-import { FastifyInstance } from "fastify";
+import type { FastifyInstance } from "fastify";
 
 export const routesRoot = async (app: FastifyInstance, options: Object) => {
 	app.get("/", { onRequest: [authenticateJWT] }, async (req, res) => {
@@ -23,7 +21,7 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
 			blueskyHandle: user?.blueskyHandle,
 			blueskyPDS: user?.blueskyPDS,
 			hasBlueskyToken: user?.blueskyToken ? true : false,
-			pollingInterval: parseInt(process.env.POLL_INTERVAL ?? "60"),
+			pollingInterval: Number.parseInt(process.env.POLL_INTERVAL ?? "60"),
 			relayCriteria: user?.relayCriteria,
 			relayMarker: user?.relayMarker,
 			relayVisibility: user?.relayVisibility,
@@ -42,14 +40,14 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
 		async (req, res) => {
 			const user = await findUserById(req.user.id, true);
 
-			let response_data: any = {
+			const response_data = {
 				err: undefined,
 				blueskyPDS: req.body.blueskyPDS,
 				userName: req.user.mastodonHandle,
 				instance: req.user.instance,
 				relayCriteria: user?.relayCriteria,
 				relayMarker: user?.relayMarker,
-				pollingInterval: parseInt(process.env.POLL_INTERVAL ?? "60"),
+				pollingInterval: Number.parseInt(process.env.POLL_INTERVAL ?? "60"),
 			};
 
 			if (!validateBlueskyAppPassword(req.body.blueskyToken))
@@ -95,21 +93,21 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
 
 	app.post<{
 		Body: {
-			relayCriteria: any;
+			relayCriteria: any,
 			relayMarker: string;
 			relayVisibility: string[];
 		};
 	}>("/settings/repost", { onRequest: [authenticateJWT] }, async (req, res) => {
 		const user = await findUserById(req.user.id, true);
 
-		let response_data: any = {
+		const response_data = {
 			err: undefined,
 			blueskyPDS: user?.blueskyPDS,
 			userName: req.user.mastodonHandle,
 			instance: req.user.instance,
 			relayCriteria: user?.relayCriteria,
 			relayMarker: user?.relayMarker,
-			pollingInterval: parseInt(process.env.POLL_INTERVAL ?? "60"),
+			pollingInterval: Number.parseInt(process.env.POLL_INTERVAL ?? "60"),
 		};
 
 		if (req.body.relayVisibility === undefined)
