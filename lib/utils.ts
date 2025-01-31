@@ -1,3 +1,4 @@
+import type { FastifyReply, FastifyRequest } from "fastify";
 import { convert } from "html-to-text";
 import { parse } from "node-html-parser";
 
@@ -52,7 +53,7 @@ export function genCallBackUrl(instanceDomain: string) {
 	return `${process.env.APP_URL}/auth/callback/${btoa(instanceDomain)}`;
 }
 
-export const authenticateJWT = async (req: any, res: any) => {
+export const authenticateJWT = async (req: FastifyRequest, res: FastifyReply) => {
 	try {
 		await req.jwtVerify();
 	} catch (err) {

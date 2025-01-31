@@ -43,7 +43,7 @@ export default async function cleanupJob() {
 						"CREDENTIAL_CHECK",
 						"Deleting user due to invalid credentials",
 					);
-					deleteUser(user);
+					deleteUser(user.id, user.name);
 				}
 			});
 	}

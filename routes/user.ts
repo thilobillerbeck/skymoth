@@ -20,7 +20,7 @@ import type { AtpSessionData } from "@atproto/api";
 import { InferSelectModel } from "drizzle-orm";
 import { user } from "../drizzle/schema";
 
-export const routesUser = async (app: FastifyInstance, options: Object) => {
+export const routesUser = async (app: FastifyInstance) => {
 	app.get("/login", async (req, res) => {
 		return res.view("login", {});
 	});
@@ -33,7 +33,10 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
 		"/account/delete",
 		{ onRequest: [authenticateJWT] },
 		async (req, res) => {
-			deleteUser(req.user);
+			deleteUser(
+				req.user.id,
+				req.user.mastodonHandle
+			);
 			return res.clearCookie("token").redirect("/login");
 		},
 	);
