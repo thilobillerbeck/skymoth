@@ -18,7 +18,7 @@ export const routesRoot = async (app: FastifyInstance) => {
 		const user = await findUserById(req.user.id);
 
 		let hasBlueskyToken = false;
-		if(user?.blueskyToken) hasBlueskyToken = true;
+		if (user?.blueskyToken) hasBlueskyToken = true;
 
 		return res.view("index", {
 			userName: req.user.mastodonHandle,
@@ -98,7 +98,7 @@ export const routesRoot = async (app: FastifyInstance) => {
 
 	app.post<{
 		Body: {
-			relayCriteria: string,
+			relayCriteria: string;
 			relayMarker: string;
 			relayVisibility: string[];
 		};

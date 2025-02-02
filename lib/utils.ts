@@ -53,7 +53,10 @@ export function genCallBackUrl(instanceDomain: string) {
 	return `${process.env.APP_URL}/auth/callback/${btoa(instanceDomain)}`;
 }
 
-export const authenticateJWT = async (req: FastifyRequest, res: FastifyReply) => {
+export const authenticateJWT = async (
+	req: FastifyRequest,
+	res: FastifyReply,
+) => {
 	try {
 		await req.jwtVerify();
 	} catch (err) {

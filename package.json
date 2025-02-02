@@ -10,7 +10,8 @@
 		"tailwind:css": "concurrently \"tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css --watch\"",
 		"tailwind:build": "tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css",
 		"format": "biome format --write",
-		"format:check": "biome format"
+		"format:check": "biome format",
+		"lint": "biome lint"
 	},
 	"dependencies": {
 		"@atproto/api": "^0.13.31",

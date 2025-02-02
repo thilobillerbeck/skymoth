@@ -33,10 +33,7 @@ export const routesUser = async (app: FastifyInstance) => {
 		"/account/delete",
 		{ onRequest: [authenticateJWT] },
 		async (req, res) => {
-			deleteUser(
-				req.user.id,
-				req.user.mastodonHandle
-			);
+			deleteUser(req.user.id, req.user.mastodonHandle);
 			return res.clearCookie("token").redirect("/login");
 		},
 	);

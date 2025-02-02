@@ -4,10 +4,15 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
 import * as schema from "./../drizzle/schema";
 import * as relations from "./../drizzle/relations";
-import { count, eq, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import {
+	count,
+	eq,
+	type InferInsertModel,
+	type InferSelectModel,
+} from "drizzle-orm";
 import type { AtpSessionData } from "@atproto/api";
 import type { OAuth } from "megalodon";
-import type Response from "megalodon/lib/src/response"
+import type Response from "megalodon/lib/src/response";
 import type { Account } from "megalodon/lib/src/entities/account";
 
 export const client = new Client({
@@ -124,9 +129,11 @@ export async function persistBlueskySession(
 		});
 }
 
-export async function clearBluskySession(user: InferSelectModel<typeof schema.user> & {
-	mastodonInstance: InferSelectModel<typeof schema.mastodonInstance>;
-}) {
+export async function clearBluskySession(
+	user: InferSelectModel<typeof schema.user> & {
+		mastodonInstance: InferSelectModel<typeof schema.mastodonInstance>;
+	},
+) {
 	return await db
 		.update(schema.user)
 		.set({
@@ -154,9 +161,11 @@ export async function clearBluskySession(user: InferSelectModel<typeof schema.us
 		});
 }
 
-export async function clearBlueskyCreds(user: InferSelectModel<typeof schema.user> & {
-	mastodonInstance: InferSelectModel<typeof schema.mastodonInstance>;
-}) {
+export async function clearBlueskyCreds(
+	user: InferSelectModel<typeof schema.user> & {
+		mastodonInstance: InferSelectModel<typeof schema.mastodonInstance>;
+	},
+) {
 	return await db
 		.update(schema.user)
 		.set({
@@ -222,10 +231,7 @@ export async function getAllUserInformation(userId: string) {
 	});
 }
 
-export async function deleteUser(
-	userId: string,
-	userName: string,
-) {
+export async function deleteUser(userId: string, userName: string) {
 	return await db
 		.delete(schema.user)
 		.where(eq(schema.user.id, userId))
@@ -258,14 +264,17 @@ export async function getMastodonInstanceUsers() {
 		.groupBy(schema.mastodonInstance.id);
 }
 
-export async function deleteMastodonInstance(instance: InferSelectModel<typeof schema.mastodonInstance>) {
+export async function deleteMastodonInstance(
+	instanceId: string,
+	instanceUrl: string,
+) {
 	return await db
 		.delete(schema.mastodonInstance)
-		.where(eq(schema.mastodonInstance.id, instance.id))
+		.where(eq(schema.mastodonInstance.id, instanceId))
 		.then(() => {
 			logSchedulerEvent(
 				"SYSTEM",
-				instance.url,
+				instanceUrl,
 				"INSTANCE_USERS",
 				"Instance deleted",
 			);
@@ -273,7 +282,7 @@ export async function deleteMastodonInstance(instance: InferSelectModel<typeof s
 		.catch((err) => {
 			logSchedulerEvent(
 				"SYSTEM",
-				instance.url,
+				instanceUrl,
 				"INSTANCE_USERS",
 				"Could not delete instance",
 			);
@@ -351,7 +360,11 @@ export async function createUser(
 		.returning();
 }
 
-export async function updateUser(userId: string, token: OAuth.TokenData, name: string) {
+export async function updateUser(
+	userId: string,
+	token: OAuth.TokenData,
+	name: string,
+) {
 	return await db
 		.update(schema.user)
 		.set({

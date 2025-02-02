@@ -22,7 +22,7 @@ export default async function taskMastodonToBluesky() {
 
 	const users = await findUsers();
 
-	users.forEach(async (user: any) => {
+	for await (const user of users) {
 		if (!user.blueskyHandle || !user.blueskyToken) {
 			logSchedulerEvent(
 				user.name,
@@ -102,7 +102,9 @@ export default async function taskMastodonToBluesky() {
 				if (postsBsky.length === 0) continue;
 
 				let repRef: ReplyRef = {
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
 					root: undefined!,
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
 					parent: undefined!,
 				};
 
@@ -179,13 +181,14 @@ export default async function taskMastodonToBluesky() {
 
 						if (repRef.root === undefined) repRef.root = result;
 						repRef.parent = result;
-					} catch (err: any) {
+					} catch (err: unknown) {
+						if (err === undefined) return;
 						if (err.error === "AccountDeactivated") {
 							logSchedulerEvent(
 								user.name,
 								user.mastodonInstance.url,
 								"REPOSTER",
-								`Account deactivated, invalidating creds`,
+								"Account deactivated, invalidating creds",
 							);
 
 							clearBlueskyCreds(user);
@@ -231,5 +234,5 @@ export default async function taskMastodonToBluesky() {
 				console.error(err);
 			}
 		}
-	});
+	}
 }

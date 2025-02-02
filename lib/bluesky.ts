@@ -29,7 +29,9 @@ export async function intiBlueskyAgent(
 	url: string,
 	handle: string,
 	password: string,
-	user: InferSelectModel<typeof User> & { mastodonInstance: InferSelectModel<typeof mastodonInstance> },
+	user: InferSelectModel<typeof User> & {
+		mastodonInstance: InferSelectModel<typeof mastodonInstance>;
+	},
 ): Promise<AtpAgent | undefined> {
 	let session: AtpSessionData | undefined = undefined;
 	session = user.blueskySession as unknown as AtpSessionData;
@@ -74,14 +76,14 @@ export async function intiBlueskyAgent(
 				"resuming session",
 			);
 			return agent;
-		} else {
-			logSchedulerEvent(
-				user.name,
-				user.mastodonInstance.url,
-				"AGENT",
-				"could not resume session",
-			);
 		}
+
+		logSchedulerEvent(
+			user.name,
+			user.mastodonInstance.url,
+			"AGENT",
+			"could not resume session",
+		);
 	} else {
 		logSchedulerEvent(
 			user.name,
@@ -95,7 +97,7 @@ export async function intiBlueskyAgent(
 		await agent.login({ identifier: handle, password: password });
 		return agent;
 	} catch (err) {
-		if ((err as XRPCError).status == ResponseType.AuthRequired) {
+		if ((err as XRPCError).status === ResponseType.AuthRequired) {
 			// invalidate creds to prevent further login attempts resulting in rate limiting
 			logSchedulerEvent(
 				user.name,
@@ -104,7 +106,7 @@ export async function intiBlueskyAgent(
 				"invalid creds",
 			);
 			clearBlueskyCreds(user);
-		} else if ((err as XRPCError).status == ResponseType.RateLimitExceeded) {
+		} else if ((err as XRPCError).status === ResponseType.RateLimitExceeded) {
 			logSchedulerEvent(
 				user.name,
 				user.mastodonInstance.url,
@@ -194,8 +196,10 @@ export async function generateBlueskyPostFromMastodon(
 					arr = new Uint8Array(result.buffer);
 				}
 
+				if (!mimeType) continue;
+
 				const res = await client.uploadBlob(arr, {
-					encoding: mimeType!,
+					encoding: mimeType,
 				});
 
 				let width = 1200;
@@ -234,9 +238,8 @@ export async function generateBlueskyPostFromMastodon(
 		const res = AppBskyFeedPost.validateRecord(post);
 		if (res.success) {
 			return post;
-		} else {
-			console.log(res);
 		}
+		console.log(res);
 	}
 	return undefined;
 }

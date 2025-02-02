@@ -66,7 +66,7 @@ export default async function cleanupJob() {
 				"Deleting instance due to no users",
 			);
 
-			deleteMastodonInstance(instance);
+			deleteMastodonInstance(instance.id, instance.url);
 		}
 	}
 }
