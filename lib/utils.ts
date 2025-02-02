@@ -54,8 +54,8 @@ export function genCallBackUrl(instanceDomain: string) {
 }
 
 export const authenticateJWT = async (
-	req: FastifyRequest,
-	res: FastifyReply,
+	req: { jwtVerify: () => unknown; },
+	res: { redirect: (arg0: string) => void; },
 ) => {
 	try {
 		await req.jwtVerify();
