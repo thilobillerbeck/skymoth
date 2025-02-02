@@ -16,6 +16,7 @@ import {
 	clearBlueskyCreds,
 } from "../db";
 import type { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
+import { XRPCError } from "@atproto/xrpc";
 
 export default async function taskMastodonToBluesky() {
 	console.log("Running scheduled job: reposting to bluesky...");
@@ -182,18 +183,19 @@ export default async function taskMastodonToBluesky() {
 						if (repRef.root === undefined) repRef.root = result;
 						repRef.parent = result;
 					} catch (err: unknown) {
-						if (err === undefined) return;
-						if (err.error === "AccountDeactivated") {
-							logSchedulerEvent(
-								user.name,
-								user.mastodonInstance.url,
-								"REPOSTER",
-								"Account deactivated, invalidating creds",
-							);
+						if (err instanceof XRPCError) {
+							if (err.error === "AccountDeactivated") {
+								logSchedulerEvent(
+									user.name,
+									user.mastodonInstance.url,
+									"REPOSTER",
+									"Account deactivated, invalidating creds",
+								);
 
-							clearBlueskyCreds(user);
+								clearBlueskyCreds(user);
 
-							return;
+								return;
+							}
 						}
 					}
 
