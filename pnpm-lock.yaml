@@ -24,8 +24,8 @@ importers:
         specifier: ^9.0.3
         version: 9.0.3
       '@fastify/schedule':
-        specifier: ^5.0.2
-        version: 5.0.2(toad-scheduler@3.0.1)
+        specifier: ^6.0.0
+        version: 6.0.0(toad-scheduler@3.0.1)
       '@fastify/session':
         specifier: ^11.0.2
         version: 11.0.2
@@ -554,8 +554,8 @@ packages:
   '@fastify/proxy-addr@5.0.0':
     resolution: {integrity: sha512-37qVVA1qZ5sgH7KpHkkC4z9SK6StIsIcOmpjvMPXNb3vx2GQxhZocogVYbr2PbbeLCQxYIPDok307xEvRZOzGA==}
 
-  '@fastify/schedule@5.0.2':
-    resolution: {integrity: sha512-kNtADXfpNIQAGc/9bMxHSwUwpYKvZYoTWGVpTc1IgsjW15SBC9Xl2OVwUgmrDmW5iOknTyIS+XbY6LHaZBT4ww==}
+  '@fastify/schedule@6.0.0':
+    resolution: {integrity: sha512-q4mPXUtqISb+dH2cB7HE7DxXqQmxPee9k0G29ydvGOoj5Aqb+uzUCLtkMVAzpnkPE6oOFGon6+JzWEmfJNS8ig==}
     peerDependencies:
       toad-scheduler: '>=2.0.0'
 
@@ -3645,7 +3645,7 @@ snapshots:
       '@fastify/forwarded': 3.0.0
       ipaddr.js: 2.2.0
 
-  '@fastify/schedule@5.0.2(toad-scheduler@3.0.1)':
+  '@fastify/schedule@6.0.0(toad-scheduler@3.0.1)':
     dependencies:
       fastify-plugin: 5.0.1
       toad-scheduler: 3.0.1
