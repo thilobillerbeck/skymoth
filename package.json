@@ -18,7 +18,7 @@
 		"@fastify/cookie": "^11.0.2",
 		"@fastify/formbody": "^8.0.2",
 		"@fastify/jwt": "^9.0.3",
-		"@fastify/schedule": "^5.0.2",
+		"@fastify/schedule": "^6.0.0",
 		"@fastify/session": "^11.0.2",
 		"@fastify/static": "^8.0.3",
 		"@fastify/view": "^10.0.2",
