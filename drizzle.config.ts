@@ -4,7 +4,7 @@ export default defineConfig({
 	out: "./drizzle",
 	schema: "./drizzle/schema.ts",
 	dbCredentials: {
-		url: process.env.POSTGRES_URL!,
+		url: process.env.POSTGRES_URL || "",
 	},
 	// Print all statements
 	verbose: true,

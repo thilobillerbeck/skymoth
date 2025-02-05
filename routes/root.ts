@@ -1,29 +1,32 @@
 import {
-	intiBlueskyAgent,
 	validateBlueskyAppPassword,
 	validateBlueskyCredentials,
 	validateBlueskyHandle,
 } from "./../lib/bluesky";
 import { authenticateJWT, checkValidHttpsUrl } from "./../lib/utils";
 import {
-	db,
 	findUserById,
 	persistBlueskyCreds,
 	updateRelaySettings,
 } from "./../lib/db";
-import { FastifyInstance } from "fastify";
+import type { FastifyInstance } from "fastify";
+import type { InferInsertModel } from "drizzle-orm";
+import type { user as User } from "./../drizzle/schema";
 
-export const routesRoot = async (app: FastifyInstance, options: Object) => {
+export const routesRoot = async (app: FastifyInstance) => {
 	app.get("/", { onRequest: [authenticateJWT] }, async (req, res) => {
 		const user = await findUserById(req.user.id);
+
+		let hasBlueskyToken = false;
+		if (user?.blueskyToken) hasBlueskyToken = true;
 
 		return res.view("index", {
 			userName: req.user.mastodonHandle,
 			instance: req.user.instance,
 			blueskyHandle: user?.blueskyHandle,
 			blueskyPDS: user?.blueskyPDS,
-			hasBlueskyToken: user?.blueskyToken ? true : false,
-			pollingInterval: parseInt(process.env.POLL_INTERVAL ?? "60"),
+			hasBlueskyToken: hasBlueskyToken,
+			pollingInterval: Number.parseInt(process.env.POLL_INTERVAL ?? "60"),
 			relayCriteria: user?.relayCriteria,
 			relayMarker: user?.relayMarker,
 			relayVisibility: user?.relayVisibility,
@@ -42,14 +45,14 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
 		async (req, res) => {
 			const user = await findUserById(req.user.id, true);
 
-			let response_data: any = {
+			const response_data = {
 				err: undefined,
 				blueskyPDS: req.body.blueskyPDS,
 				userName: req.user.mastodonHandle,
 				instance: req.user.instance,
 				relayCriteria: user?.relayCriteria,
 				relayMarker: user?.relayMarker,
-				pollingInterval: parseInt(process.env.POLL_INTERVAL ?? "60"),
+				pollingInterval: Number.parseInt(process.env.POLL_INTERVAL ?? "60"),
 			};
 
 			if (!validateBlueskyAppPassword(req.body.blueskyToken))
@@ -95,21 +98,21 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
 
 	app.post<{
 		Body: {
-			relayCriteria: any;
+			relayCriteria: string;
 			relayMarker: string;
 			relayVisibility: string[];
 		};
 	}>("/settings/repost", { onRequest: [authenticateJWT] }, async (req, res) => {
 		const user = await findUserById(req.user.id, true);
 
-		let response_data: any = {
+		const response_data = {
 			err: undefined,
 			blueskyPDS: user?.blueskyPDS,
 			userName: req.user.mastodonHandle,
 			instance: req.user.instance,
 			relayCriteria: user?.relayCriteria,
 			relayMarker: user?.relayMarker,
-			pollingInterval: parseInt(process.env.POLL_INTERVAL ?? "60"),
+			pollingInterval: Number.parseInt(process.env.POLL_INTERVAL ?? "60"),
 		};
 
 		if (req.body.relayVisibility === undefined)
@@ -126,9 +129,9 @@ export const routesRoot = async (app: FastifyInstance, options: Object) => {
 
 		await updateRelaySettings(
 			req.user.id,
-			req.body.relayCriteria,
+			req.body.relayCriteria as InferInsertModel<typeof User>["relayCriteria"],
 			req.body.relayMarker,
-			relayVisibility,
+			relayVisibility as InferInsertModel<typeof User>["relayVisibility"],
 		);
 
 		return res.redirect("/");

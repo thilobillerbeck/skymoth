@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
 	content: ["./views/**/*.liquid"],
 	theme: {
@@ -11,6 +12,7 @@ module.exports = {
 		themes: [
 			{
 				black: {
+					// biome-ignore lint/complexity/useLiteralKeys: <explanation>
 					...require("daisyui/src/theming/themes")["dark"],
 					primary: "#6b21ff",
 					secondary: "#1cd6ff",

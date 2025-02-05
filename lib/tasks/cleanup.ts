@@ -1,7 +1,6 @@
 import { Mastodon } from "megalodon";
 import { domainToUrl, logSchedulerEvent } from "../utils";
 import {
-	db,
 	deleteMastodonInstance,
 	deleteUser,
 	findUsers,
@@ -13,7 +12,7 @@ export default async function cleanupJob() {
 
 	const users = await findUsers();
 
-	users.forEach((user: any) => {
+	for (const user of users) {
 		const userClient = new Mastodon(
 			domainToUrl(user.mastodonInstance.url),
 			user.mastodonToken,
@@ -44,14 +43,14 @@ export default async function cleanupJob() {
 						"CREDENTIAL_CHECK",
 						"Deleting user due to invalid credentials",
 					);
-					deleteUser(user);
+					deleteUser(user.id, user.name);
 				}
 			});
-	});
+	}
 
 	const instances = await getMastodonInstanceUsers();
 
-	instances.forEach((instance) => {
+	for (const instance of instances) {
 		logSchedulerEvent(
 			"SYSTEM",
 			instance.url,
@@ -67,7 +66,7 @@ export default async function cleanupJob() {
 				"Deleting instance due to no users",
 			);
 
-			deleteMastodonInstance(instance);
+			deleteMastodonInstance(instance.id, instance.url);
 		}
-	});
+	}
 }

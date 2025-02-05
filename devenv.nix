@@ -47,4 +47,16 @@
   };
 
   pre-commit.hooks.commitizen.enable = true;
+  git-hooks.hooks.lint = {
+    enable = true;
+    name = "Lint code";
+    entry = "pnpm run lint";
+    pass_filenames = false;
+  };
+  git-hooks.hooks.format-check = {
+    enable = true;
+    name = "Check formatting";
+    entry = "pnpm run format:check";
+    pass_filenames = false;
+  };
 }

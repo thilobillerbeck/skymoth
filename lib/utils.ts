@@ -45,14 +45,17 @@ export function validateDomain(domain: string) {
 }
 
 export function genCallBackUrl(instanceDomain: string) {
-	if (process.env.NODE_ENV == "development") {
+	if (process.env.NODE_ENV === "development") {
 		const { ADDRESS = "localhost", PORT = "3000" } = process.env;
 		return `http://${ADDRESS}:${PORT}/auth/callback/${btoa(instanceDomain)}`;
 	}
 	return `${process.env.APP_URL}/auth/callback/${btoa(instanceDomain)}`;
 }
 
-export const authenticateJWT = async (req: any, res: any) => {
+export const authenticateJWT = async (
+	req: { jwtVerify: () => unknown },
+	res: { redirect: (arg0: string) => void },
+) => {
 	try {
 		await req.jwtVerify();
 	} catch (err) {
@@ -91,7 +94,7 @@ export function logSchedulerEvent(
 // due to the read after write system of bluesky, we need to wait a bit before fetching the post
 export function getBlueskyApiWaittime(): number {
 	return process.env.BLUESKY_API_WAITTIME
-		? parseInt(process.env.BLUESKY_API_WAITTIME)
+		? Number.parseInt(process.env.BLUESKY_API_WAITTIME)
 		: 5000;
 }
 

@@ -1,11 +1,19 @@
-import { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
+import type { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
 import { logSchedulerEvent } from "./utils";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
 import * as schema from "./../drizzle/schema";
 import * as relations from "./../drizzle/relations";
-import { count, eq } from "drizzle-orm";
-import { AtpSessionData } from "@atproto/api";
+import {
+	count,
+	eq,
+	type InferInsertModel,
+	type InferSelectModel,
+} from "drizzle-orm";
+import type { AtpSessionData } from "@atproto/api";
+import type { OAuth } from "megalodon";
+import type Response from "megalodon/lib/src/response";
+import type { Account } from "megalodon/lib/src/entities/account";
 
 export const client = new Client({
 	connectionString: process.env.POSTGRES_URL,
@@ -88,7 +96,9 @@ export async function findParentToot(
 }
 
 export async function persistBlueskySession(
-	user: any,
+	user: InferSelectModel<typeof schema.user> & {
+		mastodonInstance: InferSelectModel<typeof schema.mastodonInstance>;
+	},
 	evt: string,
 	sess?: AtpSessionData,
 ) {
@@ -119,7 +129,11 @@ export async function persistBlueskySession(
 		});
 }
 
-export async function clearBluskySession(user: any) {
+export async function clearBluskySession(
+	user: InferSelectModel<typeof schema.user> & {
+		mastodonInstance: InferSelectModel<typeof schema.mastodonInstance>;
+	},
+) {
 	return await db
 		.update(schema.user)
 		.set({
@@ -147,7 +161,11 @@ export async function clearBluskySession(user: any) {
 		});
 }
 
-export async function clearBlueskyCreds(user: any) {
+export async function clearBlueskyCreds(
+	user: InferSelectModel<typeof schema.user> & {
+		mastodonInstance: InferSelectModel<typeof schema.mastodonInstance>;
+	},
+) {
 	return await db
 		.update(schema.user)
 		.set({
@@ -186,8 +204,8 @@ export async function findUsers() {
 }
 
 export async function findUserById(
-	userid: any,
-	withMastodonInstance: boolean = false,
+	userid: string,
+	withMastodonInstance = false,
 ) {
 	return await db.query.user.findFirst({
 		where: (user, { eq }) => eq(user.id, userid),
@@ -213,16 +231,16 @@ export async function getAllUserInformation(userId: string) {
 	});
 }
 
-export async function deleteUser(user: any) {
+export async function deleteUser(userId: string, userName: string) {
 	return await db
 		.delete(schema.user)
-		.where(eq(schema.user.id, user.id))
+		.where(eq(schema.user.id, userId))
 		.then(() => {
-			logSchedulerEvent(user.name, "---", "CREDENTIAL_CHECK", "User deleted");
+			logSchedulerEvent(userName, "---", "CREDENTIAL_CHECK", "User deleted");
 		})
 		.catch((err) => {
 			logSchedulerEvent(
-				user.name,
+				userName,
 				"---",
 				"CREDENTIAL_CHECK",
 				"Could not delete user",
@@ -246,14 +264,17 @@ export async function getMastodonInstanceUsers() {
 		.groupBy(schema.mastodonInstance.id);
 }
 
-export async function deleteMastodonInstance(instance: any) {
+export async function deleteMastodonInstance(
+	instanceId: string,
+	instanceUrl: string,
+) {
 	return await db
 		.delete(schema.mastodonInstance)
-		.where(eq(schema.mastodonInstance.id, instance.id))
+		.where(eq(schema.mastodonInstance.id, instanceId))
 		.then(() => {
 			logSchedulerEvent(
 				"SYSTEM",
-				instance.url,
+				instanceUrl,
 				"INSTANCE_USERS",
 				"Instance deleted",
 			);
@@ -261,7 +282,7 @@ export async function deleteMastodonInstance(instance: any) {
 		.catch((err) => {
 			logSchedulerEvent(
 				"SYSTEM",
-				instance.url,
+				instanceUrl,
 				"INSTANCE_USERS",
 				"Could not delete instance",
 			);
@@ -270,7 +291,7 @@ export async function deleteMastodonInstance(instance: any) {
 }
 
 export async function persistBlueskyCreds(
-	userId: any,
+	userId: string,
 	handle: string,
 	token: string,
 	pds: string,
@@ -288,10 +309,10 @@ export async function persistBlueskyCreds(
 }
 
 export async function updateRelaySettings(
-	userId: any,
-	relayCriteria: any,
+	userId: string,
+	relayCriteria: InferInsertModel<typeof schema.user>["relayCriteria"],
 	relayMarker: string,
-	relayVisibility: any,
+	relayVisibility: InferInsertModel<typeof schema.user>["relayVisibility"],
 ) {
 	return await db
 		.update(schema.user)
@@ -307,7 +328,7 @@ export async function updateRelaySettings(
 
 export async function createMastodonInstance(
 	instanceDomain: string,
-	appData: any,
+	appData: OAuth.AppData,
 ) {
 	return await db
 		.insert(schema.mastodonInstance)
@@ -322,9 +343,9 @@ export async function createMastodonInstance(
 }
 
 export async function createUser(
-	instanceId: any,
-	verifiedCredentials: any,
-	token: any,
+	instanceId: string,
+	verifiedCredentials: Response<Account>,
+	token: OAuth.TokenData,
 ) {
 	return await db
 		.insert(schema.user)
@@ -339,7 +360,11 @@ export async function createUser(
 		.returning();
 }
 
-export async function updateUser(userId: any, token: any, name: string) {
+export async function updateUser(
+	userId: string,
+	token: OAuth.TokenData,
+	name: string,
+) {
 	return await db
 		.update(schema.user)
 		.set({

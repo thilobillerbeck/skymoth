@@ -2,11 +2,11 @@ import {
 	AtpAgent,
 	AppBskyFeedPost,
 	RichText,
-	BlobRef,
-	AtpSessionData,
-	AtpSessionEvent,
+	type BlobRef,
+	type AtpSessionData,
+	type AtpSessionEvent,
 } from "@atproto/api";
-import { Entity } from "megalodon";
+import type { Entity } from "megalodon";
 import {
 	fetchImageToBytes,
 	logSchedulerEvent,
@@ -14,20 +14,24 @@ import {
 	splitTextBluesky,
 } from "./utils";
 import sharp from "sharp";
-import { Attachment } from "megalodon/lib/src/entities/attachment";
+import type { Attachment } from "megalodon/lib/src/entities/attachment";
 import {
 	clearBlueskyCreds,
 	clearBluskySession,
 	db,
 	persistBlueskySession,
 } from "./db";
-import { ResponseType, XRPCError } from "@atproto/xrpc";
+import { ResponseType, type XRPCError } from "@atproto/xrpc";
+import type { InferSelectModel } from "drizzle-orm";
+import type { mastodonInstance, user as User } from "../drizzle/schema";
 
 export async function intiBlueskyAgent(
 	url: string,
 	handle: string,
 	password: string,
-	user: any,
+	user: InferSelectModel<typeof User> & {
+		mastodonInstance: InferSelectModel<typeof mastodonInstance>;
+	},
 ): Promise<AtpAgent | undefined> {
 	let session: AtpSessionData | undefined = undefined;
 	session = user.blueskySession as unknown as AtpSessionData;
@@ -72,14 +76,14 @@ export async function intiBlueskyAgent(
 				"resuming session",
 			);
 			return agent;
-		} else {
-			logSchedulerEvent(
-				user.name,
-				user.mastodonInstance.url,
-				"AGENT",
-				"could not resume session",
-			);
 		}
+
+		logSchedulerEvent(
+			user.name,
+			user.mastodonInstance.url,
+			"AGENT",
+			"could not resume session",
+		);
 	} else {
 		logSchedulerEvent(
 			user.name,
@@ -93,7 +97,7 @@ export async function intiBlueskyAgent(
 		await agent.login({ identifier: handle, password: password });
 		return agent;
 	} catch (err) {
-		if ((err as XRPCError).status == ResponseType.AuthRequired) {
+		if ((err as XRPCError).status === ResponseType.AuthRequired) {
 			// invalidate creds to prevent further login attempts resulting in rate limiting
 			logSchedulerEvent(
 				user.name,
@@ -102,7 +106,7 @@ export async function intiBlueskyAgent(
 				"invalid creds",
 			);
 			clearBlueskyCreds(user);
-		} else if ((err as XRPCError).status == ResponseType.RateLimitExceeded) {
+		} else if ((err as XRPCError).status === ResponseType.RateLimitExceeded) {
 			logSchedulerEvent(
 				user.name,
 				user.mastodonInstance.url,
@@ -126,13 +130,13 @@ export async function generateBlueskyPostsFromMastodon(
 	status: Entity.Status,
 	client: AtpAgent,
 ): Promise<Array<AppBskyFeedPost.Record>> {
-	let posts: Array<AppBskyFeedPost.Record> = [];
+	const posts: Array<AppBskyFeedPost.Record> = [];
 	const spoiler = status.sensitive ? `CW: ${status.spoiler_text}\n\n` : "";
 	const conv = mastodonHtmlToText(status.content);
 	const split = splitTextBluesky(conv, spoiler);
 
 	for (const [idx, text] of split.entries()) {
-		let post = await generateBlueskyPostFromMastodon(
+		const post = await generateBlueskyPostFromMastodon(
 			text,
 			client,
 			idx === 0 ? status.media_attachments : undefined,
@@ -192,8 +196,10 @@ export async function generateBlueskyPostFromMastodon(
 					arr = new Uint8Array(result.buffer);
 				}
 
+				if (!mimeType) continue;
+
 				const res = await client.uploadBlob(arr, {
-					encoding: mimeType!,
+					encoding: mimeType,
 				});
 
 				let width = 1200;
@@ -232,9 +238,8 @@ export async function generateBlueskyPostFromMastodon(
 		const res = AppBskyFeedPost.validateRecord(post);
 		if (res.success) {
 			return post;
-		} else {
-			console.log(res);
 		}
+		console.log(res);
 	}
 	return undefined;
 }

@@ -3,7 +3,7 @@ import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { sql } from "drizzle-orm";
 import { db } from "./db";
 
-const runPrismaToDrizzleMigrationScript = async (db: any) => {
+const runPrismaToDrizzleMigrationScript = async () => {
 	return db.execute(sql`
         CREATE SCHEMA drizzle;
 
@@ -32,7 +32,7 @@ const runPrismaToDrizzleMigrationScript = async (db: any) => {
     `);
 };
 
-const checkPrismaMigrationsTable = async (db: any) => {
+const checkPrismaMigrationsTable = async () => {
 	try {
 		const result = await db.execute(sql`
             SELECT FROM information_schema.tables 
@@ -45,7 +45,7 @@ const checkPrismaMigrationsTable = async (db: any) => {
 	}
 };
 
-const checkLastMigrationApplied = async (db: any) => {
+const checkLastMigrationApplied = async () => {
 	const result = await db.execute(sql`
       SELECT * FROM _prisma_migrations WHERE migration_name = '20241223001124_orphan_user_settings';
     `);
@@ -55,14 +55,14 @@ const checkLastMigrationApplied = async (db: any) => {
 export async function migrationHelper() {
 	console.log("Migration helper started.");
 
-	const prismaTablesExist = await checkPrismaMigrationsTable(db);
+	const prismaTablesExist = await checkPrismaMigrationsTable();
 	const lastPrismaMigrationApplied = prismaTablesExist
-		? await checkLastMigrationApplied(db)
+		? await checkLastMigrationApplied()
 		: false;
 
 	if (prismaTablesExist && lastPrismaMigrationApplied) {
 		console.log("Migrating from Prisma to Drizzle!");
-		await runPrismaToDrizzleMigrationScript(db);
+		await runPrismaToDrizzleMigrationScript();
 		console.log("Created Drizzle migrations table.");
 	} else if (prismaTablesExist && !lastPrismaMigrationApplied) {
 		console.error(

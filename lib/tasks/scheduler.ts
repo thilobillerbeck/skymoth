@@ -18,7 +18,7 @@ if (process.env.SENTRY_DSN) {
 
 const job = new SimpleIntervalJob(
 	{
-		seconds: parseInt(process.env.POLL_INTERVAL ?? "60"),
+		seconds: Number.parseInt(process.env.POLL_INTERVAL ?? "60"),
 		runImmediately: true,
 	},
 	new AsyncTask("taskMastodonToBluesky", taskMastodonToBluesky),

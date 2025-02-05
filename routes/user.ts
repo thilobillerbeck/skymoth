@@ -1,4 +1,4 @@
-import { FastifyInstance } from "fastify";
+import type { FastifyInstance } from "fastify";
 import { Mastodon } from "megalodon";
 import {
 	authenticateJWT,
@@ -9,16 +9,15 @@ import {
 import {
 	createMastodonInstance,
 	createUser,
-	db,
 	deleteUser,
 	getAllUserInformation,
 	getInstanceByDomain,
 	getUserByMastodonUid,
 	updateUser,
 } from "./../lib/db";
-import { AtpSessionData } from "@atproto/api";
+import type { AtpSessionData } from "@atproto/api";
 
-export const routesUser = async (app: FastifyInstance, options: Object) => {
+export const routesUser = async (app: FastifyInstance) => {
 	app.get("/login", async (req, res) => {
 		return res.view("login", {});
 	});
@@ -31,7 +30,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
 		"/account/delete",
 		{ onRequest: [authenticateJWT] },
 		async (req, res) => {
-			deleteUser(req.user);
+			deleteUser(req.user.id, req.user.mastodonHandle);
 			return res.clearCookie("token").redirect("/login");
 		},
 	);
@@ -40,7 +39,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
 		"/account/downloadData",
 		{ onRequest: [authenticateJWT] },
 		async (req, res) => {
-			let user = await getAllUserInformation(req.user.id);
+			const user = await getAllUserInformation(req.user.id);
 			if (user) {
 				if (user.blueskySession) {
 					const blueskySession =
@@ -85,7 +84,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
 		}
 
 		const url = domainToUrl(instanceDomain);
-		let client = new Mastodon(url);
+		const client = new Mastodon(url);
 
 		let knownInstance = await getInstanceByDomain(instanceDomain);
 
@@ -135,7 +134,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
 			});
 		}
 
-		let client = new Mastodon(domainToUrl(instance.url));
+		const client = new Mastodon(domainToUrl(instance.url));
 
 		const token = await client.fetchAccessToken(
 			instance.applicationId,
@@ -150,7 +149,7 @@ export const routesUser = async (app: FastifyInstance, options: Object) => {
 		);
 		const verifiedCredentials = await userClient.verifyAccountCredentials();
 
-		let user: any = await getUserByMastodonUid(
+		let user = await getUserByMastodonUid(
 			verifiedCredentials.data.id,
 			instance.id,
 		);

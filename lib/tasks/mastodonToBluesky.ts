@@ -15,14 +15,15 @@ import {
 	findUsers,
 	clearBlueskyCreds,
 } from "../db";
-import { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
+import type { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
+import { XRPCError } from "@atproto/xrpc";
 
 export default async function taskMastodonToBluesky() {
 	console.log("Running scheduled job: reposting to bluesky...");
 
 	const users = await findUsers();
 
-	users.forEach(async (user: any) => {
+	for await (const user of users) {
 		if (!user.blueskyHandle || !user.blueskyToken) {
 			logSchedulerEvent(
 				user.name,
@@ -102,7 +103,9 @@ export default async function taskMastodonToBluesky() {
 				if (postsBsky.length === 0) continue;
 
 				let repRef: ReplyRef = {
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
 					root: undefined!,
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
 					parent: undefined!,
 				};
 
@@ -175,22 +178,24 @@ export default async function taskMastodonToBluesky() {
 					}
 
 					try {
-						let result = await blueskyClient.post(postBsky);
+						const result = await blueskyClient.post(postBsky);
 
 						if (repRef.root === undefined) repRef.root = result;
 						repRef.parent = result;
-					} catch (err: any) {
-						if (err.error === "AccountDeactivated") {
-							logSchedulerEvent(
-								user.name,
-								user.mastodonInstance.url,
-								"REPOSTER",
-								`Account deactivated, invalidating creds`,
-							);
+					} catch (err: unknown) {
+						if (err instanceof XRPCError) {
+							if (err.error === "AccountDeactivated") {
+								logSchedulerEvent(
+									user.name,
+									user.mastodonInstance.url,
+									"REPOSTER",
+									"Account deactivated, invalidating creds",
+								);
 
-							clearBlueskyCreds(user);
+								clearBlueskyCreds(user);
 
-							return;
+								return;
+							}
 						}
 					}
 
@@ -231,5 +236,5 @@ export default async function taskMastodonToBluesky() {
 				console.error(err);
 			}
 		}
-	});
+	}
 }
