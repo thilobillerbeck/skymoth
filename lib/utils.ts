@@ -1,4 +1,3 @@
-import type { FastifyReply, FastifyRequest } from "fastify";
 import { convert } from "html-to-text";
 import { parse } from "node-html-parser";
 

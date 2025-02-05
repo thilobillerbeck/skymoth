@@ -4,9 +4,7 @@ export default defineConfig({
 	out: "./drizzle",
 	schema: "./drizzle/schema.ts",
 	dbCredentials: {
-		url:
-			process.env.POSTGRES_URL ||
-			"postgresql://skymoth:skymoth@127.0.0.1/skymoth",
+		url: process.env.POSTGRES_URL || "",
 	},
 	// Print all statements
 	verbose: true,

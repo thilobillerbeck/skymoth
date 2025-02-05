@@ -9,7 +9,6 @@ import {
 import {
 	createMastodonInstance,
 	createUser,
-	db,
 	deleteUser,
 	getAllUserInformation,
 	getInstanceByDomain,
@@ -17,8 +16,6 @@ import {
 	updateUser,
 } from "./../lib/db";
 import type { AtpSessionData } from "@atproto/api";
-import { InferSelectModel } from "drizzle-orm";
-import { user } from "../drizzle/schema";
 
 export const routesUser = async (app: FastifyInstance) => {
 	app.get("/login", async (req, res) => {

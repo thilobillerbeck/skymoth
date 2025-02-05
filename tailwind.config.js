@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import { dark } from "daisyui";
 
 module.exports = {
 	content: ["./views/**/*.liquid"],

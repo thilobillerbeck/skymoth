@@ -10,7 +10,6 @@ import { join } from "node:path";
 import * as Sentry from "@sentry/node";
 import { nodeProfilingIntegration } from "@sentry/profiling-node";
 import { existsSync, readFileSync } from "node:fs";
-import { join as pathJoin } from "node:path";
 import { printInfo } from "./lib/utils";
 import { client, db } from "./lib/db";
 import { migrationHelper } from "./lib/migration";
@@ -47,7 +46,7 @@ migrationHelper()
 
 		let version = "development";
 
-		const gitRevPath = pathJoin(__dirname, ".git-rev");
+		const gitRevPath = join(__dirname, ".git-rev");
 		if (existsSync(gitRevPath)) {
 			version = readFileSync(gitRevPath, "utf-8").trim();
 		}
