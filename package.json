@@ -15,7 +15,7 @@
 	},
 	"dependencies": {
 		"@atproto/api": "^0.13.31",
-		"@atproto/xrpc": "^0.6.5",
+		"@atproto/xrpc": "^0.6.7",
 		"@fastify/cookie": "^11.0.2",
 		"@fastify/formbody": "^8.0.2",
 		"@fastify/jwt": "^9.0.3",
