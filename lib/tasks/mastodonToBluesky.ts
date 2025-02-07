@@ -23,7 +23,7 @@ export default async function taskMastodonToBluesky() {
 
 	const users = await findUsers();
 
-	for await (const user of users) {
+	for (const user of users) {
 		if (!user.blueskyHandle || !user.blueskyToken) {
 			logSchedulerEvent(
 				user.name,
