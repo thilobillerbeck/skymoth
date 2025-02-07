@@ -2,7 +2,7 @@ FROM node:20 AS base
 ARG GIT_TAG
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack disable && npm install -g pnpm@latest
+RUN corepack disable && npm install -g pnpm@latest  --ignore-scripts
 COPY . /app
 WORKDIR /app
 RUN if [ -n "$GIT_TAG" ]; then \
