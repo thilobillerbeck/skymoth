@@ -29,7 +29,7 @@
 		"drizzle-orm": "^0.39.2",
 		"fastify": "^5.2.1",
 		"html-to-text": "^9.0.5",
-		"liquidjs": "^10.20.2",
+		"liquidjs": "^10.20.3",
 		"megalodon": "^10.1.1",
 		"node-html-parser": "^7.0.1",
 		"pg": "^8.13.1",
