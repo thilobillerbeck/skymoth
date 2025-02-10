@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@atproto/api':
-        specifier: ^0.13.33
-        version: 0.13.33
+        specifier: ^0.13.35
+        version: 0.13.35
       '@atproto/xrpc':
         specifier: ^0.6.8
         version: 0.6.8
@@ -139,8 +139,8 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@atproto/api@0.13.33':
-    resolution: {integrity: sha512-d8AOvtxo2J2zrmcakJTUtLdz2ns+pAqywNXhPxPzHrHcw79D6MKBLHR0vr8oxkGwhDBQTsHiQWTk4gSo8PF7YA==}
+  '@atproto/api@0.13.35':
+    resolution: {integrity: sha512-vsEfBj0C333TLjDppvTdTE0IdKlXuljKSveAeI4PPx/l6eUKNnDTsYxvILtXUVzwUlTDmSRqy5O4Ryh78n1b7g==}
 
   '@atproto/common-web@0.4.0':
     resolution: {integrity: sha512-ZYL0P9myHybNgwh/hBY0HaBzqiLR1B5/ie5bJpLQAg0whRzNA28t8/nU2vh99tbsWcAF0LOD29M8++LyENJLNQ==}
@@ -3362,7 +3362,7 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@atproto/api@0.13.33':
+  '@atproto/api@0.13.35':
     dependencies:
       '@atproto/common-web': 0.4.0
       '@atproto/lexicon': 0.4.6
