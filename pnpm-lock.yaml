@@ -21,8 +21,8 @@ importers:
         specifier: ^8.0.2
         version: 8.0.2
       '@fastify/jwt':
-        specifier: ^9.0.3
-        version: 9.0.3
+        specifier: ^9.0.4
+        version: 9.0.4
       '@fastify/schedule':
         specifier: ^6.0.0
         version: 6.0.0(toad-scheduler@3.0.1)
@@ -539,8 +539,8 @@ packages:
   '@fastify/forwarded@3.0.0':
     resolution: {integrity: sha512-kJExsp4JCms7ipzg7SJ3y8DwmePaELHxKYtg+tZow+k0znUTf3cb+npgyqm8+ATZOdmfgfydIebPDWM172wfyA==}
 
-  '@fastify/jwt@9.0.3':
-    resolution: {integrity: sha512-5OjeozLzwhMhrOkadHG9FhS5S3wNVIN6ADhBJd/x3VJIWptlRdc1ORksA6NHJ1ihvuAb0IOVK9giaCZTelnMSg==}
+  '@fastify/jwt@9.0.4':
+    resolution: {integrity: sha512-OJ5moNArmagwYIAeAE5xRI/cnZk7Nvuc+kz7Q+EWzODBszBfQaaeRABIkPD8nIkDrOh1fOnlNyrSpNV/QomiaQ==}
 
   '@fastify/merge-json-schemas@0.2.1':
     resolution: {integrity: sha512-OA3KGBCy6KtIvLf8DINC5880o5iBlDX4SxzLQS8HorJAbqluzLRn80UXU0bxZn7UOFhFgpRJDasfwn9nG4FG4A==}
@@ -1268,8 +1268,8 @@ packages:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
 
-  bn.js@4.12.0:
-    resolution: {integrity: sha512-c98Bf3tPniI+scsdk237ku1Dc3ujXQTSgyiPUDEOe7tRkhrqridvh8klBv0HCEso1OLOYcHuCv/cS6DNxKH+ZA==}
+  bn.js@4.12.1:
+    resolution: {integrity: sha512-k8TVBiPkPJT9uHLdOKfFpqcfprwBFOAAXXozRubr7R7PfIuKvQlzcI4M0pALeqXN09vdaMbUdUj+pass+uULAg==}
 
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
@@ -1765,8 +1765,8 @@ packages:
   fast-json-stringify@6.0.1:
     resolution: {integrity: sha512-s7SJE83QKBZwg54dIbD5rCtzOBVD43V1ReWXXYqBgwCwHLYAAT0RQc/FmrQglXqWPpz6omtryJQOau5jI4Nrvg==}
 
-  fast-jwt@5.0.2:
-    resolution: {integrity: sha512-b2z/32MTWyURskK8plXXkbLuZU3F+T79iFaVLYZEveF5lOwUj6g8wg2T7zIi6/xTbbv4BRQzm/lgH2jL3vSPgA==}
+  fast-jwt@5.0.5:
+    resolution: {integrity: sha512-Ch94zewwBjRznO0r76NFI5FDT0lOtnzkWVO4r7+d7E2WKuf7WW1FVOWRpv7QGEFlXzz9OAayrb5BhEmkOkwjhg==}
     engines: {node: '>=20'}
 
   fast-querystring@1.1.2:
@@ -2464,8 +2464,8 @@ packages:
     resolution: {integrity: sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw==}
     engines: {node: '>= 6'}
 
-  obliterator@2.0.4:
-    resolution: {integrity: sha512-lgHwxlxV1qIg1Eap7LgIeoBWIMFibOjbrYPIPJZcI1mmGAI2m3lNYpK12Y+GBdPQ0U1hRwSord7GIaawz962qQ==}
+  obliterator@2.0.5:
+    resolution: {integrity: sha512-42CPE9AhahZRsMNslczq0ctAEtqk8Eka26QofnqC346BZdHDySk3LWka23LI7ULIw11NmltpiLagIq8gBozxTw==}
 
   obuf@1.1.2:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
@@ -3638,11 +3638,11 @@ snapshots:
 
   '@fastify/forwarded@3.0.0': {}
 
-  '@fastify/jwt@9.0.3':
+  '@fastify/jwt@9.0.4':
     dependencies:
       '@fastify/error': 4.0.0
       '@lukeed/ms': 2.0.2
-      fast-jwt: 5.0.2
+      fast-jwt: 5.0.5
       fastify-plugin: 5.0.1
       steed: 1.1.3
 
@@ -4478,7 +4478,7 @@ snapshots:
 
   asn1.js@5.4.1:
     dependencies:
-      bn.js: 4.12.0
+      bn.js: 4.12.1
       inherits: 2.0.4
       minimalistic-assert: 1.0.1
       safer-buffer: 2.1.2
@@ -4518,7 +4518,7 @@ snapshots:
 
   binary-extensions@2.3.0: {}
 
-  bn.js@4.12.0: {}
+  bn.js@4.12.1: {}
 
   boolbase@1.0.0: {}
 
@@ -4993,7 +4993,7 @@ snapshots:
       json-schema-ref-resolver: 2.0.1
       rfdc: 1.4.1
 
-  fast-jwt@5.0.2:
+  fast-jwt@5.0.5:
     dependencies:
       '@lukeed/ms': 2.0.2
       asn1.js: 5.4.1
@@ -5525,7 +5525,7 @@ snapshots:
 
   mnemonist@0.39.8:
     dependencies:
-      obliterator: 2.0.4
+      obliterator: 2.0.5
 
   module-details-from-path@1.0.3: {}
 
@@ -5613,7 +5613,7 @@ snapshots:
 
   object-hash@3.0.0: {}
 
-  obliterator@2.0.4: {}
+  obliterator@2.0.5: {}
 
   obuf@1.1.2: {}
 
