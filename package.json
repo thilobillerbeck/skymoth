@@ -14,7 +14,7 @@
 		"lint": "biome lint"
 	},
 	"dependencies": {
-		"@atproto/api": "^0.13.33",
+		"@atproto/api": "^0.13.35",
 		"@atproto/xrpc": "^0.6.8",
 		"@fastify/cookie": "^11.0.2",
 		"@fastify/formbody": "^8.0.2",
