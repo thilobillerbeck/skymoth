@@ -54,8 +54,8 @@ importers:
         specifier: ^9.0.5
         version: 9.0.5
       liquidjs:
-        specifier: ^10.20.2
-        version: 10.20.2
+        specifier: ^10.20.3
+        version: 10.20.3
       megalodon:
         specifier: ^10.1.1
         version: 10.1.1
@@ -2190,8 +2190,8 @@ packages:
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
-  liquidjs@10.20.2:
-    resolution: {integrity: sha512-MbAueOtO8aH+GzC/kmhcJTiMrMu+MVel/3+yhFVmP3K89WP0ZuvVPi8ZRKCHAO6SLJvV0Y0Jz6tUEy6Hg8xO/g==}
+  liquidjs@10.20.3:
+    resolution: {integrity: sha512-lSrPyIKT/ft0BJuZsz+QaWLclj4LY0v8X11K/VDTze4MrHGUedXSn3xuLL1MssBuaA49tNI+ZGI72fRpYSTLFg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5446,7 +5446,7 @@ snapshots:
 
   lines-and-columns@1.2.4: {}
 
-  liquidjs@10.20.2:
+  liquidjs@10.20.3:
     dependencies:
       commander: 10.0.1
 
