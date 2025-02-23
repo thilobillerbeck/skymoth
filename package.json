@@ -32,7 +32,7 @@
 		"liquidjs": "^10.20.3",
 		"megalodon": "^10.1.1",
 		"node-html-parser": "^7.0.1",
-		"pg": "^8.13.1",
+		"pg": "^8.13.3",
 		"sharp": "^0.33.5",
 		"toad-scheduler": "^3.0.1"
 	},
