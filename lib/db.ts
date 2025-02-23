@@ -14,6 +14,7 @@ import type { AtpSessionData } from "@atproto/api";
 import type { OAuth } from "megalodon";
 import type Response from "megalodon/lib/src/response";
 import type { Account } from "megalodon/lib/src/entities/account";
+import logger from "./logger";
 
 export const client = new Client({
 	connectionString: process.env.POSTGRES_URL,
@@ -125,7 +126,7 @@ export async function persistBlueskySession(
 				"AGENT",
 				"could not persist session",
 			);
-			console.error(err);
+			logger.error(err);
 		});
 }
 
@@ -157,7 +158,7 @@ export async function clearBluskySession(
 				"AGENT",
 				"could not clear session",
 			);
-			console.error(err);
+			logger.error(err);
 		});
 }
 
@@ -191,7 +192,7 @@ export async function clearBlueskyCreds(
 				"AGENT",
 				"could not clear creds",
 			);
-			console.error(err);
+			logger.error(err);
 		});
 }
 
@@ -245,7 +246,7 @@ export async function deleteUser(userId: string, userName: string) {
 				"CREDENTIAL_CHECK",
 				"Could not delete user",
 			);
-			console.error(err);
+			logger.error(err);
 		});
 }
 
@@ -286,7 +287,7 @@ export async function deleteMastodonInstance(
 				"INSTANCE_USERS",
 				"Could not delete instance",
 			);
-			console.error(err);
+			logger.error(err);
 		});
 }
 

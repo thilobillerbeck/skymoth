@@ -89,9 +89,9 @@ export const routesUser = async (app: FastifyInstance) => {
 		let knownInstance = await getInstanceByDomain(instanceDomain);
 
 		if (knownInstance) {
-			console.log("--- INSTANCE ALREADY REGISTERED ---");
+			req.log.info("Instance already registered");
 		} else {
-			console.log("--- INSTANCE NOT REGISTERED ---");
+			req.log.info("Instance not registered");
 			const appData = await client.createApp(
 				process.env.APP_ID ?? "skymoth-test",
 				{

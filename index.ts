@@ -13,6 +13,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { printInfo } from "./lib/utils";
 import { client, db } from "./lib/db";
 import { migrationHelper } from "./lib/migration";
+import logger from "./lib/logger";
 
 declare module "@fastify/jwt" {
 	interface FastifyJWT {
@@ -98,5 +99,5 @@ migrationHelper()
 		printInfo();
 	})
 	.catch((err) => {
-		console.error(err);
+		logger.error(err);
 	});
