@@ -24,6 +24,7 @@ import {
 import { ResponseType, type XRPCError } from "@atproto/xrpc";
 import type { InferSelectModel } from "drizzle-orm";
 import type { mastodonInstance, user as User } from "../drizzle/schema";
+import logger from "./logger";
 
 export async function intiBlueskyAgent(
 	url: string,
@@ -120,7 +121,7 @@ export async function intiBlueskyAgent(
 				"AGENT",
 				"login error",
 			);
-			console.error(err);
+			logger.error(err);
 		}
 		return undefined;
 	}
@@ -239,7 +240,6 @@ export async function generateBlueskyPostFromMastodon(
 		if (res.success) {
 			return post;
 		}
-		console.log(res);
 	}
 	return undefined;
 }

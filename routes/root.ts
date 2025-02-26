@@ -125,8 +125,6 @@ export const routesRoot = async (app: FastifyInstance) => {
 			? [req.body.relayVisibility]
 			: req.body.relayVisibility;
 
-		console.log(relayVisibility);
-
 		await updateRelaySettings(
 			req.user.id,
 			req.body.relayCriteria as InferInsertModel<typeof User>["relayCriteria"],

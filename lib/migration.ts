@@ -2,6 +2,7 @@ import { resolve } from "node:path";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { sql } from "drizzle-orm";
 import { db } from "./db";
+import logger from "./logger";
 
 const runPrismaToDrizzleMigrationScript = async () => {
 	return db.execute(sql`
@@ -53,7 +54,7 @@ const checkLastMigrationApplied = async () => {
 };
 
 export async function migrationHelper() {
-	console.log("Migration helper started.");
+	logger.info("Migration helper started.");
 
 	const prismaTablesExist = await checkPrismaMigrationsTable();
 	const lastPrismaMigrationApplied = prismaTablesExist
@@ -61,16 +62,16 @@ export async function migrationHelper() {
 		: false;
 
 	if (prismaTablesExist && lastPrismaMigrationApplied) {
-		console.log("Migrating from Prisma to Drizzle!");
+		logger.info("Migrating from Prisma to Drizzle!");
 		await runPrismaToDrizzleMigrationScript();
-		console.log("Created Drizzle migrations table.");
+		logger.info("Created Drizzle migrations table.");
 	} else if (prismaTablesExist && !lastPrismaMigrationApplied) {
-		console.error(
+		logger.error(
 			"Please upgrade to v0.3.2 with all migrations applied before running upgrading to this version.",
 		);
 		process.exit(1);
 	} else {
-		console.log("Applying fresh migration.");
+		logger.info("Applying fresh migration.");
 	}
 	migrate(db, { migrationsFolder: resolve(__dirname, "./../drizzle") });
 	return;

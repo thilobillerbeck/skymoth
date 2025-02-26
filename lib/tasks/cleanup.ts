@@ -6,9 +6,10 @@ import {
 	findUsers,
 	getMastodonInstanceUsers,
 } from "../db";
+import logger from "../logger";
 
 export default async function cleanupJob() {
-	console.log("Running scheduled job: verify instance app credentials...");
+	logger.info("Running scheduled job: verify instance app credentials...");
 
 	const users = await findUsers();
 

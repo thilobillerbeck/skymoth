@@ -19,6 +19,7 @@ import type { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post
 import { XRPCError } from "@atproto/xrpc";
 import type { InferSelectModel } from "drizzle-orm";
 import type * as schema from "./../../drizzle/schema";
+import logger from "../logger";
 
 async function nastodonToBluesky(
 	user: InferSelectModel<typeof schema.user> & {
@@ -231,13 +232,13 @@ async function nastodonToBluesky(
 				"REPOSTER",
 				"could not repost",
 			);
-			console.error(err);
+			logger.error(err);
 		}
 	}
 }
 
 export default async function taskMastodonToBluesky() {
-	console.log("Running scheduled job: reposting to bluesky...");
+	logger.info("Running scheduled job: reposting to bluesky...");
 
 	const users = await findUsers();
 

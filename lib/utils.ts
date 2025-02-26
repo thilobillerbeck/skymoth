@@ -1,5 +1,6 @@
 import { convert } from "html-to-text";
 import { parse } from "node-html-parser";
+import logger from "./logger";
 
 export function mastodonHtmlToText(html: string) {
 	const root = parse(html);
@@ -88,7 +89,7 @@ export function logSchedulerEvent(
 	msg: string,
 ) {
 	// create log entry with tabbed columns
-	console.log(`${username}:${instance} \t| ${action} \t| ${msg}`);
+	logger.info(`${username}:${instance} \t| ${action} \t| ${msg}`);
 }
 
 // due to the read after write system of bluesky, we need to wait a bit before fetching the post
@@ -99,7 +100,7 @@ export function getBlueskyApiWaittime(): number {
 }
 
 export function printInfo() {
-	console.log(
+	logger.info(
 		`Waiting time between posts in one run is set to: ${getBlueskyApiWaittime()}`,
 	);
 }
