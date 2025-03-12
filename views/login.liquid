@@ -5,14 +5,12 @@
         <div class="card-body">
             <h2 class="card-title">Login</h2>
             <form action="/auth" method="get">
-                <div class="form-control w-full">
-                    <label for="instance" class="label">
-                        <span class="label-text">Mastodon Instance Domain</span>
-                    </label>
-                    <input placeholder="instance.tld" type="text" name="instance" id="instance" required
-                        class="input input-bordered w-full" />
-                </div>
-                <input class="btn btn-secondary btn-outline w-full mt-2" type="submit" value="Sign In with Mastodon" />
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Mastodon Instance Domain</legend>
+                <input placeholder="instance.tld" type="text" name="instance" id="instance" required
+                class="input input-bordered w-full" />
+            </fieldset>
+            <input class="btn btn-secondary btn-outline w-full mt-2" type="submit" value="Sign In with Mastodon" />
             </form>
         </div>
     </div>

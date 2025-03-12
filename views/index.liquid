@@ -30,28 +30,24 @@
                     class="text-secondary underline" >app password</a>.
             </p>
             <form action="/settings/blueskyCreds" method="post">
-                <div class="form-control w-full">
-                    <label for="blueskyPDS" class="label">
-                        <span class="label-text">Bluesky PDS</span>
-                    </label>
+                <fieldset class="fieldset w-full">
+                    <label for="blueskyPDS" class="fieldset-label">Bluesky PDS</label>
                     <input value="{{ blueskyPDS }}" placeholder="https://bsky.social" type="text" name="blueskyPDS"
-                        id="blueskyPDS" required class="input input-bordered w-full" />
-                </div>
-                <div class="form-control w-full">
-                    <label for="blueskyHandle" class="label">
-                        <span class="label-text">Bluesky Handle</span>
-                    </label>
-                    <input value="{{ blueskyHandle }}" placeholder="user.example" type="text" name="blueskyHandle"
-                        id="blueskyHandle" required class="input input-bordered w-full" />
-                </div>
-                <div class="form-control w-full">
-                    <label for="blueskyToken" class="label">
-                        <span class="label-text">Bluesky App Password</span>
-                    </label>
-                    <input type="password" placeholder="***********" type="text"
-                        name="blueskyToken" id="blueskyToken" required class="input input-bordered w-full" />
-                </div>
+                        id="blueskyPDS" required class="input w-full" />
 
+                        <label for="blueskyHandle" class="fieldset-label">
+                            Bluesky Handle
+                        </label>
+                        <input value="{{ blueskyHandle }}" placeholder="user.example" type="text" name="blueskyHandle"
+                            id="blueskyHandle" required class="input w-full" />
+    
+                            <label for="blueskyToken" class="fieldset-label">
+                                Bluesky App Password
+                            </label>
+                            <input type="password" placeholder="***********" type="text"
+                                name="blueskyToken" id="blueskyToken" required class="input w-full" />
+        
+                </fieldset>
                 <div class="card-actions justify-end mt-4">
                     <input class="btn btn-outline btn-success" type="submit" value="Update" />
                 </div>
@@ -107,15 +103,13 @@
                         <input type="radio" name="relayCriteria" value="notContainsMarker" class="radio radio-primary mr-2" {% if relayCriteria == 'notContainsMarker' %}checked{% endif %}/>
                         <span>Posts which do not include the marker below</span>
                     </label>
-                    <div class="form-control mt-4">
-                        <label class="mb-2">
-                            <span class="label-text">Marker for relay</span>
+                    <fieldset class="fieldset w-full">
+                        <label class="fieldset-label">
+                            Marker for relay
                         </label>
-                        <input type="text" name="relayMarker" placeholder="Enter a marker, eg: #xp" class="input input-bordered w-full" id="relayMarker" value="{{ relayMarker }}"/>
-                        <p class="text-sm text-gray-400 mt-2">
-                            This text can be any string contained in the toot, for example '#xp' (for crosspost) or 'cc:bluesky'.
-                        </p>
-                    </div>
+                        <input type="text" name="relayMarker" placeholder="Enter a marker, eg: #xp" class="input w-full" id="relayMarker" value="{{ relayMarker }}"/>
+                        <p class="fieldset-label">This text can be any string contained in the toot, for example '#xp' (for crosspost) or 'cc:bluesky'.</p>
+                    </fieldset>
                 </div>
 
                 <div class="card-actions justify-end mt-4">
@@ -137,7 +131,7 @@
             <h2 class="font-bold">Delete your account</h2>
             <p>
                 If you want to delete your account, you can do so
-                <button class="text-error underline" onclick="delete_modal.showModal()">here</button>.
+                <button class="text-error underline" onclick="delete_modal.showModal()">here</button>
             </p>
         </div>
     </div>
