@@ -5,6 +5,7 @@ import {
 	type BlobRef,
 	type AtpSessionData,
 	type AtpSessionEvent,
+	type Facet,
 } from "@atproto/api";
 import type { Entity } from "megalodon";
 import {
@@ -25,6 +26,9 @@ import { ResponseType, type XRPCError } from "@atproto/xrpc";
 import type { InferSelectModel } from "drizzle-orm";
 import type { mastodonInstance, user as User } from "../drizzle/schema";
 import logger from "./logger";
+import { isLink as isFacetLink } from "@atproto/api/dist/client/types/app/bsky/richtext/facet";
+import ogs from "open-graph-scraper";
+import type { External } from "@atproto/api/dist/client/types/app/bsky/embed/external";
 
 export async function intiBlueskyAgent(
 	url: string,
@@ -150,6 +154,92 @@ export async function generateBlueskyPostsFromMastodon(
 	return posts;
 }
 
+async function handleBskyImageBlob(
+	url: string,
+	client: AtpAgent,
+): Promise<BlobRef | undefined> {
+	const { arrayBuffer, mimeType } = await fetchImageToBytes(url);
+
+	if (!mimeType) return undefined;
+
+	let arr = new Uint8Array(arrayBuffer);
+
+	if (arr.length > 1000000) {
+		const result = await sharp(arrayBuffer)
+			.resize({ height: 1080 })
+			.jpeg({
+				quality: 40,
+			})
+			.toBuffer();
+
+		arr = new Uint8Array(result.buffer);
+	}
+	const res = await client.uploadBlob(arr, {
+		encoding: mimeType,
+	});
+
+	if (res.success) return res.data.blob;
+	return undefined;
+}
+
+async function getPostExternalEmbed(
+	links: string[],
+	client: AtpAgent,
+): Promise<External | undefined> {
+	for (const link of links) {
+		const { result } = await ogs({
+			url: link,
+		});
+
+		if (result.requestUrl && result.ogTitle && result.ogDescription) {
+			if (result.ogImage?.[0].url) {
+				const url = result.ogImage[0].url.startsWith("/")
+					? `${result.requestUrl}${result.ogImage[0].url.slice(1)}`
+					: result.ogImage[0].url;
+
+				console.log(url);
+
+				const imageBlob = await handleBskyImageBlob(url, client);
+
+				if (!imageBlob) {
+					return {
+						uri: result.requestUrl,
+						title: result.ogTitle,
+						description: result.ogDescription,
+					};
+				}
+				return {
+					uri: result.requestUrl,
+					title: result.ogTitle,
+					description: result.ogDescription,
+					thumb: imageBlob,
+				};
+			}
+			return {
+				uri: result.requestUrl,
+				title: result.ogTitle,
+				description: result.ogDescription,
+			};
+		}
+	}
+
+	return undefined;
+}
+
+async function getPostExternalLinks(facets: Facet[]) {
+	const lgLinks = [];
+
+	for (const facet of facets) {
+		for (const facetFeature of facet.features) {
+			if (isFacetLink(facetFeature)) {
+				lgLinks.push(facetFeature.uri);
+			}
+		}
+	}
+
+	return lgLinks;
+}
+
 export async function generateBlueskyPostFromMastodon(
 	content: string,
 	client: AtpAgent,
@@ -161,6 +251,8 @@ export async function generateBlueskyPostFromMastodon(
 
 	await rt.detectFacets(client);
 
+	const ogLinks = rt.facets ? await getPostExternalLinks(rt.facets) : [];
+
 	let post: AppBskyFeedPost.Record = {
 		$type: "app.bsky.feed.post",
 		text: rt.text,
@@ -168,7 +260,7 @@ export async function generateBlueskyPostFromMastodon(
 		createdAt: new Date().toISOString(),
 	};
 
-	if (media_attachments) {
+	if (media_attachments && media_attachments.length > 0) {
 		const media_attachmentsFiltered = media_attachments.filter(
 			(media) => media.type === "image",
 		);
@@ -183,25 +275,9 @@ export async function generateBlueskyPostFromMastodon(
 				};
 			}[] = [];
 			for (const media of media_attachmentsFiltered) {
-				const { arrayBuffer, mimeType } = await fetchImageToBytes(media.url);
-				let arr = new Uint8Array(arrayBuffer);
+				const imageBlob = await handleBskyImageBlob(media.url, client);
 
-				if (arr.length > 1000000) {
-					const result = await sharp(arrayBuffer)
-						.resize({ height: 1080 })
-						.jpeg({
-							quality: 40,
-						})
-						.toBuffer();
-
-					arr = new Uint8Array(result.buffer);
-				}
-
-				if (!mimeType) continue;
-
-				const res = await client.uploadBlob(arr, {
-					encoding: mimeType,
-				});
+				if (!imageBlob) continue;
 
 				let width = 1200;
 				let height = 1200;
@@ -216,7 +292,7 @@ export async function generateBlueskyPostFromMastodon(
 				}
 
 				images.push({
-					image: res.data.blob,
+					image: imageBlob,
 					alt: media.description ? media.description : "",
 					aspectRatio: {
 						width: width,
@@ -233,11 +309,24 @@ export async function generateBlueskyPostFromMastodon(
 				},
 			};
 		}
+	} else if (ogLinks.length > 0) {
+		const ogEmbed = await getPostExternalEmbed(ogLinks, client);
+
+		if (ogEmbed) {
+			post = {
+				...post,
+				embed: {
+					$type: "app.bsky.embed.external",
+					external: ogEmbed,
+				},
+			};
+		}
 	}
 
 	if (AppBskyFeedPost.isRecord(post)) {
 		const res = AppBskyFeedPost.validateRecord(post);
 		if (res.success) {
+			console.log(post);
 			return post;
 		}
 	}
