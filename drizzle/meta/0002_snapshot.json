@@ -1,0 +1,333 @@
+{
+	"id": "e21f8556-1072-4726-9129-2d848923dbed",
+	"prevId": "14af269f-036c-48d4-a61e-55f2a6f8b33d",
+	"version": "7",
+	"dialect": "postgresql",
+	"tables": {
+		"public.MastodonInstance": {
+			"name": "MastodonInstance",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"urlEncoded": {
+					"name": "urlEncoded",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"url": {
+					"name": "url",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"applicationId": {
+					"name": "applicationId",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"applicationSecret": {
+					"name": "applicationSecret",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"createdAt": {
+					"name": "createdAt",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"updatedAt": {
+					"name": "updatedAt",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				}
+			},
+			"indexes": {
+				"MastodonInstance_urlEncoded_key": {
+					"name": "MastodonInstance_urlEncoded_key",
+					"columns": [
+						{
+							"expression": "urlEncoded",
+							"isExpression": false,
+							"asc": true,
+							"nulls": "last",
+							"opclass": "text_ops"
+						}
+					],
+					"isUnique": true,
+					"concurrently": false,
+					"method": "btree",
+					"with": {}
+				},
+				"MastodonInstance_url_key": {
+					"name": "MastodonInstance_url_key",
+					"columns": [
+						{
+							"expression": "url",
+							"isExpression": false,
+							"asc": true,
+							"nulls": "last",
+							"opclass": "text_ops"
+						}
+					],
+					"isUnique": true,
+					"concurrently": false,
+					"method": "btree",
+					"with": {}
+				}
+			},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		},
+		"public.Repost": {
+			"name": "Repost",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"createdAt": {
+					"name": "createdAt",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": false,
+					"default": "now()"
+				},
+				"userId": {
+					"name": "userId",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"tootId": {
+					"name": "tootId",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"bsRootUri": {
+					"name": "bsRootUri",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"bsRootCid": {
+					"name": "bsRootCid",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"bsParentUri": {
+					"name": "bsParentUri",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"bsParentCid": {
+					"name": "bsParentCid",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"Repost_userId_fkey": {
+					"name": "Repost_userId_fkey",
+					"tableFrom": "Repost",
+					"tableTo": "User",
+					"columnsFrom": ["userId"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "cascade"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		},
+		"public.User": {
+			"name": "User",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"createdAt": {
+					"name": "createdAt",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"updatedAt": {
+					"name": "updatedAt",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"lastTootTime": {
+					"name": "lastTootTime",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"name": {
+					"name": "name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"mastodonUid": {
+					"name": "mastodonUid",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"mastodonToken": {
+					"name": "mastodonToken",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"blueskyToken": {
+					"name": "blueskyToken",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"blueskyHandle": {
+					"name": "blueskyHandle",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"blueskySession": {
+					"name": "blueskySession",
+					"type": "jsonb",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"blueskySessionEvent": {
+					"name": "blueskySessionEvent",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"mastodonInstanceId": {
+					"name": "mastodonInstanceId",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"blueskyPDS": {
+					"name": "blueskyPDS",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"default": "'https://bsky.social'"
+				},
+				"relayCriteria": {
+					"name": "relayCriteria",
+					"type": "RelayCriteria",
+					"typeSchema": "public",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "'all'"
+				},
+				"relayMarker": {
+					"name": "relayMarker",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "''"
+				},
+				"relayVisibility": {
+					"name": "relayVisibility",
+					"type": "StatusVisibility[]",
+					"primaryKey": false,
+					"notNull": false,
+					"default": "'{\"public\"}'"
+				},
+				"relayUnlistedAnswers": {
+					"name": "relayUnlistedAnswers",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"default": true
+				},
+				"relayPostNumbering": {
+					"name": "relayPostNumbering",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"default": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"User_mastodonInstanceId_fkey": {
+					"name": "User_mastodonInstanceId_fkey",
+					"tableFrom": "User",
+					"tableTo": "MastodonInstance",
+					"columnsFrom": ["mastodonInstanceId"],
+					"columnsTo": ["id"],
+					"onDelete": "restrict",
+					"onUpdate": "cascade"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		}
+	},
+	"enums": {
+		"public.RelayCriteria": {
+			"name": "RelayCriteria",
+			"schema": "public",
+			"values": ["all", "favedBySelf", "containsMarker", "notContainsMarker"]
+		},
+		"public.StatusVisibility": {
+			"name": "StatusVisibility",
+			"schema": "public",
+			"values": ["public", "unlisted", "private", "direct"]
+		}
+	},
+	"schemas": {},
+	"sequences": {},
+	"roles": {},
+	"policies": {},
+	"views": {},
+	"_meta": {
+		"columns": {},
+		"schemas": {},
+		"tables": {}
+	}
+}

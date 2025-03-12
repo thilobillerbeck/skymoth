@@ -1,0 +1,1 @@
+ALTER TABLE "User" ADD COLUMN "relayPostNumbering" boolean DEFAULT false NOT NULL;

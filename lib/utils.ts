@@ -64,13 +64,25 @@ export const authenticateJWT = async (
 	}
 };
 
-export function splitTextBluesky(text: string, spoiler: string): string[] {
+export function splitTextBluesky(
+	text: string,
+	spoiler: string,
+	numbering: boolean,
+	numberingScale = 1,
+): string[] {
+	const numberingLength = numbering ? 4 + numberingScale * 2 : 0;
+
 	let res = [];
 	let letterCount = 0;
 	let chunks = [];
+
+	if (text.length <= 300 - spoiler.length) {
+		return [`${spoiler}${text}`];
+	}
+
 	for (const word of text.split(" ")) {
 		letterCount += word.length + 1; // +1 for space
-		if (letterCount >= 300 - spoiler.length) {
+		if (letterCount >= 300 - numberingLength - spoiler.length) {
 			res.push(chunks.join(" "));
 			chunks = [];
 			letterCount = word.length;
@@ -78,7 +90,9 @@ export function splitTextBluesky(text: string, spoiler: string): string[] {
 		chunks.push(word);
 	}
 	res.push(chunks.join(" "));
-	res = res.map((r) => `${spoiler}${r}`);
+	res = res.map(
+		(r, i) => `${spoiler}${r}${numbering ? ` [${i + 1}/${res.length}]` : ""}`,
+	);
 	return res;
 }
 

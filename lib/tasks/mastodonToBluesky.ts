@@ -101,6 +101,7 @@ async function nastodonToBluesky(
 			const postsBsky = await generateBlueskyPostsFromMastodon(
 				post,
 				blueskyClient,
+				user.relayPostNumbering,
 			);
 
 			if (postsBsky.length === 0) continue;

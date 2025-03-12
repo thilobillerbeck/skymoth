@@ -15,6 +15,13 @@
 			"when": 1741784477510,
 			"tag": "0001_mature_mystique",
 			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "7",
+			"when": 1741797412632,
+			"tag": "0002_new_doctor_faustus",
+			"breakpoints": true
 		}
 	]
 }

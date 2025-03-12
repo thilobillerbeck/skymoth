@@ -121,6 +121,20 @@
                     </fieldset>
                 </div>
 
+                <div class="space-y-2">
+                    <p class="mt-4 font-bold">
+                        Post numbering
+                    </p>
+                    <p class="mb-4">
+                        Whether to number a toot that has been split into multiple posts. e.g. [x/Y] (Does not work for threads)
+                    </p>
+                    <input type="checkbox" name="relayPostNumbering" id="relayPostNumbering" class="checkbox checkbox-primary mr-2" {% if relayPostNumbering %}checked{% endif %}/>
+                    <span>
+                        Attach post number to relayed toots
+                    </span>
+                </div>
+
+
                 <div class="card-actions justify-end mt-4">
                     <input class="btn btn-outline btn-success" type="submit" value="Update" />
                 </div>

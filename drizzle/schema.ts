@@ -100,6 +100,7 @@ export const user = pgTable(
 		relayMarker: text().default("").notNull(),
 		relayVisibility: statusVisibility().array().default(["public"]),
 		relayUnlistedAnswers: boolean().default(true).notNull(),
+		relayPostNumbering: boolean().default(false).notNull(),
 	},
 	(table) => [
 		foreignKey({
