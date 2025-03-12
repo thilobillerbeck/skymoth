@@ -86,7 +86,7 @@ importers:
         version: 5.1.0
       '@tailwindcss/typography':
         specifier: ^0.5.16
-        version: 0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.7.3)))
+        version: 0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.8.2)))
       '@types/html-to-text':
         specifier: ^9.0.4
         version: 9.0.4
@@ -116,16 +116,16 @@ importers:
         version: 11.0.0(jiti@1.21.6)(postcss@8.5.3)
       semantic-release:
         specifier: ^24.2.3
-        version: 24.2.3(typescript@5.7.3)
+        version: 24.2.3(typescript@5.8.2)
       tailwindcss:
         specifier: ^3.4.17
-        version: 3.4.17(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.7.3))
+        version: 3.4.17(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.8.2))
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@22.13.10)(typescript@5.7.3)
+        version: 10.9.2(@types/node@22.13.10)(typescript@5.8.2)
       typescript:
-        specifier: ^5.7.3
-        version: 5.7.3
+        specifier: ^5.8.2
+        version: 5.8.2
 
 packages:
 
@@ -3223,8 +3223,8 @@ packages:
     resolution: {integrity: sha512-6kSc32kT0rbwxD6QL1CYe8IqdzN/J/ILMrNK+HMQCKH3insCDRY/3ITb0vcBss0a3t72fzh2YSzj8ko1HgwT3g==}
     engines: {node: '>=16'}
 
-  typescript@5.7.3:
-    resolution: {integrity: sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==}
+  typescript@5.8.2:
+    resolution: {integrity: sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -4211,7 +4211,7 @@ snapshots:
       domhandler: 5.0.3
       selderee: 0.11.0
 
-  '@semantic-release/commit-analyzer@13.0.1(semantic-release@24.2.3(typescript@5.7.3))':
+  '@semantic-release/commit-analyzer@13.0.1(semantic-release@24.2.3(typescript@5.8.2))':
     dependencies:
       conventional-changelog-angular: 8.0.0
       conventional-changelog-writer: 8.0.0
@@ -4221,7 +4221,7 @@ snapshots:
       import-from-esm: 2.0.0
       lodash-es: 4.17.21
       micromatch: 4.0.8
-      semantic-release: 24.2.3(typescript@5.7.3)
+      semantic-release: 24.2.3(typescript@5.8.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -4229,7 +4229,7 @@ snapshots:
 
   '@semantic-release/error@4.0.0': {}
 
-  '@semantic-release/github@11.0.1(semantic-release@24.2.3(typescript@5.7.3))':
+  '@semantic-release/github@11.0.1(semantic-release@24.2.3(typescript@5.8.2))':
     dependencies:
       '@octokit/core': 6.1.3
       '@octokit/plugin-paginate-rest': 11.4.0(@octokit/core@6.1.3)
@@ -4246,12 +4246,12 @@ snapshots:
       lodash-es: 4.17.21
       mime: 4.0.6
       p-filter: 4.1.0
-      semantic-release: 24.2.3(typescript@5.7.3)
+      semantic-release: 24.2.3(typescript@5.8.2)
       url-join: 5.0.0
     transitivePeerDependencies:
       - supports-color
 
-  '@semantic-release/npm@12.0.1(semantic-release@24.2.3(typescript@5.7.3))':
+  '@semantic-release/npm@12.0.1(semantic-release@24.2.3(typescript@5.8.2))':
     dependencies:
       '@semantic-release/error': 4.0.0
       aggregate-error: 5.0.0
@@ -4264,11 +4264,11 @@ snapshots:
       rc: 1.2.8
       read-pkg: 9.0.1
       registry-auth-token: 5.1.0
-      semantic-release: 24.2.3(typescript@5.7.3)
+      semantic-release: 24.2.3(typescript@5.8.2)
       semver: 7.7.1
       tempy: 3.1.0
 
-  '@semantic-release/release-notes-generator@14.0.3(semantic-release@24.2.3(typescript@5.7.3))':
+  '@semantic-release/release-notes-generator@14.0.3(semantic-release@24.2.3(typescript@5.8.2))':
     dependencies:
       conventional-changelog-angular: 8.0.0
       conventional-changelog-writer: 8.0.0
@@ -4280,7 +4280,7 @@ snapshots:
       into-stream: 7.0.0
       lodash-es: 4.17.21
       read-package-up: 11.0.0
-      semantic-release: 24.2.3(typescript@5.7.3)
+      semantic-release: 24.2.3(typescript@5.8.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -4354,13 +4354,13 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@tailwindcss/typography@0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.7.3)))':
+  '@tailwindcss/typography@0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.8.2)))':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.17(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.7.3))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.8.2))
 
   '@tsconfig/node10@1.0.11': {}
 
@@ -4703,14 +4703,14 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
-  cosmiconfig@9.0.0(typescript@5.7.3):
+  cosmiconfig@9.0.0(typescript@5.8.2):
     dependencies:
       env-paths: 2.2.1
       import-fresh: 3.3.1
       js-yaml: 4.1.0
       parse-json: 5.2.0
     optionalDependencies:
-      typescript: 5.7.3
+      typescript: 5.8.2
 
   create-require@1.1.1: {}
 
@@ -5871,13 +5871,13 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.5.3
 
-  postcss-load-config@4.0.2(postcss@8.5.3)(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.7.3)):
+  postcss-load-config@4.0.2(postcss@8.5.3)(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.8.2)):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.4.1
     optionalDependencies:
       postcss: 8.5.3
-      ts-node: 10.9.2(@types/node@22.13.10)(typescript@5.7.3)
+      ts-node: 10.9.2(@types/node@22.13.10)(typescript@5.8.2)
 
   postcss-load-config@5.0.3(jiti@1.21.6)(postcss@8.5.3):
     dependencies:
@@ -6073,15 +6073,15 @@ snapshots:
     dependencies:
       parseley: 0.12.1
 
-  semantic-release@24.2.3(typescript@5.7.3):
+  semantic-release@24.2.3(typescript@5.8.2):
     dependencies:
-      '@semantic-release/commit-analyzer': 13.0.1(semantic-release@24.2.3(typescript@5.7.3))
+      '@semantic-release/commit-analyzer': 13.0.1(semantic-release@24.2.3(typescript@5.8.2))
       '@semantic-release/error': 4.0.0
-      '@semantic-release/github': 11.0.1(semantic-release@24.2.3(typescript@5.7.3))
-      '@semantic-release/npm': 12.0.1(semantic-release@24.2.3(typescript@5.7.3))
-      '@semantic-release/release-notes-generator': 14.0.3(semantic-release@24.2.3(typescript@5.7.3))
+      '@semantic-release/github': 11.0.1(semantic-release@24.2.3(typescript@5.8.2))
+      '@semantic-release/npm': 12.0.1(semantic-release@24.2.3(typescript@5.8.2))
+      '@semantic-release/release-notes-generator': 14.0.3(semantic-release@24.2.3(typescript@5.8.2))
       aggregate-error: 5.0.0
-      cosmiconfig: 9.0.0(typescript@5.7.3)
+      cosmiconfig: 9.0.0(typescript@5.8.2)
       debug: 4.4.0
       env-ci: 11.1.0
       execa: 9.5.2
@@ -6302,7 +6302,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.7.3)):
+  tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.8.2)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -6321,7 +6321,7 @@ snapshots:
       postcss: 8.5.3
       postcss-import: 15.1.0(postcss@8.5.3)
       postcss-js: 4.0.1(postcss@8.5.3)
-      postcss-load-config: 4.0.2(postcss@8.5.3)(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.7.3))
+      postcss-load-config: 4.0.2(postcss@8.5.3)(ts-node@10.9.2(@types/node@22.13.10)(typescript@5.8.2))
       postcss-nested: 6.2.0(postcss@8.5.3)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
@@ -6383,7 +6383,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-node@10.9.2(@types/node@22.13.10)(typescript@5.7.3):
+  ts-node@10.9.2(@types/node@22.13.10)(typescript@5.8.2):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -6397,7 +6397,7 @@ snapshots:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 5.7.3
+      typescript: 5.8.2
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
@@ -6411,7 +6411,7 @@ snapshots:
 
   type-fest@4.34.1: {}
 
-  typescript@5.7.3: {}
+  typescript@5.8.2: {}
 
   uglify-js@3.19.3:
     optional: true
