@@ -68,8 +68,8 @@ export function splitTextBluesky(
 	text: string,
 	spoiler: string,
 	numbering: boolean,
-	numberingScale = 1,
 ): string[] {
+	const numberingScale = Math.ceil(text.length / 3000);
 	const numberingLength = numbering ? 4 + numberingScale * 2 : 0;
 
 	let res = [];

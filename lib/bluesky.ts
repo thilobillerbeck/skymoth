@@ -198,8 +198,6 @@ async function getPostExternalEmbed(
 					? `${result.requestUrl}${result.ogImage[0].url.slice(1)}`
 					: result.ogImage[0].url;
 
-				console.log(url);
-
 				const imageBlob = await handleBskyImageBlob(url, client);
 
 				if (!imageBlob) {
@@ -327,7 +325,6 @@ export async function generateBlueskyPostFromMastodon(
 	if (AppBskyFeedPost.isRecord(post)) {
 		const res = AppBskyFeedPost.validateRecord(post);
 		if (res.success) {
-			console.log(post);
 			return post;
 		}
 	}
