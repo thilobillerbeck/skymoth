@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@atproto/api':
-        specifier: ^0.14.5
-        version: 0.14.5
+        specifier: ^0.14.9
+        version: 0.14.9
       '@atproto/xrpc':
         specifier: ^0.6.9
         version: 0.6.9
@@ -145,8 +145,8 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@atproto/api@0.14.5':
-    resolution: {integrity: sha512-UnMOJWtZepMhWRnpL7VASp9R2lPLFjQpSSIOOBIqqhprTUot1aIxyFmz1idI58bSl6SZVA7BWRH+i8XyXSKlNg==}
+  '@atproto/api@0.14.9':
+    resolution: {integrity: sha512-9S7Vl6gK8hmy0+Gw5AWriUsQfQYZxwW7yTK5UdPPGlmjvQP49YeSLrsxB1ZkTyrlLSG2tpYrGsN4vco6KOORAQ==}
 
   '@atproto/common-web@0.4.0':
     resolution: {integrity: sha512-ZYL0P9myHybNgwh/hBY0HaBzqiLR1B5/ie5bJpLQAg0whRzNA28t8/nU2vh99tbsWcAF0LOD29M8++LyENJLNQ==}
@@ -154,8 +154,14 @@ packages:
   '@atproto/lexicon@0.4.7':
     resolution: {integrity: sha512-/x6h3tAiDNzSi4eXtC8ke65B7UzsagtlGRHmUD95698x5lBRpDnpizj0fZWTZVYed5qnOmz/ZEue+v3wDmO61g==}
 
-  '@atproto/syntax@0.3.3':
-    resolution: {integrity: sha512-F1LZweesNYdBbZBXVa72N/cSvchG8Q1tG4/209ZXbIuM3FwQtkgn+zgmmV4P4ORmhOeXPBNXvMBpcqiwx/gEQQ==}
+  '@atproto/lexicon@0.4.8':
+    resolution: {integrity: sha512-NPhu4MNHqft4muvHvcU0BrkWoEpTI+OmbQzvZzzRpw54MW3PfrQ4TPEpAfPOrWugPB9y4mD+l8OMN1c9eOGWMQ==}
+
+  '@atproto/syntax@0.3.4':
+    resolution: {integrity: sha512-8CNmi5DipOLaVeSMPggMe7FCksVag0aO6XZy9WflbduTKM4dFZVCs4686UeMLfGRXX+X966XgwECHoLYrovMMg==}
+
+  '@atproto/xrpc@0.6.10':
+    resolution: {integrity: sha512-ClMiO+oAl3KrFe7sdo8Wzw81yV7EpEradZLJnYilPq4s7uF0by1jHGI/LarHBKHnE5RpaFpBC/5XD/ZzgmvAeg==}
 
   '@atproto/xrpc@0.6.9':
     resolution: {integrity: sha512-vQGA7++DYMNaHx3C7vEjT+2X6hYYLG7JNbBnDLWu0km1/1KYXgRkAz4h+FfYqg1mvzvIorHU7DAs5wevkJDDlw==}
@@ -3181,8 +3187,8 @@ packages:
     resolution: {integrity: sha512-75voc/9G4rDIJleOo4jPvN4/YC4GRZrY8yy1uU4lwrB3XEQbWve8zXoO5No4eFrGcTAMYyoY67p8jRQdtA1HbA==}
     engines: {node: '>=12'}
 
-  tlds@1.255.0:
-    resolution: {integrity: sha512-tcwMRIioTcF/FcxLev8MJWxCp+GUALRhFEqbDoZrnowmKSGqPrl5pqS+Sut2m8BgJ6S4FExCSSpGffZ0Tks6Aw==}
+  tlds@1.256.0:
+    resolution: {integrity: sha512-ZmyVB9DAw+FFTmLElGYJgdZFsKLYd/I59Bg9NHkCGPwAbVZNRilFWDMAdX8UG+bHuv7kfursd5XGqo/9wi26lA==}
     hasBin: true
 
   to-regex-range@5.0.1:
@@ -3408,15 +3414,15 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@atproto/api@0.14.5':
+  '@atproto/api@0.14.9':
     dependencies:
       '@atproto/common-web': 0.4.0
-      '@atproto/lexicon': 0.4.7
-      '@atproto/syntax': 0.3.3
-      '@atproto/xrpc': 0.6.9
+      '@atproto/lexicon': 0.4.8
+      '@atproto/syntax': 0.3.4
+      '@atproto/xrpc': 0.6.10
       await-lock: 2.2.2
       multiformats: 9.9.0
-      tlds: 1.255.0
+      tlds: 1.256.0
       zod: 3.24.2
 
   '@atproto/common-web@0.4.0':
@@ -3429,12 +3435,25 @@ snapshots:
   '@atproto/lexicon@0.4.7':
     dependencies:
       '@atproto/common-web': 0.4.0
-      '@atproto/syntax': 0.3.3
+      '@atproto/syntax': 0.3.4
       iso-datestring-validator: 2.2.2
       multiformats: 9.9.0
       zod: 3.24.2
 
-  '@atproto/syntax@0.3.3': {}
+  '@atproto/lexicon@0.4.8':
+    dependencies:
+      '@atproto/common-web': 0.4.0
+      '@atproto/syntax': 0.3.4
+      iso-datestring-validator: 2.2.2
+      multiformats: 9.9.0
+      zod: 3.24.2
+
+  '@atproto/syntax@0.3.4': {}
+
+  '@atproto/xrpc@0.6.10':
+    dependencies:
+      '@atproto/lexicon': 0.4.8
+      zod: 3.24.2
 
   '@atproto/xrpc@0.6.9':
     dependencies:
@@ -6421,7 +6440,7 @@ snapshots:
     dependencies:
       convert-hrtime: 5.0.0
 
-  tlds@1.255.0: {}
+  tlds@1.256.0: {}
 
   to-regex-range@5.0.1:
     dependencies:
