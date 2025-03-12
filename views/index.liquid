@@ -26,8 +26,8 @@
             </h2>
             <p>
                 To get started, you'll need to enter your Bluesky handle and token. You can find these by going to your
-                settings and create an <a href="https://bsky.app/settings/app-passwords" target="_blank" rel="noopener noreferrer"
-                    class="text-secondary underline" >app password</a>.
+                settings and create an <a href="https://bsky.app/settings/app-passwords" target="_blank"
+                    rel="noopener noreferrer" class="text-secondary underline">app password</a>.
             </p>
             <form action="/settings/blueskyCreds" method="post">
                 <fieldset class="fieldset w-full">
@@ -35,18 +35,22 @@
                     <input value="{{ blueskyPDS }}" placeholder="https://bsky.social" type="text" name="blueskyPDS"
                         id="blueskyPDS" required class="input w-full" />
 
-                        <label for="blueskyHandle" class="fieldset-label">
-                            Bluesky Handle
-                        </label>
+                    <label for="blueskyHandle" class="fieldset-label">
+                        Bluesky Handle
+                    </label>
+                    <label class="input">
+                        <span class="label">@</span>
                         <input value="{{ blueskyHandle }}" placeholder="user.example" type="text" name="blueskyHandle"
-                            id="blueskyHandle" required class="input w-full" />
-    
-                            <label for="blueskyToken" class="fieldset-label">
-                                Bluesky App Password
-                            </label>
-                            <input type="password" placeholder="***********" type="text"
-                                name="blueskyToken" id="blueskyToken" required class="input w-full" />
-        
+                            id="blueskyHandle" />
+                    </label>
+
+
+                    <label for="blueskyToken" class="fieldset-label">
+                        Bluesky App Password
+                    </label>
+                    <input type="password" placeholder="***********" type="text" name="blueskyToken" id="blueskyToken"
+                        required class="input w-full" />
+
                 </fieldset>
                 <div class="card-actions justify-end mt-4">
                     <input class="btn btn-outline btn-success" type="submit" value="Update" />
@@ -57,82 +61,93 @@
     <div class="card w-full mx-8 md:mx-0 md:w-1/3 bg-base-200 shadow-xl">
         <div class="card-body">
             <h2 class="card-title">Post Settings</h2>
-            <form action="/settings/repost" method="post">
-                <div class="space-y-2">
-                    <p class="mt-4 font-bold">
-                        Toot visibility
-                    </p>
-                    <p class="mb-4">
-                        Choose the visibility of the toots that Skymoth will repost.
-                    </p>
+            <form action="/settings/repost" method="post" class="flex flex-col gap-2">
+                <fieldset class="fieldset w-full">
+                    <legend class="fieldset-legend">Toot visibility</legend>
                     <div class="inline-flex gap-4 w-full">
-                        <label class="flex items-center">
-                            <input type="checkbox" name="relayVisibility" value="public" class="checkbox checkbox-primary mr-2" {% if relayVisibility contains 'public' %}checked{% endif %}/>
+                        <label class="fieldset-label">
+                            <input type="checkbox" name="relayVisibility" value="public"
+                                class="checkbox checkbox-primary" {% if relayVisibility contains 'public' %}checked{%
+                                endif %} />
                             <span>Public</span>
                         </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="relayVisibility" value="unlisted" class="checkbox checkbox-primary mr-2" {% if relayVisibility contains 'unlisted' %}checked{% endif %}/>
+                        <label class="fieldset-label">
+                            <input type="checkbox" name="relayVisibility" value="unlisted"
+                                class="checkbox checkbox-primary" {% if relayVisibility contains 'unlisted' %}checked{%
+                                endif %} />
                             <span>Unlisted</span>
                         </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="relayVisibility" value="private" class="checkbox checkbox-primary mr-2" {% if relayVisibility contains 'private' %}checked{% endif %}/>
+                        <label class="fieldset-label">
+                            <input type="checkbox" name="relayVisibility" value="private"
+                                class="checkbox checkbox-primary" {% if relayVisibility contains 'private' %}checked{%
+                                endif %} />
                             <span>Private</span>
                         </label>
                     </div>
-                    <p class="my-4">
-                        The following setting accounts for clients that create threads as unlisted replies to a public toot. This setting ignores your toot visibility settings.
-                    </p>
-                    <label class="flex items-center">
-                        <input type="checkbox" name="relayUnlistedAnswers" id="relayUnlistedAnswers" class="checkbox checkbox-primary mr-2" {% if relayUnlistedAnswers %}checked{% endif %}/>
-                        <span>
-                            Repost unlisted answers to public toots
-                        </span>
+                    <p class="fieldset-label">Choose the visibility of the toots that Skymoth will repost.</p>
+                </fieldset>
+
+                <fieldset class="fieldset w-full">
+                    <legend class="fieldset-legend">Thread helper</legend>
+
+                    <label class="fieldset-label">
+                        <input type="checkbox" name="relayUnlistedAnswers" id="relayUnlistedAnswers"
+                            class="checkbox checkbox-primary" {% if relayUnlistedAnswers %}checked{% endif %} />
+                        Relay unlisted replies to public toots
                     </label>
-                </div>
-                <div class="space-y-2">
-                    <p class="mt-4 font-bold">
-                        Toot markers
+                    <p class="fieldset-label"> This setting accounts for clients that create threads as unlisted replies
+                        to a public toot. This setting ignores your toot visibility settings.
                     </p>
-                    <p class="mb-4">
+                </fieldset>
+
+                <fieldset class="fieldset w-full">
+                    <legend class="fieldset-legend">Toot markers</legend>
+                    <label class="fieldset-label">
+                        <input type="radio" name="relayCriteria" value="all" class="radio radio-primary" {% if
+                            relayCriteria=='all' %}checked{% endif %} />
+                        None
+                    </label>
+                    <label class="fieldset-label">
+                        <input type="radio" name="relayCriteria" value="favedBySelf" class="radio radio-primary" {% if
+                            relayCriteria=='favedBySelf' %}checked{% endif %} />
+                        Posts which the user ⭐'d
+                    </label>
+                    <label class="fieldset-label">
+                        <input type="radio" name="relayCriteria" value="containsMarker" class="radio radio-primary" {%
+                            if relayCriteria=='containsMarker' %}checked{% endif %} />
+                        Posts which include the marker below
+                    </label>
+                    <label class="fieldset-label">
+                        <input type="radio" name="relayCriteria" value="notContainsMarker" class="radio radio-primary"
+                            {% if relayCriteria=='notContainsMarker' %}checked{% endif %} />
+                        Posts which do not include the marker below
+                    </label>
+                    <p class="fieldset-label">
                         Choose if Skymoth should relay toots based on the presence of a marker.
                     </p>
-                    <label class="flex items-center">
-                        <input type="radio" name="relayCriteria" value="all" class="radio radio-primary mr-2" {% if relayCriteria == 'all' %}checked{% endif %}/>
-                        <span>None</span>
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="relayCriteria" value="favedBySelf" class="radio radio-primary mr-2" {% if relayCriteria == 'favedBySelf' %}checked{% endif %}/>
-                        <span>Posts which the user ⭐'d</span>
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="relayCriteria" value="containsMarker" class="radio radio-primary mr-2" {% if relayCriteria == 'containsMarker' %}checked{% endif %}/>
-                        <span>Posts which include the marker below</span>
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="relayCriteria" value="notContainsMarker" class="radio radio-primary mr-2" {% if relayCriteria == 'notContainsMarker' %}checked{% endif %}/>
-                        <span>Posts which do not include the marker below</span>
-                    </label>
-                    <fieldset class="fieldset w-full">
-                        <label class="fieldset-label">
-                            Marker for relay
-                        </label>
-                        <input type="text" name="relayMarker" placeholder="Enter a marker, eg: #xp" class="input w-full" id="relayMarker" value="{{ relayMarker }}"/>
-                        <p class="fieldset-label">This text can be any string contained in the toot, for example '#xp' (for crosspost) or 'cc:bluesky'.</p>
-                    </fieldset>
-                </div>
+                </fieldset>
 
-                <div class="space-y-2">
-                    <p class="mt-4 font-bold">
-                        Post numbering
-                    </p>
-                    <p class="mb-4">
-                        Whether to number a toot that has been split into multiple posts. e.g. [x/Y] (Does not work for threads)
-                    </p>
-                    <input type="checkbox" name="relayPostNumbering" id="relayPostNumbering" class="checkbox checkbox-primary mr-2" {% if relayPostNumbering %}checked{% endif %}/>
-                    <span>
+                <fieldset class="fieldset w-full">
+                    <legend class="fieldset-legend">Marker for relay</legend>
+                    <input type="text" name="relayMarker" placeholder="Enter a marker, eg: #xp" class="input w-full"
+                        id="relayMarker" value="{{ relayMarker }}" />
+                    <p class="fieldset-label">This text can be any string contained in the toot, for example '#xp' (for
+                        crosspost) or 'cc:bluesky'.</p>
+                </fieldset>
+
+                <fieldset class="fieldset w-full">
+                    <legend class="fieldset-legend">Post numbering</legend>
+                    <label class="fieldset-label">
+                        <input type="checkbox" name="relayPostNumbering" id="relayPostNumbering"
+                            class="checkbox checkbox-primary" {% if relayPostNumbering %}checked{% endif %} />
                         Attach post number to relayed toots
-                    </span>
-                </div>
+                    </label>
+
+                    <p class="fieldset-label">
+                        Whether to number a toot that has been split into multiple posts. e.g. [x/Y] (Does not work for
+                        threads)
+                    </p>
+                </fieldset>
 
 
                 <div class="card-actions justify-end mt-4">
@@ -149,7 +164,8 @@
                 <a class="btn btn-warning btn-outline" href="/logout">Logout</a>
             </div>
             <p>
-                Please be aware that due to security implications, the download will not include any authentication tokens
+                Please be aware that due to security implications, the download will not include any authentication
+                tokens
             </p>
             <h2 class="font-bold">Delete your account</h2>
             <p>
