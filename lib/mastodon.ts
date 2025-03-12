@@ -52,6 +52,7 @@ export async function getNewToots(
 	lastTootTime: Date,
 	constraint: Constraint,
 	relayVisibility: InferInsertModel<typeof user>["relayVisibility"],
+	relayUnlistedAnswers: InferInsertModel<typeof user>["relayUnlistedAnswers"],
 ) {
 	const statuses = await client.getAccountStatuses(uid, {
 		limit: 50,
@@ -86,14 +87,19 @@ export async function getNewToots(
 			return false;
 		}
 
+		let isThread = false;
+
 		// due to the way some mastodon clients handle threads, we need to check if the status may be a thread
-		const isThread = verifyThread(
-			uid,
-			status,
-			statuses_data,
-			relayVisibility,
-			true,
-		);
+		// if the user disabled this feature, we can skip this check
+		if (relayUnlistedAnswers) {
+			isThread = verifyThread(
+				uid,
+				status,
+				statuses_data,
+				relayVisibility,
+				true,
+			);
+		}
 
 		return newPost && (isInVisibilityScope || isThread) && isNotMention;
 	});

@@ -50,6 +50,7 @@ async function nastodonToBluesky(
 		user.lastTootTime,
 		constraint,
 		user.relayVisibility,
+		user.relayUnlistedAnswers,
 	);
 
 	if (posts.length === 0) {

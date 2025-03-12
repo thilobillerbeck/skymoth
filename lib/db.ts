@@ -314,6 +314,7 @@ export async function updateRelaySettings(
 	relayCriteria: InferInsertModel<typeof schema.user>["relayCriteria"],
 	relayMarker: string,
 	relayVisibility: InferInsertModel<typeof schema.user>["relayVisibility"],
+	relayUnlistedAnswers: boolean,
 ) {
 	return await db
 		.update(schema.user)
@@ -322,6 +323,7 @@ export async function updateRelaySettings(
 			relayCriteria: relayCriteria,
 			relayMarker: relayMarker,
 			relayVisibility: relayVisibility,
+			relayUnlistedAnswers: relayUnlistedAnswers,
 		})
 		.where(eq(schema.user.id, userId))
 		.returning();

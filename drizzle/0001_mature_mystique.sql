@@ -1,0 +1,1 @@
+ALTER TABLE "User" ADD COLUMN "relayUnlistedAnswers" boolean DEFAULT true NOT NULL;

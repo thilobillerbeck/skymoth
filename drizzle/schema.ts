@@ -1,13 +1,12 @@
 import {
 	pgTable,
-	varchar,
 	timestamp,
 	text,
-	integer,
 	uniqueIndex,
 	foreignKey,
 	jsonb,
 	pgEnum,
+	boolean,
 } from "drizzle-orm/pg-core";
 import { randomUUID } from "node:crypto";
 
@@ -100,6 +99,7 @@ export const user = pgTable(
 		relayCriteria: relayCriteria().default("all").notNull(),
 		relayMarker: text().default("").notNull(),
 		relayVisibility: statusVisibility().array().default(["public"]),
+		relayUnlistedAnswers: boolean().default(true).notNull(),
 	},
 	(table) => [
 		foreignKey({

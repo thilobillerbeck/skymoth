@@ -79,6 +79,15 @@
                             <span>Private</span>
                         </label>
                     </div>
+                    <p class="my-4">
+                        The following setting accounts for clients that create threads as unlisted replies to a public toot. This setting ignores your toot visibility settings.
+                    </p>
+                    <label class="flex items-center">
+                        <input type="checkbox" name="relayUnlistedAnswers" id="relayUnlistedAnswers" class="checkbox checkbox-primary mr-2" {% if relayUnlistedAnswers %}checked{% endif %}/>
+                        <span>
+                            Repost unlisted answers to public toots
+                        </span>
+                    </label>
                 </div>
                 <div class="space-y-2">
                     <p class="mt-4 font-bold">
