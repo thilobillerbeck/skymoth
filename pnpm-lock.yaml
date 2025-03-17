@@ -12,8 +12,8 @@ importers:
         specifier: ^0.14.9
         version: 0.14.9
       '@atproto/xrpc':
-        specifier: ^0.6.9
-        version: 0.6.9
+        specifier: ^0.6.10
+        version: 0.6.10
       '@fastify/cookie':
         specifier: ^11.0.2
         version: 11.0.2
@@ -153,9 +153,6 @@ packages:
   '@atproto/common-web@0.4.0':
     resolution: {integrity: sha512-ZYL0P9myHybNgwh/hBY0HaBzqiLR1B5/ie5bJpLQAg0whRzNA28t8/nU2vh99tbsWcAF0LOD29M8++LyENJLNQ==}
 
-  '@atproto/lexicon@0.4.7':
-    resolution: {integrity: sha512-/x6h3tAiDNzSi4eXtC8ke65B7UzsagtlGRHmUD95698x5lBRpDnpizj0fZWTZVYed5qnOmz/ZEue+v3wDmO61g==}
-
   '@atproto/lexicon@0.4.8':
     resolution: {integrity: sha512-NPhu4MNHqft4muvHvcU0BrkWoEpTI+OmbQzvZzzRpw54MW3PfrQ4TPEpAfPOrWugPB9y4mD+l8OMN1c9eOGWMQ==}
 
@@ -164,9 +161,6 @@ packages:
 
   '@atproto/xrpc@0.6.10':
     resolution: {integrity: sha512-ClMiO+oAl3KrFe7sdo8Wzw81yV7EpEradZLJnYilPq4s7uF0by1jHGI/LarHBKHnE5RpaFpBC/5XD/ZzgmvAeg==}
-
-  '@atproto/xrpc@0.6.9':
-    resolution: {integrity: sha512-vQGA7++DYMNaHx3C7vEjT+2X6hYYLG7JNbBnDLWu0km1/1KYXgRkAz4h+FfYqg1mvzvIorHU7DAs5wevkJDDlw==}
 
   '@babel/code-frame@7.26.2':
     resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
@@ -3586,14 +3580,6 @@ snapshots:
       uint8arrays: 3.0.0
       zod: 3.24.2
 
-  '@atproto/lexicon@0.4.7':
-    dependencies:
-      '@atproto/common-web': 0.4.0
-      '@atproto/syntax': 0.3.4
-      iso-datestring-validator: 2.2.2
-      multiformats: 9.9.0
-      zod: 3.24.2
-
   '@atproto/lexicon@0.4.8':
     dependencies:
       '@atproto/common-web': 0.4.0
@@ -3607,11 +3593,6 @@ snapshots:
   '@atproto/xrpc@0.6.10':
     dependencies:
       '@atproto/lexicon': 0.4.8
-      zod: 3.24.2
-
-  '@atproto/xrpc@0.6.9':
-    dependencies:
-      '@atproto/lexicon': 0.4.7
       zod: 3.24.2
 
   '@babel/code-frame@7.26.2':
