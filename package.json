@@ -48,7 +48,7 @@
 		"@types/pg": "^8.11.11",
 		"autoprefixer": "^10.4.21",
 		"concurrently": "^9.1.2",
-		"daisyui": "^5.0.0",
+		"daisyui": "^5.0.9",
 		"drizzle-kit": "^0.30.5",
 		"nodemon": "^3.1.9",
 		"postcss": "^8.5.3",
