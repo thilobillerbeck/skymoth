@@ -139,10 +139,12 @@ export async function generateBlueskyPostsFromMastodon(
 	const posts: Array<AppBskyFeedPost.Record> = [];
 	const spoiler = status.sensitive ? `CW: ${status.spoiler_text}\n\n` : "";
 	const conv = mastodonHtmlToText(status.content);
-	const split = splitTextBluesky(conv, spoiler, postNumbering);
+	const postLink = status.poll ? `\n\n(${status.url})` : "";
+	const split = splitTextBluesky(conv, spoiler, postLink, postNumbering);
 
 	for (const [idx, text] of split.entries()) {
 		const post = await generateBlueskyPostFromMastodon(
+			status,
 			text,
 			client,
 			idx === 0 ? status.media_attachments : undefined,
@@ -240,6 +242,7 @@ async function getPostExternalLinks(facets: Facet[]) {
 }
 
 export async function generateBlueskyPostFromMastodon(
+	status: Entity.Status,
 	content: string,
 	client: AtpAgent,
 	media_attachments?: Array<Attachment>,
@@ -256,6 +259,7 @@ export async function generateBlueskyPostFromMastodon(
 		$type: "app.bsky.feed.post",
 		text: rt.text,
 		facets: rt.facets,
+		langs: status.language ? [status.language] : ["en"],
 		createdAt: new Date().toISOString(),
 	};
 

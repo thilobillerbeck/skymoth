@@ -145,6 +145,8 @@ async function nastodonToBluesky(
 				}
 			}
 
+			console.log(postsBsky);
+
 			for (const [postBskyIdx, postBsky] of postsBsky.entries()) {
 				if (postsBsky.length > 1) {
 					logSchedulerEvent(

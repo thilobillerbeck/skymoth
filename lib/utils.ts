@@ -67,6 +67,7 @@ export const authenticateJWT = async (
 export function splitTextBluesky(
 	text: string,
 	spoiler: string,
+	postLink: string,
 	numbering: boolean,
 ): string[] {
 	const numberingScale = Math.ceil(text.length / 3000);
@@ -76,11 +77,13 @@ export function splitTextBluesky(
 	let letterCount = 0;
 	let chunks = [];
 
-	if (text.length <= 300 - spoiler.length) {
-		return [`${spoiler}${text}`];
+	if (text.length <= 300 - spoiler.length - postLink.length) {
+		return [`${spoiler}${text}${postLink}`];
 	}
 
-	for (const word of text.split(" ")) {
+	const modifiedText = text + postLink;
+
+	for (const word of modifiedText.split(" ")) {
 		letterCount += word.length + 1; // +1 for space
 		if (letterCount >= 300 - numberingLength - spoiler.length) {
 			res.push(chunks.join(" "));
