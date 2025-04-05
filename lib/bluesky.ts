@@ -131,6 +131,22 @@ export async function intiBlueskyAgent(
 	}
 }
 
+function applyPostLink(status: Entity.Status): string {
+	console.log(status.media_attachments);
+	if (status.poll) return `\n\nPoll: ${status.url}`;
+	if (
+		status.media_attachments.find(
+			(media) => media.type === "video" || media.type === "gifv",
+		)
+	) {
+		return `\n\nVideo: ${status.url}`;
+	}
+	if (status.media_attachments.find((media) => media.type === "audio")) {
+		return `\n\nAudio: ${status.url}`;
+	}
+	return "";
+}
+
 export async function generateBlueskyPostsFromMastodon(
 	status: Entity.Status,
 	client: AtpAgent,
@@ -139,7 +155,7 @@ export async function generateBlueskyPostsFromMastodon(
 	const posts: Array<AppBskyFeedPost.Record> = [];
 	const spoiler = status.sensitive ? `CW: ${status.spoiler_text}\n\n` : "";
 	const conv = mastodonHtmlToText(status.content);
-	const postLink = status.poll ? `\n\n(${status.url})` : "";
+	const postLink = applyPostLink(status);
 	const split = splitTextBluesky(conv, spoiler, postLink, postNumbering);
 
 	for (const [idx, text] of split.entries()) {
