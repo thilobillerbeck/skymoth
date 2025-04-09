@@ -106,8 +106,8 @@ importers:
         specifier: ^9.1.2
         version: 9.1.2
       daisyui:
-        specifier: ^5.0.12
-        version: 5.0.12
+        specifier: ^5.0.14
+        version: 5.0.14
       drizzle-kit:
         specifier: ^0.30.6
         version: 0.30.6
@@ -1621,8 +1621,8 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
-  daisyui@5.0.12:
-    resolution: {integrity: sha512-01DU0eYBcHgPtuf5fxcrkGkIN6/Uyaqmkle5Yo3ZyW9YVAu036ALZbjv2KH5euvUbeQ4r9q3gAarGcf7Tywhng==}
+  daisyui@5.0.14:
+    resolution: {integrity: sha512-z7F+fjjVwu9Zy0OhW53rnHDipRMYjkzRXYtXbn2hvQp2S/hIUcPGKdATzFkqZ+hwx9vJ7Td3uMVXSs84FGA2zQ==}
 
   dateformat@4.6.3:
     resolution: {integrity: sha512-2P0p0pFGzHS5EMnhdxQi7aJN+iMheud0UhG4dlE1DLAlvL8JHjJJTX/CSm4JXwV0Ka5nGk3zC5mcb5bUQUxxMA==}
@@ -5064,7 +5064,7 @@ snapshots:
 
   cssesc@3.0.0: {}
 
-  daisyui@5.0.12: {}
+  daisyui@5.0.14: {}
 
   dateformat@4.6.3: {}
 
