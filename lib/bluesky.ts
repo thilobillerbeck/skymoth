@@ -132,7 +132,6 @@ export async function intiBlueskyAgent(
 }
 
 function applyPostLink(status: Entity.Status): string {
-	console.log(status.media_attachments);
 	if (status.poll) return `\n\nPoll: ${status.url}`;
 	if (
 		status.media_attachments.find(
@@ -206,37 +205,41 @@ async function getPostExternalEmbed(
 	client: AtpAgent,
 ): Promise<External | undefined> {
 	for (const link of links) {
-		const { result } = await ogs({
-			url: link,
-		});
+		try {
+			const { result } = await ogs({
+				url: link,
+			});
 
-		if (result.requestUrl && result.ogTitle && result.ogDescription) {
-			if (result.ogImage?.[0].url) {
-				const url = result.ogImage[0].url.startsWith("/")
-					? `${result.requestUrl}${result.ogImage[0].url.slice(1)}`
-					: result.ogImage[0].url;
+			if (result.requestUrl && result.ogTitle && result.ogDescription) {
+				if (result.ogImage?.[0].url) {
+					const url = result.ogImage[0].url.startsWith("/")
+						? `${result.requestUrl}${result.ogImage[0].url.slice(1)}`
+						: result.ogImage[0].url;
 
-				const imageBlob = await handleBskyImageBlob(url, client);
+					const imageBlob = await handleBskyImageBlob(url, client);
 
-				if (!imageBlob) {
+					if (!imageBlob) {
+						return {
+							uri: result.requestUrl,
+							title: result.ogTitle,
+							description: result.ogDescription,
+						};
+					}
 					return {
 						uri: result.requestUrl,
 						title: result.ogTitle,
 						description: result.ogDescription,
+						thumb: imageBlob,
 					};
 				}
 				return {
 					uri: result.requestUrl,
 					title: result.ogTitle,
 					description: result.ogDescription,
-					thumb: imageBlob,
 				};
 			}
-			return {
-				uri: result.requestUrl,
-				title: result.ogTitle,
-				description: result.ogDescription,
-			};
+		} catch (err) {
+			logger.error(err, "Error fetching og data, skipping link");
 		}
 	}
 
