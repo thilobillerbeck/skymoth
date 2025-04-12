@@ -20,6 +20,7 @@ import { XRPCError } from "@atproto/xrpc";
 import type { InferSelectModel } from "drizzle-orm";
 import type * as schema from "./../../drizzle/schema";
 import logger from "../logger";
+import type { Status } from "megalodon/lib/src/entities/status";
 
 async function nastodonToBluesky(
 	user: InferSelectModel<typeof schema.user> & {
@@ -44,14 +45,27 @@ async function nastodonToBluesky(
 		user.relayCriteria ?? "all",
 		user.relayMarker ?? "",
 	);
-	let posts = await getNewToots(
-		userClient,
-		user.mastodonUid,
-		user.lastTootTime,
-		constraint,
-		user.relayVisibility,
-		user.relayUnlistedAnswers,
-	);
+
+	let posts: Status[] = [];
+
+	try {
+		posts = await getNewToots(
+			userClient,
+			user.mastodonUid,
+			user.lastTootTime,
+			constraint,
+			user.relayVisibility,
+			user.relayUnlistedAnswers,
+		);
+	} catch (err) {
+		logSchedulerEvent(
+			user.name,
+			user.mastodonInstance.url,
+			"TOOT_FETCH",
+			"could not fetch new toots",
+		);
+		logger.error(err);
+	}
 
 	if (posts.length === 0) {
 		logSchedulerEvent(
