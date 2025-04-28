@@ -50,7 +50,7 @@
 		"concurrently": "^9.1.2",
 		"daisyui": "^5.0.19",
 		"drizzle-kit": "^0.30.6",
-		"nodemon": "^3.1.9",
+		"nodemon": "^3.1.10",
 		"postcss": "^8.5.3",
 		"postcss-cli": "^11.0.1",
 		"semantic-release": "^24.2.3",
