@@ -48,9 +48,9 @@ export function validateDomain(domain: string) {
 export function genCallBackUrl(instanceDomain: string) {
 	if (process.env.NODE_ENV === "development") {
 		const { ADDRESS = "localhost", PORT = "3000" } = process.env;
-		return `http://${ADDRESS}:${PORT}/auth/callback/${btoa(instanceDomain)}`;
+		return `http://${ADDRESS}:${PORT}/auth/callback/${Buffer.from(instanceDomain).toString('base64')}`;
 	}
-	return `${process.env.APP_URL}/auth/callback/${btoa(instanceDomain)}`;
+	return `${process.env.APP_URL}/auth/callback/${Buffer.from(instanceDomain).toString('base64')}`;
 }
 
 export const authenticateJWT = async (
@@ -64,6 +64,15 @@ export const authenticateJWT = async (
 	}
 };
 
+/**
+ * Splits a long text into multiple posts for Bluesky, optionally adding numbering.
+ * @param text The main text to split.
+ * @param spoiler A spoiler prefix to add to each chunk.
+ * @param postLink A link to append to the end of the text.
+ * @param numbering If true, adds numbering (e.g., [1/3]) to each chunk.
+ * @param numberingThreshold Minimum number of chunks required before numbering is applied (default: 1, so numbering is always applied if `numbering` is true).
+ * @returns An array of post-ready strings.
+ */
 export function splitTextBluesky(
 	text: string,
 	spoiler: string,
