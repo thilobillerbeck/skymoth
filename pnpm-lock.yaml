@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@atproto/api':
-        specifier: ^0.15.3
-        version: 0.15.3
+        specifier: ^0.15.20
+        version: 0.15.20
       '@atproto/xrpc':
         specifier: ^0.6.12
         version: 0.6.12
@@ -147,20 +147,26 @@ packages:
   '@actions/io@1.1.3':
     resolution: {integrity: sha512-wi9JjgKLYS7U/z8PPbco+PvTb/nRWjeoFlJ1Qer83k/3C5PHQi28hiVdeE2kHXmIL99mQFawx8qt/JPjZilJ8Q==}
 
-  '@atproto/api@0.15.3':
-    resolution: {integrity: sha512-HrNaKWHZoVv4pxrt5ITyqG/f1veEitm6Egrvs4ZaDS1FyYDLNVdgLDr4ccW76iFs8ja1xQuQtZNakHbgQUN92w==}
+  '@atproto/api@0.15.20':
+    resolution: {integrity: sha512-TEVjmL5SoInJSnI/mcxMJ7OUrZiQisewVo4aKNxEUjB+yQ9zjj4Vm2kIFys+Jv49plyDARTxLlEqFs7tiiIyDg==}
 
-  '@atproto/common-web@0.4.1':
-    resolution: {integrity: sha512-Ghh+djHYMAUCktLKwr2IuGgtjcwSWGudp+K7+N7KBA9pDDloOXUEY8Agjc5SHSo9B1QIEFkegClU5n+apn2e0w==}
+  '@atproto/common-web@0.4.2':
+    resolution: {integrity: sha512-vrXwGNoFGogodjQvJDxAeP3QbGtawgZute2ed1XdRO0wMixLk3qewtikZm06H259QDJVu6voKC5mubml+WgQUw==}
 
   '@atproto/lexicon@0.4.10':
     resolution: {integrity: sha512-uDbP20vetBgtXPuxoyRcvOGBt2gNe1dFc9yYKcb6jWmXfseHiGTnIlORJOLBXIT2Pz15Eap4fLxAu6zFAykD5A==}
+
+  '@atproto/lexicon@0.4.11':
+    resolution: {integrity: sha512-btefdnvNz2Ao2I+qbmj0F06HC8IlrM/IBz6qOBS50r0S6uDf5tOO+Mv2tSVdimFkdzyDdLtBI1sV36ONxz2cOw==}
 
   '@atproto/syntax@0.4.0':
     resolution: {integrity: sha512-b9y5ceHS8YKOfP3mdKmwAx5yVj9294UN7FG2XzP6V5aKUdFazEYRnR9m5n5ZQFKa3GNvz7de9guZCJ/sUTcOAA==}
 
   '@atproto/xrpc@0.6.12':
     resolution: {integrity: sha512-Ut3iISNLujlmY9Gu8sNU+SPDJDvqlVzWddU8qUr0Yae5oD4SguaUFjjhireMGhQ3M5E0KljQgDbTmnBo1kIZ3w==}
+
+  '@atproto/xrpc@0.7.0':
+    resolution: {integrity: sha512-SfhP9dGx2qclaScFDb58Jnrmim5nk4geZXCqg6sB0I/KZhZEkr9iIx1hLCp+sxkIfEsmEJjeWO4B0rjUIJW5cw==}
 
   '@babel/code-frame@7.26.2':
     resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
@@ -1672,6 +1678,15 @@ packages:
       supports-color:
         optional: true
 
+  debug@4.4.1:
+    resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
   deep-extend@0.6.0:
     resolution: {integrity: sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==}
     engines: {node: '>=4.0.0'}
@@ -3170,6 +3185,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  semver@7.7.2:
+    resolution: {integrity: sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   set-cookie-parser@2.7.1:
     resolution: {integrity: sha512-IOc8uWeOZgnb3ptbCURJWNjWUPcO3ZnTTdzsurqERrP6nPyv+paC55vJM0LpOlT2ne+Ix+9+CRG1MNLlyZ4GjQ==}
 
@@ -3191,8 +3211,8 @@ packages:
   shell-quote@1.8.1:
     resolution: {integrity: sha512-6j1W9l1iAs/4xYBI1SYOVZyFcCis9b4KCLQ8fgAGG07QvzaRLVVRQvAy85yNmmZSjYjg4MWh4gNvlPujU/5LpA==}
 
-  shell-quote@1.8.2:
-    resolution: {integrity: sha512-AzqKpGKjrj7EM6rKVQEPpB288oCfnrEIuyoT9cyF4nmGa7V8Zk6f7RRqYisX8X9m+Q7bd632aZW4ky7EhbQztA==}
+  shell-quote@1.8.3:
+    resolution: {integrity: sha512-ObmnIF4hXNg1BqhnHmgbDETF8dLPCggZWBjkQfhZpbszZnYur5DUljTcCHii5LC3J5E0yeO/1LIMyH+UvHQgyw==}
     engines: {node: '>= 0.4'}
 
   shimmer@1.2.1:
@@ -3376,8 +3396,8 @@ packages:
     resolution: {integrity: sha512-qkf4trmKSIiMTs/E63cxH+ojC2unam7rJ0WrauAzpT3ECNTxGRMlaXxVbfxMUC/w0LaYk6jQ4y/nGR9uBO3tww==}
     engines: {node: '>=12.0.0'}
 
-  tlds@1.256.0:
-    resolution: {integrity: sha512-ZmyVB9DAw+FFTmLElGYJgdZFsKLYd/I59Bg9NHkCGPwAbVZNRilFWDMAdX8UG+bHuv7kfursd5XGqo/9wi26lA==}
+  tlds@1.259.0:
+    resolution: {integrity: sha512-AldGGlDP0PNgwppe2quAvuBl18UcjuNtOnDuUkqhd6ipPqrYYBt3aTxK1QTsBVknk97lS2JcafWMghjGWFtunw==}
     hasBin: true
 
   to-regex-range@5.0.1:
@@ -3597,6 +3617,9 @@ packages:
   zod@3.24.2:
     resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
 
+  zod@3.25.67:
+    resolution: {integrity: sha512-idA2YXwpCdqUSKRCACDE6ItZD9TZzy3OZMtpfLoh6oPR47lipysRrJfjzMqFxQ3uJuUPyUeWe1r9vLH33xO/Qw==}
+
 snapshots:
 
   '@actions/core@1.11.1':
@@ -3615,31 +3638,39 @@ snapshots:
 
   '@actions/io@1.1.3': {}
 
-  '@atproto/api@0.15.3':
+  '@atproto/api@0.15.20':
     dependencies:
-      '@atproto/common-web': 0.4.1
-      '@atproto/lexicon': 0.4.10
+      '@atproto/common-web': 0.4.2
+      '@atproto/lexicon': 0.4.11
       '@atproto/syntax': 0.4.0
-      '@atproto/xrpc': 0.6.12
+      '@atproto/xrpc': 0.7.0
       await-lock: 2.2.2
       multiformats: 9.9.0
-      tlds: 1.256.0
-      zod: 3.24.2
+      tlds: 1.259.0
+      zod: 3.25.67
 
-  '@atproto/common-web@0.4.1':
+  '@atproto/common-web@0.4.2':
     dependencies:
       graphemer: 1.4.0
       multiformats: 9.9.0
       uint8arrays: 3.0.0
-      zod: 3.24.2
+      zod: 3.25.67
 
   '@atproto/lexicon@0.4.10':
     dependencies:
-      '@atproto/common-web': 0.4.1
+      '@atproto/common-web': 0.4.2
       '@atproto/syntax': 0.4.0
       iso-datestring-validator: 2.2.2
       multiformats: 9.9.0
       zod: 3.24.2
+
+  '@atproto/lexicon@0.4.11':
+    dependencies:
+      '@atproto/common-web': 0.4.2
+      '@atproto/syntax': 0.4.0
+      iso-datestring-validator: 2.2.2
+      multiformats: 9.9.0
+      zod: 3.25.67
 
   '@atproto/syntax@0.4.0': {}
 
@@ -3647,6 +3678,11 @@ snapshots:
     dependencies:
       '@atproto/lexicon': 0.4.10
       zod: 3.24.2
+
+  '@atproto/xrpc@0.7.0':
+    dependencies:
+      '@atproto/lexicon': 0.4.11
+      zod: 3.25.67
 
   '@babel/code-frame@7.26.2':
     dependencies:
@@ -5120,6 +5156,11 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  debug@4.4.1:
+    dependencies:
+      ms: 2.1.3
+    optional: true
+
   deep-extend@0.6.0: {}
 
   deepmerge@4.3.1: {}
@@ -5498,10 +5539,10 @@ snapshots:
   gel@2.0.1:
     dependencies:
       '@petamoriken/float16': 3.9.2
-      debug: 4.4.0
+      debug: 4.4.1
       env-paths: 3.0.0
-      semver: 7.7.1
-      shell-quote: 1.8.2
+      semver: 7.7.2
+      shell-quote: 1.8.3
       which: 4.0.0
     transitivePeerDependencies:
       - supports-color
@@ -6504,6 +6545,9 @@ snapshots:
 
   semver@7.7.1: {}
 
+  semver@7.7.2:
+    optional: true
+
   set-cookie-parser@2.7.1: {}
 
   setprototypeof@1.2.0: {}
@@ -6543,7 +6587,7 @@ snapshots:
 
   shell-quote@1.8.1: {}
 
-  shell-quote@1.8.2:
+  shell-quote@1.8.3:
     optional: true
 
   shimmer@1.2.1: {}
@@ -6723,7 +6767,7 @@ snapshots:
       fdir: 6.4.3(picomatch@4.0.2)
       picomatch: 4.0.2
 
-  tlds@1.256.0: {}
+  tlds@1.259.0: {}
 
   to-regex-range@5.0.1:
     dependencies:
@@ -6891,3 +6935,5 @@ snapshots:
   yoctocolors@2.1.1: {}
 
   zod@3.24.2: {}
+
+  zod@3.25.67: {}
