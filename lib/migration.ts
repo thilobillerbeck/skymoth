@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
-import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { sql } from "drizzle-orm";
+import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { db } from "./db";
 import logger from "./logger";
 

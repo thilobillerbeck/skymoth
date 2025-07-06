@@ -48,9 +48,9 @@ export function validateDomain(domain: string) {
 export function genCallBackUrl(instanceDomain: string) {
 	if (process.env.NODE_ENV === "development") {
 		const { ADDRESS = "localhost", PORT = "3000" } = process.env;
-		return `http://${ADDRESS}:${PORT}/auth/callback/${Buffer.from(instanceDomain).toString('base64')}`;
+		return `http://${ADDRESS}:${PORT}/auth/callback/${Buffer.from(instanceDomain).toString("base64")}`;
 	}
-	return `${process.env.APP_URL}/auth/callback/${Buffer.from(instanceDomain).toString('base64')}`;
+	return `${process.env.APP_URL}/auth/callback/${Buffer.from(instanceDomain).toString("base64")}`;
 }
 
 export const authenticateJWT = async (
@@ -78,7 +78,7 @@ export function splitTextBluesky(
 	spoiler: string,
 	postLink: string,
 	numbering: boolean,
-	numberingThreshold: number = 1, // default: always number if 'numbering' is true
+	numberingThreshold = 1, // default: always number if 'numbering' is true
 ): string[] {
 	const MAX_LENGTH = 300;
 	const numberingScale = Math.ceil(text.length / 3000);
@@ -95,8 +95,8 @@ export function splitTextBluesky(
 	let start = 0;
 
 	while (start < modifiedText.length) {
-		let end = Math.min(start + chunkLength, modifiedText.length);
-		let chunk = modifiedText.slice(start, end);
+		const end = Math.min(start + chunkLength, modifiedText.length);
+		const chunk = modifiedText.slice(start, end);
 
 		// Try to split at line break
 		let splitIdx = chunk.lastIndexOf("\n");
@@ -110,7 +110,7 @@ export function splitTextBluesky(
 		// If no good split point, split at max length
 		if (splitIdx === -1 || splitIdx < 20) splitIdx = chunk.length;
 
-		let part = chunk.slice(0, splitIdx + 1).trim();
+		const part = chunk.slice(0, splitIdx + 1).trim();
 		res.push(part);
 		start += part.length;
 		// Skip any whitespace at the start of the next chunk
@@ -120,7 +120,8 @@ export function splitTextBluesky(
 	// Only apply numbering if enabled and the number of posts meets/exceeds the threshold
 	const shouldNumber = numbering && res.length >= numberingThreshold;
 	res = res.map(
-		(r, i) => `${spoiler}${r}${shouldNumber ? ` [${i + 1}/${res.length}]` : ""}`,
+		(r, i) =>
+			`${spoiler}${r}${shouldNumber ? ` [${i + 1}/${res.length}]` : ""}`,
 	);
 	return res;
 }

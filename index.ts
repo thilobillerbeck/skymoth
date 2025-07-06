@@ -1,19 +1,19 @@
-import Fastify from "fastify";
 import fastifyCookie from "@fastify/cookie";
 import fastifyView from "@fastify/view";
+import Fastify from "fastify";
 const { Liquid } = require("liquidjs");
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import fastifyFormbody from "@fastify/formbody";
 import fastifyJwt from "@fastify/jwt";
-import { routesRoot } from "./routes/root";
-import { routesUser } from "./routes/user";
-import { join } from "node:path";
 import * as Sentry from "@sentry/node";
 import { nodeProfilingIntegration } from "@sentry/profiling-node";
-import { existsSync, readFileSync } from "node:fs";
-import { printInfo } from "./lib/utils";
 import { client, db } from "./lib/db";
-import { migrationHelper } from "./lib/migration";
 import logger from "./lib/logger";
+import { migrationHelper } from "./lib/migration";
+import { printInfo } from "./lib/utils";
+import { routesRoot } from "./routes/root";
+import { routesUser } from "./routes/user";
 
 declare module "@fastify/jwt" {
 	interface FastifyJWT {

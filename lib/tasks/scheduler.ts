@@ -1,9 +1,9 @@
-import { AsyncTask, SimpleIntervalJob, ToadScheduler } from "toad-scheduler";
-import taskMastodonToBluesky from "./mastodonToBluesky";
 import * as Sentry from "@sentry/node";
 import { nodeProfilingIntegration } from "@sentry/profiling-node";
-import cleanupJob from "./cleanup";
+import { AsyncTask, SimpleIntervalJob, ToadScheduler } from "toad-scheduler";
 import { client } from "./../db";
+import cleanupJob from "./cleanup";
+import taskMastodonToBluesky from "./mastodonToBluesky";
 
 client.connect();
 

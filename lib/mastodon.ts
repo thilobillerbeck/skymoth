@@ -1,9 +1,9 @@
-import type { MegalodonInterface, Mastodon } from "megalodon";
-import type { Status } from "megalodon/lib/src/entities/status";
-import type { Constraint } from "./constraint";
-import { convert } from "html-to-text";
 import type { InferInsertModel } from "drizzle-orm";
+import { convert } from "html-to-text";
+import type { Mastodon, MegalodonInterface } from "megalodon";
+import type { Status } from "megalodon/lib/src/entities/status";
 import type { user } from "../drizzle/schema";
+import type { Constraint } from "./constraint";
 
 export async function getUserIdFromMastodonHandle(
 	handle: string,
