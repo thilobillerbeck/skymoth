@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@atproto/api':
-        specifier: ^0.15.20
-        version: 0.15.20
+        specifier: ^0.15.23
+        version: 0.15.23
       '@atproto/xrpc':
         specifier: ^0.7.0
         version: 0.7.0
@@ -151,8 +151,8 @@ packages:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
 
-  '@atproto/api@0.15.20':
-    resolution: {integrity: sha512-TEVjmL5SoInJSnI/mcxMJ7OUrZiQisewVo4aKNxEUjB+yQ9zjj4Vm2kIFys+Jv49plyDARTxLlEqFs7tiiIyDg==}
+  '@atproto/api@0.15.23':
+    resolution: {integrity: sha512-qrXMPDs8xUugQyNxU5jm5xlhfx60SzOIzmHkZkI7ExYQFjX6juCabR9t8LofIUSiZKRY1PcU4QUFyhQIsjFuVg==}
 
   '@atproto/common-web@0.4.2':
     resolution: {integrity: sha512-vrXwGNoFGogodjQvJDxAeP3QbGtawgZute2ed1XdRO0wMixLk3qewtikZm06H259QDJVu6voKC5mubml+WgQUw==}
@@ -3428,8 +3428,8 @@ packages:
     resolution: {integrity: sha512-qkf4trmKSIiMTs/E63cxH+ojC2unam7rJ0WrauAzpT3ECNTxGRMlaXxVbfxMUC/w0LaYk6jQ4y/nGR9uBO3tww==}
     engines: {node: '>=12.0.0'}
 
-  tlds@1.256.0:
-    resolution: {integrity: sha512-ZmyVB9DAw+FFTmLElGYJgdZFsKLYd/I59Bg9NHkCGPwAbVZNRilFWDMAdX8UG+bHuv7kfursd5XGqo/9wi26lA==}
+  tlds@1.259.0:
+    resolution: {integrity: sha512-AldGGlDP0PNgwppe2quAvuBl18UcjuNtOnDuUkqhd6ipPqrYYBt3aTxK1QTsBVknk97lS2JcafWMghjGWFtunw==}
     hasBin: true
 
   to-regex-range@5.0.1:
@@ -3656,6 +3656,9 @@ packages:
   zod@3.24.2:
     resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
 
+  zod@3.25.76:
+    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+
 snapshots:
 
   '@actions/core@1.11.1':
@@ -3679,7 +3682,7 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.11
       '@jridgewell/trace-mapping': 0.3.28
 
-  '@atproto/api@0.15.20':
+  '@atproto/api@0.15.23':
     dependencies:
       '@atproto/common-web': 0.4.2
       '@atproto/lexicon': 0.4.11
@@ -3687,15 +3690,15 @@ snapshots:
       '@atproto/xrpc': 0.7.0
       await-lock: 2.2.2
       multiformats: 9.9.0
-      tlds: 1.256.0
-      zod: 3.24.2
+      tlds: 1.259.0
+      zod: 3.25.76
 
   '@atproto/common-web@0.4.2':
     dependencies:
       graphemer: 1.4.0
       multiformats: 9.9.0
       uint8arrays: 3.0.0
-      zod: 3.24.2
+      zod: 3.25.76
 
   '@atproto/lexicon@0.4.11':
     dependencies:
@@ -3703,7 +3706,7 @@ snapshots:
       '@atproto/syntax': 0.4.0
       iso-datestring-validator: 2.2.2
       multiformats: 9.9.0
-      zod: 3.24.2
+      zod: 3.25.76
 
   '@atproto/syntax@0.4.0': {}
 
@@ -6865,7 +6868,7 @@ snapshots:
       fdir: 6.4.3(picomatch@4.0.2)
       picomatch: 4.0.2
 
-  tlds@1.256.0: {}
+  tlds@1.259.0: {}
 
   to-regex-range@5.0.1:
     dependencies:
@@ -7037,3 +7040,5 @@ snapshots:
   yoctocolors@2.1.1: {}
 
   zod@3.24.2: {}
+
+  zod@3.25.76: {}
