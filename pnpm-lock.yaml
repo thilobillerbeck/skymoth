@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@atproto/api':
-        specifier: ^0.15.23
-        version: 0.15.23
+        specifier: ^0.15.26
+        version: 0.15.26
       '@atproto/xrpc':
         specifier: ^0.7.0
         version: 0.7.0
@@ -151,8 +151,8 @@ packages:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
 
-  '@atproto/api@0.15.23':
-    resolution: {integrity: sha512-qrXMPDs8xUugQyNxU5jm5xlhfx60SzOIzmHkZkI7ExYQFjX6juCabR9t8LofIUSiZKRY1PcU4QUFyhQIsjFuVg==}
+  '@atproto/api@0.15.26':
+    resolution: {integrity: sha512-AdXGjeCpLZiP9YMGi4YOdK1ayqkBhklmGfSG8UefqR6tTHth59PZvYs5KiwLnFhedt2Xljt3eUlhkn14Y48wEA==}
 
   '@atproto/common-web@0.4.2':
     resolution: {integrity: sha512-vrXwGNoFGogodjQvJDxAeP3QbGtawgZute2ed1XdRO0wMixLk3qewtikZm06H259QDJVu6voKC5mubml+WgQUw==}
@@ -160,11 +160,17 @@ packages:
   '@atproto/lexicon@0.4.11':
     resolution: {integrity: sha512-btefdnvNz2Ao2I+qbmj0F06HC8IlrM/IBz6qOBS50r0S6uDf5tOO+Mv2tSVdimFkdzyDdLtBI1sV36ONxz2cOw==}
 
+  '@atproto/lexicon@0.4.12':
+    resolution: {integrity: sha512-fcEvEQ1GpQYF5igZ4IZjPWEoWVpsEF22L9RexxLS3ptfySXLflEyH384e7HITzO/73McDeaJx3lqHIuqn9ulnw==}
+
   '@atproto/syntax@0.4.0':
     resolution: {integrity: sha512-b9y5ceHS8YKOfP3mdKmwAx5yVj9294UN7FG2XzP6V5aKUdFazEYRnR9m5n5ZQFKa3GNvz7de9guZCJ/sUTcOAA==}
 
   '@atproto/xrpc@0.7.0':
     resolution: {integrity: sha512-SfhP9dGx2qclaScFDb58Jnrmim5nk4geZXCqg6sB0I/KZhZEkr9iIx1hLCp+sxkIfEsmEJjeWO4B0rjUIJW5cw==}
+
+  '@atproto/xrpc@0.7.1':
+    resolution: {integrity: sha512-ANHEzlskYlMEdH18m+Itp3a8d0pEJao2qoDybDoMupTnoeNkya4VKIaOgAi6ERQnqatBBZyn9asW+7rJmSt/8g==}
 
   '@babel/code-frame@7.27.1':
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
@@ -3727,12 +3733,12 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.11
       '@jridgewell/trace-mapping': 0.3.28
 
-  '@atproto/api@0.15.23':
+  '@atproto/api@0.15.26':
     dependencies:
       '@atproto/common-web': 0.4.2
-      '@atproto/lexicon': 0.4.11
+      '@atproto/lexicon': 0.4.12
       '@atproto/syntax': 0.4.0
-      '@atproto/xrpc': 0.7.0
+      '@atproto/xrpc': 0.7.1
       await-lock: 2.2.2
       multiformats: 9.9.0
       tlds: 1.259.0
@@ -3751,6 +3757,14 @@ snapshots:
       '@atproto/syntax': 0.4.0
       iso-datestring-validator: 2.2.2
       multiformats: 9.9.0
+      zod: 3.24.2
+
+  '@atproto/lexicon@0.4.12':
+    dependencies:
+      '@atproto/common-web': 0.4.2
+      '@atproto/syntax': 0.4.0
+      iso-datestring-validator: 2.2.2
+      multiformats: 9.9.0
       zod: 3.25.76
 
   '@atproto/syntax@0.4.0': {}
@@ -3759,6 +3773,11 @@ snapshots:
     dependencies:
       '@atproto/lexicon': 0.4.11
       zod: 3.24.2
+
+  '@atproto/xrpc@0.7.1':
+    dependencies:
+      '@atproto/lexicon': 0.4.12
+      zod: 3.25.76
 
   '@babel/code-frame@7.27.1':
     dependencies:
