@@ -46,7 +46,7 @@
     };
   };
 
-  pre-commit.hooks.commitizen.enable = true;
+  git-hooks.hooks.commitizen.enable = true;
   git-hooks.hooks.lint = {
     enable = true;
     name = "Lint code";

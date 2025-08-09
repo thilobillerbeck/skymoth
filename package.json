@@ -68,13 +68,19 @@
 				{
 					"dockerProject": "thilobillerbeck",
 					"dockerImage": "skymoth",
-					"dockerPlatform": ["linux/amd64", "linux/arm64"],
+					"dockerPlatform": [
+						"linux/amd64",
+						"linux/arm64"
+					],
 					"dockerRegistry": "ghcr.io"
 				}
 			]
 		]
 	},
 	"nodemonConfig": {
-		"ignore": ["dist", "node_modules"]
+		"ignore": [
+			"dist",
+			"node_modules"
+		]
 	}
 }
