@@ -2,12 +2,12 @@ import type { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post
 import { XRPCError } from "@atproto/xrpc";
 import type { InferSelectModel } from "drizzle-orm";
 import { Mastodon } from "megalodon";
-import type { Status } from "megalodon/lib/src/entities/status";
+import type { Status } from "megalodon/lib/esm/entities/status";
+import type * as schema from "./../../drizzle/schema";
 import { generateBlueskyPostsFromMastodon, intiBlueskyAgent } from "../bluesky";
 import { Constraint } from "../constraint";
 import {
 	clearBlueskyCreds,
-	db,
 	findParentToot,
 	findUsers,
 	storeRepostRecord,
@@ -20,7 +20,6 @@ import {
 	getBlueskyApiWaittime,
 	logSchedulerEvent,
 } from "../utils";
-import type * as schema from "./../../drizzle/schema";
 
 async function nastodonToBluesky(
 	user: InferSelectModel<typeof schema.user> & {
@@ -121,9 +120,9 @@ async function nastodonToBluesky(
 			if (postsBsky.length === 0) continue;
 
 			let repRef: ReplyRef = {
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				// biome-ignore lint/style/noNonNullAssertion: this does need to be uninitialized
 				root: undefined!,
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				// biome-ignore lint/style/noNonNullAssertion: this does need to be uninitialized
 				parent: undefined!,
 			};
 

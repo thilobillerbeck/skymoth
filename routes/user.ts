@@ -18,11 +18,11 @@ import {
 } from "./../lib/utils";
 
 export const routesUser = async (app: FastifyInstance) => {
-	app.get("/login", async (req, res) => {
+	app.get("/login", async (_req, res) => {
 		return res.view("login", {});
 	});
 
-	app.get("/logout", async (req, res) => {
+	app.get("/logout", async (_req, res) => {
 		return res.clearCookie("token").redirect("/login");
 	});
 

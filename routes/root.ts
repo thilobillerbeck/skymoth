@@ -141,11 +141,11 @@ export const routesRoot = async (app: FastifyInstance) => {
 		return res.redirect("/");
 	});
 
-	app.get("/privacy", async (req, res) => {
+	app.get("/privacy", async (_req, res) => {
 		return res.view("privacy", {});
 	});
 
-	app.get("/health", async (req, res) => {
+	app.get("/health", async (_req, res) => {
 		return res.send({ status: "ok" });
 	});
 };

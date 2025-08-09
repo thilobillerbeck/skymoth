@@ -8,8 +8,8 @@ import {
 } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import type { OAuth } from "megalodon";
-import type { Account } from "megalodon/lib/src/entities/account";
-import type Response from "megalodon/lib/src/response";
+import type { Account } from "megalodon/lib/esm/entities/account";
+import type Response from "megalodon/lib/esm/response";
 import { Client } from "pg";
 import * as relations from "./../drizzle/relations";
 import * as schema from "./../drizzle/schema";
