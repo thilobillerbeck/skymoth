@@ -1,5 +1,4 @@
 import { Mastodon } from "megalodon";
-import { domainToUrl, logSchedulerEvent } from "../utils";
 import {
 	deleteMastodonInstance,
 	deleteUser,
@@ -7,6 +6,7 @@ import {
 	getMastodonInstanceUsers,
 } from "../db";
 import logger from "../logger";
+import { domainToUrl, logSchedulerEvent } from "../utils";
 
 export default async function cleanupJob() {
 	logger.info("Running scheduled job: verify instance app credentials...");

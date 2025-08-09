@@ -12,7 +12,7 @@ import { isLink as isFacetLink } from "@atproto/api/dist/client/types/app/bsky/r
 import { ResponseType, type XRPCError } from "@atproto/xrpc";
 import type { InferSelectModel } from "drizzle-orm";
 import type { Entity } from "megalodon";
-import type { Attachment } from "megalodon/lib/src/entities/attachment";
+import type { Attachment } from "megalodon/lib/esm/entities/attachment";
 import ogs from "open-graph-scraper";
 import sharp from "sharp";
 import type { mastodonInstance, user as User } from "../drizzle/schema";
@@ -101,7 +101,7 @@ export async function intiBlueskyAgent(
 		await agent.login({ identifier: handle, password: password });
 		return agent;
 	} catch (err) {
-		if ((err as XRPCError).status === ResponseType.AuthRequired) {
+		if ((err as XRPCError).status === ResponseType.AuthenticationRequired) {
 			// invalidate creds to prevent further login attempts resulting in rate limiting
 			logSchedulerEvent(
 				user.name,
@@ -189,7 +189,7 @@ async function handleBskyImageBlob(
 			})
 			.toBuffer();
 
-		arr = new Uint8Array(result.buffer);
+		arr = new Uint8Array(result);
 	}
 	const res = await client.uploadBlob(arr, {
 		encoding: mimeType,

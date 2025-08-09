@@ -1,7 +1,7 @@
 import type { InferInsertModel } from "drizzle-orm";
 import { convert } from "html-to-text";
 import type { Mastodon, MegalodonInterface } from "megalodon";
-import type { Status } from "megalodon/lib/src/entities/status";
+import type { Status } from "megalodon/lib/esm/entities/status";
 import type { user } from "../drizzle/schema";
 import type { Constraint } from "./constraint";
 
@@ -25,7 +25,9 @@ function verifyThread(
 	if (
 		status.in_reply_to_account_id === uid &&
 		(status.visibility === "unlisted" ||
-			relayVisibility.includes(status.visibility))
+			relayVisibility.includes(
+				status.visibility as "public" | "unlisted" | "private" | "direct",
+			))
 	) {
 		const parentStatus = searchSpace.find(
 			(s) => s.id === status.in_reply_to_id,
@@ -64,7 +66,9 @@ export async function getNewToots(
 	const statuses_filtered = statuses_data.filter((status) => {
 		const newPost = new Date(status.created_at) > lastTootTime;
 		const isInVisibilityScope = relayVisibility
-			? relayVisibility.includes(status.visibility)
+			? relayVisibility.includes(
+					status.visibility as "public" | "unlisted" | "private" | "direct",
+				)
 			: false;
 		const isNotMention = status.mentions.length === 0;
 		const text = convert(status.content ?? "", {

@@ -2,7 +2,7 @@ import type { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post
 import { XRPCError } from "@atproto/xrpc";
 import type { InferSelectModel } from "drizzle-orm";
 import { Mastodon } from "megalodon";
-import type { Status } from "megalodon/lib/src/entities/status";
+import type { Status } from "megalodon/lib/esm/entities/status";
 import type * as schema from "./../../drizzle/schema";
 import { generateBlueskyPostsFromMastodon, intiBlueskyAgent } from "../bluesky";
 import { Constraint } from "../constraint";
