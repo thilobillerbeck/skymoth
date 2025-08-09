@@ -48,9 +48,9 @@ export function validateDomain(domain: string) {
 export function genCallBackUrl(instanceDomain: string) {
 	if (process.env.NODE_ENV === "development") {
 		const { ADDRESS = "localhost", PORT = "3000" } = process.env;
-		return `http://${ADDRESS}:${PORT}/auth/callback/${btoa(instanceDomain)}`;
+		return `http://${ADDRESS}:${PORT}/auth/callback/${Buffer.from(instanceDomain).toString("base64")}`;
 	}
-	return `${process.env.APP_URL}/auth/callback/${btoa(instanceDomain)}`;
+	return `${process.env.APP_URL}/auth/callback/${Buffer.from(instanceDomain).toString("base64")}`;
 }
 
 export const authenticateJWT = async (
@@ -64,37 +64,64 @@ export const authenticateJWT = async (
 	}
 };
 
+/**
+ * Splits a long text into multiple posts for Bluesky, optionally adding numbering.
+ * @param text The main text to split.
+ * @param spoiler A spoiler prefix to add to each chunk.
+ * @param postLink A link to append to the end of the text.
+ * @param numbering If true, adds numbering (e.g., [1/3]) to each chunk.
+ * @param numberingThreshold Minimum number of chunks required before numbering is applied (default: 1, so numbering is always applied if `numbering` is true).
+ * @returns An array of post-ready strings.
+ */
 export function splitTextBluesky(
 	text: string,
 	spoiler: string,
 	postLink: string,
 	numbering: boolean,
+	numberingThreshold = 1, // default: always number if 'numbering' is true
 ): string[] {
+	const MAX_LENGTH = 300;
 	const numberingScale = Math.ceil(text.length / 3000);
 	const numberingLength = numbering ? 4 + numberingScale * 2 : 0;
+	const chunkLength = MAX_LENGTH - numberingLength - spoiler.length;
 
-	let res = [];
-	let letterCount = 0;
-	let chunks = [];
-
-	if (text.length <= 300 - spoiler.length - postLink.length) {
+	// If the text fits in one chunk, return as a single post
+	if (text.length <= chunkLength - postLink.length) {
 		return [`${spoiler}${text}${postLink}`];
 	}
 
 	const modifiedText = text + postLink;
+	let res: string[] = [];
+	let start = 0;
 
-	for (const word of modifiedText.split(" ")) {
-		letterCount += word.length + 1; // +1 for space
-		if (letterCount >= 300 - numberingLength - spoiler.length) {
-			res.push(chunks.join(" "));
-			chunks = [];
-			letterCount = word.length;
-		}
-		chunks.push(word);
+	while (start < modifiedText.length) {
+		const end = Math.min(start + chunkLength, modifiedText.length);
+		const chunk = modifiedText.slice(start, end);
+
+		// Try to split at line break
+		let splitIdx = chunk.lastIndexOf("\n");
+		if (splitIdx === -1) splitIdx = chunk.lastIndexOf("\r");
+		// Try to split at period
+		if (splitIdx === -1) splitIdx = chunk.lastIndexOf(".");
+		// Try to split at other punctuation
+		if (splitIdx === -1) splitIdx = chunk.search(/[\!\?,;:](?!.*[\!\?,;:])/);
+		// Try to split at space (prefer splitting at a space before splitting in the middle of a word)
+		if (splitIdx === -1) splitIdx = chunk.lastIndexOf(" ");
+		// If no good split point, split at max length
+		if (splitIdx === -1 || splitIdx < 20) splitIdx = chunk.length;
+
+		const part = chunk.slice(0, splitIdx + 1).trim();
+		res.push(part);
+		start += part.length;
+		// Skip any whitespace at the start of the next chunk
+		while (/\s/.test(modifiedText[start])) start++;
 	}
-	res.push(chunks.join(" "));
+
+	// Only apply numbering if enabled and the number of posts meets/exceeds the threshold
+	const shouldNumber = numbering && res.length >= numberingThreshold;
 	res = res.map(
-		(r, i) => `${spoiler}${r}${numbering ? ` [${i + 1}/${res.length}]` : ""}`,
+		(r, i) =>
+			`${spoiler}${r}${shouldNumber ? ` [${i + 1}/${res.length}]` : ""}`,
 	);
 	return res;
 }
