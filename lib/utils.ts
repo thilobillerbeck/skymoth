@@ -59,7 +59,7 @@ export const authenticateJWT = async (
 ) => {
 	try {
 		await req.jwtVerify();
-	} catch (err) {
+	} catch (_err) {
 		res.redirect("/login");
 	}
 };
@@ -126,7 +126,7 @@ export function checkValidHttpsUrl(rwaUrl: string): boolean {
 	try {
 		const url = new URL(rwaUrl);
 		return url.protocol === "https:";
-	} catch (err) {
+	} catch (_err) {
 		return false;
 	}
 }

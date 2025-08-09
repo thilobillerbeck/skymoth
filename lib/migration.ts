@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
-import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { sql } from "drizzle-orm";
+import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { db } from "./db";
 import logger from "./logger";
 
@@ -21,14 +21,14 @@ const runPrismaToDrizzleMigrationScript = async () => {
             hash text NOT NULL,
             created_at int8 NULL,
             CONSTRAINT "__drizzle_migrations_pkey" PRIMARY KEY (id)
-        );   
+        );
 
         INSERT INTO drizzle."__drizzle_migrations"
             (id, hash, created_at)
             VALUES(1, '1ec46a86de694b1955fc7147a85248e628a60f4c7b8a4066125479d793ea4477', 1737818942346);
 
         ALTER TABLE "_prisma_migrations" DISABLE ROW LEVEL SECURITY;
-        
+
         DROP TABLE "_prisma_migrations" CASCADE;
     `);
 };
@@ -36,12 +36,12 @@ const runPrismaToDrizzleMigrationScript = async () => {
 const checkPrismaMigrationsTable = async () => {
 	try {
 		const result = await db.execute(sql`
-            SELECT FROM information_schema.tables 
+            SELECT FROM information_schema.tables
             WHERE  table_schema = 'public'
             AND    table_name   = '_prisma_migrations';
         `);
 		return result.rows.length > 0;
-	} catch (e) {
+	} catch (_e) {
 		return false;
 	}
 };

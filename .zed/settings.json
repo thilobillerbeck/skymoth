@@ -8,5 +8,9 @@
 		"CSS": { "formatter": { "language_server": { "name": "biome" } } },
 		"GraphQL": { "formatter": { "language_server": { "name": "biome" } } }
 	},
-	"file_scan_exclusions": [".devenv", ".direnv", ".git", ".vscode"]
+	"file_scan_exclusions": [".devenv", ".direnv", ".git", ".vscode"],
+	"code_actions_on_format": {
+		"source.organizeImports.biome": true,
+		"source.fixAll.biome": true
+	}
 }

@@ -1,11 +1,6 @@
+import type { AtpSessionData } from "@atproto/api";
 import type { FastifyInstance } from "fastify";
 import { Mastodon } from "megalodon";
-import {
-	authenticateJWT,
-	domainToUrl,
-	genCallBackUrl,
-	validateDomain,
-} from "./../lib/utils";
 import {
 	createMastodonInstance,
 	createUser,
@@ -15,14 +10,19 @@ import {
 	getUserByMastodonUid,
 	updateUser,
 } from "./../lib/db";
-import type { AtpSessionData } from "@atproto/api";
+import {
+	authenticateJWT,
+	domainToUrl,
+	genCallBackUrl,
+	validateDomain,
+} from "./../lib/utils";
 
 export const routesUser = async (app: FastifyInstance) => {
-	app.get("/login", async (req, res) => {
+	app.get("/login", async (_req, res) => {
 		return res.view("login", {});
 	});
 
-	app.get("/logout", async (req, res) => {
+	app.get("/logout", async (_req, res) => {
 		return res.clearCookie("token").redirect("/login");
 	});
 

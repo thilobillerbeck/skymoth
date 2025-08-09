@@ -1,19 +1,19 @@
-import Fastify from "fastify";
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import fastifyCookie from "@fastify/cookie";
-import fastifyView from "@fastify/view";
-const { Liquid } = require("liquidjs");
 import fastifyFormbody from "@fastify/formbody";
 import fastifyJwt from "@fastify/jwt";
-import { routesRoot } from "./routes/root";
-import { routesUser } from "./routes/user";
-import { join } from "node:path";
+import fastifyView from "@fastify/view";
 import * as Sentry from "@sentry/node";
 import { nodeProfilingIntegration } from "@sentry/profiling-node";
-import { existsSync, readFileSync } from "node:fs";
-import { printInfo } from "./lib/utils";
-import { client, db } from "./lib/db";
-import { migrationHelper } from "./lib/migration";
+import Fastify from "fastify";
+import { Liquid } from "liquidjs";
+import { client } from "./lib/db";
 import logger from "./lib/logger";
+import { migrationHelper } from "./lib/migration";
+import { printInfo } from "./lib/utils";
+import { routesRoot } from "./routes/root";
+import { routesUser } from "./routes/user";
 
 declare module "@fastify/jwt" {
 	interface FastifyJWT {
@@ -87,14 +87,11 @@ migrationHelper()
 		app.register(routesRoot);
 		app.register(routesUser);
 
-		app.listen(
-			{ host: ADDRESS, port: Number.parseInt(PORT, 10) },
-			(err, address) => {
-				if (err) {
-					app.log.error(err);
-				}
-			},
-		);
+		app.listen({ host: ADDRESS, port: Number.parseInt(PORT, 10) }, (err) => {
+			if (err) {
+				app.log.error(err);
+			}
+		});
 
 		printInfo();
 	})

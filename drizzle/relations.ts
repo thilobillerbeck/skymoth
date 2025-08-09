@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm/relations";
-import { mastodonInstance, user, repost } from "./schema";
+import { mastodonInstance, repost, user } from "./schema";
 
 export const userRelations = relations(user, ({ one, many }) => ({
 	mastodonInstance: one(mastodonInstance, {

@@ -1,17 +1,17 @@
+import type { InferInsertModel } from "drizzle-orm";
+import type { FastifyInstance } from "fastify";
+import type { user as User } from "./../drizzle/schema";
 import {
 	validateBlueskyAppPassword,
 	validateBlueskyCredentials,
 	validateBlueskyHandle,
 } from "./../lib/bluesky";
-import { authenticateJWT, checkValidHttpsUrl } from "./../lib/utils";
 import {
 	findUserById,
 	persistBlueskyCreds,
 	updateRelaySettings,
 } from "./../lib/db";
-import type { FastifyInstance } from "fastify";
-import type { InferInsertModel } from "drizzle-orm";
-import type { user as User } from "./../drizzle/schema";
+import { authenticateJWT, checkValidHttpsUrl } from "./../lib/utils";
 
 export const routesRoot = async (app: FastifyInstance) => {
 	app.get("/", { onRequest: [authenticateJWT] }, async (req, res) => {
@@ -141,11 +141,11 @@ export const routesRoot = async (app: FastifyInstance) => {
 		return res.redirect("/");
 	});
 
-	app.get("/privacy", async (req, res) => {
+	app.get("/privacy", async (_req, res) => {
 		return res.view("privacy", {});
 	});
 
-	app.get("/health", async (req, res) => {
+	app.get("/health", async (_req, res) => {
 		return res.send({ status: "ok" });
 	});
 };

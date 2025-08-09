@@ -1,14 +1,14 @@
+import { randomUUID } from "node:crypto";
 import {
-	pgTable,
-	timestamp,
-	text,
-	uniqueIndex,
+	boolean,
 	foreignKey,
 	jsonb,
 	pgEnum,
-	boolean,
+	pgTable,
+	text,
+	timestamp,
+	uniqueIndex,
 } from "drizzle-orm/pg-core";
-import { randomUUID } from "node:crypto";
 
 export const relayCriteria = pgEnum("RelayCriteria", [
 	"all",

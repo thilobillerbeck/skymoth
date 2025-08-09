@@ -1,34 +1,33 @@
 import {
-	AtpAgent,
 	AppBskyFeedPost,
-	RichText,
-	type BlobRef,
+	AtpAgent,
 	type AtpSessionData,
 	type AtpSessionEvent,
+	type BlobRef,
 	type Facet,
+	RichText,
 } from "@atproto/api";
+import type { External } from "@atproto/api/dist/client/types/app/bsky/embed/external";
+import { isLink as isFacetLink } from "@atproto/api/dist/client/types/app/bsky/richtext/facet";
+import { ResponseType, type XRPCError } from "@atproto/xrpc";
+import type { InferSelectModel } from "drizzle-orm";
 import type { Entity } from "megalodon";
+import type { Attachment } from "megalodon/lib/src/entities/attachment";
+import ogs from "open-graph-scraper";
+import sharp from "sharp";
+import type { mastodonInstance, user as User } from "../drizzle/schema";
+import {
+	clearBlueskyCreds,
+	clearBluskySession,
+	persistBlueskySession,
+} from "./db";
+import logger from "./logger";
 import {
 	fetchImageToBytes,
 	logSchedulerEvent,
 	mastodonHtmlToText,
 	splitTextBluesky,
 } from "./utils";
-import sharp from "sharp";
-import type { Attachment } from "megalodon/lib/src/entities/attachment";
-import {
-	clearBlueskyCreds,
-	clearBluskySession,
-	db,
-	persistBlueskySession,
-} from "./db";
-import { ResponseType, type XRPCError } from "@atproto/xrpc";
-import type { InferSelectModel } from "drizzle-orm";
-import type { mastodonInstance, user as User } from "../drizzle/schema";
-import logger from "./logger";
-import { isLink as isFacetLink } from "@atproto/api/dist/client/types/app/bsky/richtext/facet";
-import ogs from "open-graph-scraper";
-import type { External } from "@atproto/api/dist/client/types/app/bsky/embed/external";
 
 export async function intiBlueskyAgent(
 	url: string,
@@ -38,7 +37,7 @@ export async function intiBlueskyAgent(
 		mastodonInstance: InferSelectModel<typeof mastodonInstance>;
 	},
 ): Promise<AtpAgent | undefined> {
-	let session: AtpSessionData | undefined = undefined;
+	let session: AtpSessionData | undefined;
 	session = user.blueskySession as unknown as AtpSessionData;
 
 	const agent = new AtpAgent({
@@ -378,7 +377,7 @@ export async function validateBlueskyCredentials(
 	try {
 		const res = await agent.login({ identifier: handle, password: token });
 		return res.success;
-	} catch (err) {
+	} catch (_err) {
 		return false;
 	}
 }

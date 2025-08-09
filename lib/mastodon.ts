@@ -1,9 +1,9 @@
-import type { MegalodonInterface, Mastodon } from "megalodon";
-import type { Status } from "megalodon/lib/src/entities/status";
-import type { Constraint } from "./constraint";
-import { convert } from "html-to-text";
 import type { InferInsertModel } from "drizzle-orm";
+import { convert } from "html-to-text";
+import type { Mastodon, MegalodonInterface } from "megalodon";
+import type { Status } from "megalodon/lib/src/entities/status";
 import type { user } from "../drizzle/schema";
+import type { Constraint } from "./constraint";
 
 export async function getUserIdFromMastodonHandle(
 	handle: string,
@@ -60,7 +60,7 @@ export async function getNewToots(
 		exclude_replies: false,
 		only_media: false,
 	});
-	const statuses_data = await statuses.data;
+	const statuses_data = statuses.data;
 	const statuses_filtered = statuses_data.filter((status) => {
 		const newPost = new Date(status.created_at) > lastTootTime;
 		const isInVisibilityScope = relayVisibility
