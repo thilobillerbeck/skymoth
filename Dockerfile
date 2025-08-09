@@ -6,9 +6,9 @@ RUN corepack disable && npm install --ignore-scripts -g pnpm@latest
 COPY . /app
 WORKDIR /app
 RUN if [ -n "$GIT_TAG" ]; then \
-      VERSION="$GIT_TAG ($(git rev-parse --short HEAD))"; \
+    VERSION="$GIT_TAG ($(git rev-parse --short HEAD))"; \
     else \
-      VERSION="$(git describe --tags --abbrev=0) ($(git rev-parse --short HEAD))"; \
+    VERSION="$(git describe --tags --abbrev=0) ($(git rev-parse --short HEAD))"; \
     fi && \
     echo $VERSION > .git-rev
 RUN rm -rf .git

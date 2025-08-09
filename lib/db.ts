@@ -1,10 +1,10 @@
 import type { AtpSessionData } from "@atproto/api";
 import type { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
 import {
-	count,
-	eq,
 	type InferInsertModel,
 	type InferSelectModel,
+	count,
+	eq,
 } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import type { OAuth } from "megalodon";
