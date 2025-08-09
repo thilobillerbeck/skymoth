@@ -104,7 +104,7 @@ export function splitTextBluesky(
 		// Try to split at period
 		if (splitIdx === -1) splitIdx = chunk.lastIndexOf(".");
 		// Try to split at other punctuation
-		if (splitIdx === -1) splitIdx = chunk.search(/[\!\?,;:](?!.*[\!\?,;:])/);
+		if (splitIdx === -1) splitIdx = chunk.search(/[!?,;:](?!.*[!?,;:])/);
 		// Try to split at space (prefer splitting at a space before splitting in the middle of a word)
 		if (splitIdx === -1) splitIdx = chunk.lastIndexOf(" ");
 		// If no good split point, split at max length
