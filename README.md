@@ -63,7 +63,6 @@ The project uses GitHub Actions for continuous integration and deployment:
 
 - **Pull Request Validation** (`pr.yaml`): Runs tests, linting, and formatting checks on all pull requests
 - **Release Pipeline** (`ci.yaml`): Runs tests before deploying to main/develop branches
-- **Manual Testing** (`test.yaml`): Allows manual test execution on any branch
 
 Tests must pass before any code can be merged or released.
 
