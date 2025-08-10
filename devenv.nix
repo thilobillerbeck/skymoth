@@ -16,6 +16,7 @@
   packages = with pkgs; [
     prisma-engines
     zizmor
+    pinact
   ];
 
   languages = {
