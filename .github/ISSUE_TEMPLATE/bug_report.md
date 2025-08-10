@@ -20,6 +20,11 @@ Steps to reproduce the behavior:
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
+**Environment Information**
+- Skymoth Version: [e.g. v1.2.3]
+- Node.js Version: [e.g. 18.17.0]
+- Operating System: [e.g. Ubuntu 22.04, macOS 13.4]
+
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
