@@ -131,16 +131,16 @@ export async function intiBlueskyAgent(
 }
 
 function applyPostLink(status: Entity.Status): string {
-	if (status.poll) return `\n\nPoll: ${status.url}`;
+	if (status.poll) return `Poll: ${status.url}`;
 	if (
 		status.media_attachments.find(
 			(media) => media.type === "video" || media.type === "gifv",
 		)
 	) {
-		return `\n\nVideo: ${status.url}`;
+		return `Video: ${status.url}`;
 	}
 	if (status.media_attachments.find((media) => media.type === "audio")) {
-		return `\n\nAudio: ${status.url}`;
+		return `Audio: ${status.url}`;
 	}
 	return "";
 }
