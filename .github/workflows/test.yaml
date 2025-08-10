@@ -4,45 +4,52 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Branch to test (leave empty for current branch)'
+        description: "Branch to test (leave empty for current branch)"
         required: false
-        default: ''
+        default: ""
       test_pattern:
         description: 'Test pattern (e.g., "*.test.js" or specific test file)'
         required: false
-        default: '*.test.js'
+        default: "*.test.js"
+
+permissions:
+  contents: read
 
 jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           ref: ${{ github.event.inputs.branch || github.ref }}
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4
         with:
           node-version: "lts/*"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4
         with:
           version: 9
 
       - name: Get pnpm store directory
+        id: pnpm-cache
         shell: bash
         run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
 
       - name: Setup pnpm cache
-        uses: actions/cache@v4
+        uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4
         with:
-          path: ${{ env.STORE_PATH }}
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
@@ -59,11 +66,36 @@ jobs:
       - name: Build project
         run: pnpm run build
 
-      - name: Run tests
+      - name: Validate test pattern input
+        id: validate-input
+        env:
+          INPUT_TEST_PATTERN: ${{ github.event.inputs.test_pattern }}
         run: |
-          if [ -n "${{ github.event.inputs.test_pattern }}" ] && [ "${{ github.event.inputs.test_pattern }}" != "*.test.js" ]; then
-            echo "Running specific test pattern: ${{ github.event.inputs.test_pattern }}"
-            node --test "dist/test/${{ github.event.inputs.test_pattern }}"
+          # Validate test pattern to prevent injection
+          TEST_PATTERN="${INPUT_TEST_PATTERN:-*.test.js}"
+
+          # Only allow alphanumeric, dots, hyphens, underscores, and forward slashes
+          if echo "$TEST_PATTERN" | grep -qE '^[a-zA-Z0-9._/-]+\.test\.js$|^\*\.test\.js$'; then
+            echo "VALIDATED_PATTERN=$TEST_PATTERN" >> $GITHUB_OUTPUT
+            echo "PATTERN_VALID=true" >> $GITHUB_OUTPUT
+          else
+            echo "PATTERN_VALID=false" >> $GITHUB_OUTPUT
+            echo "Invalid test pattern format. Only alphanumeric characters, dots, hyphens, underscores, and forward slashes are allowed."
+          fi
+
+      - name: Run tests
+        env:
+          TEST_PATTERN: ${{ steps.validate-input.outputs.VALIDATED_PATTERN }}
+          PATTERN_VALID: ${{ steps.validate-input.outputs.PATTERN_VALID }}
+        run: |
+          if [ "$PATTERN_VALID" != "true" ]; then
+            echo "Skipping tests due to invalid pattern"
+            exit 1
+          fi
+
+          if [ -n "$TEST_PATTERN" ] && [ "$TEST_PATTERN" != "*.test.js" ]; then
+            echo "Running specific test pattern: $TEST_PATTERN"
+            node --test "dist/test/$TEST_PATTERN"
           else
             echo "Running all tests"
             pnpm test
@@ -71,8 +103,12 @@ jobs:
 
       - name: Test Summary
         if: always()
+        env:
+          BRANCH_NAME: ${{ github.event.inputs.branch || github.ref_name }}
+          TEST_PATTERN: ${{ steps.validate-input.outputs.VALIDATED_PATTERN }}
+          JOB_STATUS: ${{ job.status }}
         run: |
           echo "## Test Results Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- **Branch:** ${{ github.event.inputs.branch || github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Test Pattern:** ${{ github.event.inputs.test_pattern || 'All tests' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** $BRANCH_NAME" >> $GITHUB_STEP_SUMMARY
+          echo "- **Test Pattern:** ${TEST_PATTERN:-All tests}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** $JOB_STATUS" >> $GITHUB_STEP_SUMMARY
