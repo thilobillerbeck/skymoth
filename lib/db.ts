@@ -1,10 +1,10 @@
 import type { AtpSessionData } from "@atproto/api";
 import type { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
 import {
-	type InferInsertModel,
-	type InferSelectModel,
 	count,
 	eq,
+	type InferInsertModel,
+	type InferSelectModel,
 } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import type { OAuth } from "megalodon";
@@ -316,6 +316,7 @@ export async function updateRelaySettings(
 	relayVisibility: InferInsertModel<typeof schema.user>["relayVisibility"],
 	relayUnlistedAnswers: boolean,
 	relayPostNumbering: boolean,
+	relayCW: boolean = true,
 ) {
 	return await db
 		.update(schema.user)
@@ -326,6 +327,7 @@ export async function updateRelaySettings(
 			relayVisibility: relayVisibility,
 			relayUnlistedAnswers: relayUnlistedAnswers,
 			relayPostNumbering: relayPostNumbering,
+			relayCW: relayCW,
 		})
 		.where(eq(schema.user.id, userId))
 		.returning();
