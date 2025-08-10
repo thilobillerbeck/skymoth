@@ -87,8 +87,12 @@ export function splitTextBluesky(
 
 	// If the text fits in one chunk, return as a single post
 	if (text.length <= chunkLength - postLink.length) {
-		return [`${spoiler}${text}${postLink}`];
+		return [`${spoiler}${text}${text && postLink ? "\n\n" : ""}${postLink}`];
 	}
+
+	// if text starts and ends with a line break, remove them
+	if (text.startsWith("\n")) text = text.slice(1);
+	if (text.endsWith("\n")) text = text.slice(0, -1);
 
 	const modifiedText = text + postLink;
 	let res: string[] = [];
