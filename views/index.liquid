@@ -136,6 +136,20 @@
                 </fieldset>
 
                 <fieldset class="fieldset w-full">
+                    <legend class="fieldset-legend">Posts with CW</legend>
+
+                    <label class="fieldset-label">
+                        <input type="checkbox" name="relayCW" id="relayCW"
+                            class="checkbox checkbox-primary" {% if relayCW %}checked{% endif %} />
+                        Relay posts with content warnings
+                    </label>
+                    <p class="fieldset-label">
+                        Whether to relay posts that have a content warning. If this is disabled, Skymoth
+                        will not relay posts with a content warning.
+                    </p>
+                </fieldset>
+
+                <fieldset class="fieldset w-full">
                     <legend class="fieldset-legend">Post numbering</legend>
                     <label class="fieldset-label">
                         <input type="checkbox" name="relayPostNumbering" id="relayPostNumbering"

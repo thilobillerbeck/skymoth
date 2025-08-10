@@ -32,6 +32,7 @@ export const routesRoot = async (app: FastifyInstance) => {
 			relayVisibility: user?.relayVisibility,
 			relayUnlistedAnswers: user?.relayUnlistedAnswers,
 			relayPostNumbering: user?.relayPostNumbering,
+			relayCW: user?.relayCW,
 		});
 	});
 
@@ -105,6 +106,7 @@ export const routesRoot = async (app: FastifyInstance) => {
 			relayVisibility: string[];
 			relayUnlistedAnswers: string;
 			relayPostNumbering: string;
+			relayCW: string;
 		};
 	}>("/settings/repost", { onRequest: [authenticateJWT] }, async (req, res) => {
 		const user = await findUserById(req.user.id, true);
@@ -117,6 +119,10 @@ export const routesRoot = async (app: FastifyInstance) => {
 			relayCriteria: user?.relayCriteria,
 			relayMarker: user?.relayMarker,
 			pollingInterval: Number.parseInt(process.env.POLL_INTERVAL ?? "60"),
+			relayVisibility: user?.relayVisibility,
+			relayUnlistedAnswers: user?.relayUnlistedAnswers,
+			relayPostNumbering: user?.relayPostNumbering,
+			relayCW: user?.relayCW,
 		};
 
 		if (req.body.relayVisibility === undefined)
@@ -136,6 +142,7 @@ export const routesRoot = async (app: FastifyInstance) => {
 			relayVisibility as InferInsertModel<typeof User>["relayVisibility"],
 			req.body.relayUnlistedAnswers === "on",
 			req.body.relayPostNumbering === "on",
+			req.body.relayCW === "on",
 		);
 
 		return res.redirect("/");

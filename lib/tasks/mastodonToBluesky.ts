@@ -93,6 +93,15 @@ async function nastodonToBluesky(
 
 	for (const [postIdx, post] of posts.entries()) {
 		try {
+			if ((post.sensitive || post.spoiler_text) && !user.relayCW) {
+				logSchedulerEvent(
+					user.name,
+					user.mastodonInstance.url,
+					"REPOSTER",
+					`skipping ${post.id} as it is sensitive and CWs should not be relayed`,
+				);
+				continue;
+			}
 			if (
 				post.in_reply_to_account_id !== user.mastodonUid &&
 				post.in_reply_to_account_id !== null

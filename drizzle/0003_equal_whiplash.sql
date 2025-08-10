@@ -1,0 +1,1 @@
+ALTER TABLE "User" ADD COLUMN "relayCW" boolean DEFAULT true NOT NULL;
