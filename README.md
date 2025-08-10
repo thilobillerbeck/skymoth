@@ -16,7 +16,7 @@ Skymoth is an open source service which allows you to share the content you post
 
 With v0.4.0 Drizzle will be the new ORM of choice. Thus Prisma and its migration tracking table
 will be dropped accordingly. To make the upgrading process go smoothly, Skymoth checks if all migrations
-from Prisma have been applied before migrating. If you have an instance running on a version below v0.3.2 
+from Prisma have been applied before migrating. If you have an instance running on a version below v0.3.2
 upgrade to v0.3.2 first before upgrading to v0.4.0 and above.
 
 Additionally, Drizzle will execute its migrations automatically on app startup, so there is no need to run `pnpm migrate`
@@ -36,6 +36,36 @@ Don't worry, if set up correctly the development shell you are in should contain
 ```bash
 devenv up
 ```
+
+### Testing
+
+The project uses Node.js built-in test runner for unit testing. To run tests:
+
+```bash
+# Run all tests
+pnpm test
+
+# Run linting
+pnpm run lint
+
+# Check code formatting
+pnpm run format:check
+
+# Auto-fix formatting issues
+pnpm run format
+```
+
+Tests are located in the `test/` directory and follow the `*.test.ts` pattern.
+
+### CI/CD Pipeline
+
+The project uses GitHub Actions for continuous integration and deployment:
+
+- **Pull Request Validation** (`pr.yaml`): Runs tests, linting, and formatting checks on all pull requests
+- **Release Pipeline** (`ci.yaml`): Runs tests before deploying to main/develop branches
+- **Manual Testing** (`test.yaml`): Allows manual test execution on any branch
+
+Tests must pass before any code can be merged or released.
 
 ## FAQ
 
