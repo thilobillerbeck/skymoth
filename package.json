@@ -7,6 +7,7 @@
 		"dev": "pnpm run dev:server",
 		"dev:server": "nodemon --exec ts-node index.ts",
 		"dev:scheduler": "nodemon --exec ts-node lib/tasks/scheduler.ts",
+		"test": "npm run build && node --test dist/test/*.test.js",
 		"tailwind:css": "concurrently \"tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css --watch\"",
 		"tailwind:build": "tailwindcss -i ${PWD}/public/styles/tailwind.css -o ${PWD}/public/styles/style.css",
 		"format": "biome format --write",
