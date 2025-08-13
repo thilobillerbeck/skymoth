@@ -83,6 +83,7 @@ describe("splitTextBluesky", () => {
 		for (const post of result) {
 			assert.ok(!post.includes("["));
 			assert.ok(!post.includes("]"));
+			assert.ok(post.length <= 300);
 		}
 	});
 
@@ -101,10 +102,11 @@ describe("splitTextBluesky", () => {
 			numberingThreshold,
 		);
 
-		assert.strictEqual(result.length, 3);
+		assert.strictEqual(result.length, 2);
 		for (const post of result) {
 			assert.ok(!post.includes("["));
 			assert.ok(!post.includes("]"));
+			assert.ok(post.length <= 300);
 		}
 	});
 
@@ -139,6 +141,7 @@ describe("splitTextBluesky", () => {
 		assert.ok(result.length > 1);
 		for (const post of result) {
 			assert.ok(post.startsWith("CW: Test\n\n"));
+			assert.ok(post.length <= 300);
 		}
 	});
 
@@ -344,6 +347,28 @@ Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie co
 		assert.equal(
 			result[4],
 			"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+		);
+	});
+
+	test("Lorem Ipsum 3", () => {
+		const text =
+			"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et";
+		const spoiler = "";
+		const postLink = "";
+		const numbering = false;
+
+		const result = splitTextBluesky(text, spoiler, postLink, numbering);
+
+		console.log(result);
+
+		assert.ok(result.length > 1);
+		assert.equal(
+			result[0],
+			"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+		);
+		assert.equal(
+			result[1],
+			"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et",
 		);
 	});
 });

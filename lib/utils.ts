@@ -102,18 +102,23 @@ export function splitTextBluesky(
 		const end = Math.min(start + chunkLength, modifiedText.length);
 		const chunk = modifiedText.slice(start, end);
 
-		// Try to split at line break
-		let splitIdx = chunk.lastIndexOf("\n");
-		if (splitIdx === -1) splitIdx = chunk.lastIndexOf("\r");
-		// Try to split at period
-		if (splitIdx === -1) splitIdx = chunk.lastIndexOf(".");
-		// Try to split at other punctuation
-		if (splitIdx === -1) splitIdx = chunk.search(/[!?,;:](?!.*[!?,;:])/);
-		// Try to split at space (prefer splitting at a space before splitting in the middle of a word)
-		if (splitIdx === -1) splitIdx = chunk.lastIndexOf(" ");
-		// If no good split point, split at max length
-		if (splitIdx === -1 || splitIdx < 20) splitIdx = chunk.length;
+		let splitIdx = -1;
 
+		if (chunk.length < chunkLength) {
+			splitIdx = chunk.length;
+		} else {
+			// Try to split at line break
+			splitIdx = chunk.lastIndexOf("\n");
+			if (splitIdx === -1) splitIdx = chunk.lastIndexOf("\r");
+			// Try to split at period
+			if (splitIdx === -1) splitIdx = chunk.lastIndexOf(".");
+			// Try to split at other punctuation
+			if (splitIdx === -1) splitIdx = chunk.search(/[!?,;:](?!.*[!?,;:])/);
+			// Try to split at space (prefer splitting at a space before splitting in the middle of a word)
+			if (splitIdx === -1) splitIdx = chunk.lastIndexOf(" ");
+			// If no good split point, split at max length
+			if (splitIdx === -1 || splitIdx < 20) splitIdx = chunk.length;
+		}
 		const part = chunk.slice(0, splitIdx + 1).trim();
 		res.push(part);
 		start += part.length;
