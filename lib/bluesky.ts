@@ -202,11 +202,15 @@ async function handleBskyImageBlob(
 async function getPostExternalEmbed(
 	links: string[],
 	client: AtpAgent,
+	language: string | null,
 ): Promise<External | undefined> {
 	for (const link of links) {
 		try {
 			const { result } = await ogs({
 				url: link,
+				fetchOptions: {
+					headers: { "accept-language": language || "en" },
+				},
 			});
 
 			if (result.requestUrl && result.ogTitle && result.ogDescription) {
@@ -331,7 +335,11 @@ export async function generateBlueskyPostFromMastodon(
 			};
 		}
 	} else if (ogLinks.length > 0) {
-		const ogEmbed = await getPostExternalEmbed(ogLinks, client);
+		const ogEmbed = await getPostExternalEmbed(
+			ogLinks,
+			client,
+			status.language,
+		);
 
 		if (ogEmbed) {
 			post = {
