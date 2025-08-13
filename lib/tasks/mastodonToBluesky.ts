@@ -100,6 +100,7 @@ async function nastodonToBluesky(
 					"REPOSTER",
 					`skipping ${post.id} as it is sensitive and CWs should not be relayed`,
 				);
+				await updateLastPostTime(user.id, new Date(post.created_at));
 				continue;
 			}
 			if (
@@ -112,6 +113,7 @@ async function nastodonToBluesky(
 					"REPOSTER",
 					`skipping ${post.id} as it is a reply to someone else`,
 				);
+				await updateLastPostTime(user.id, new Date(post.created_at));
 				continue;
 			}
 			logSchedulerEvent(
