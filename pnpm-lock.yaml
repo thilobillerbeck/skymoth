@@ -12,8 +12,8 @@ importers:
         specifier: ^0.16.7
         version: 0.16.7
       '@atproto/xrpc':
-        specifier: ^0.7.2
-        version: 0.7.2
+        specifier: ^0.7.5
+        version: 0.7.5
       '@fastify/cookie':
         specifier: ^11.0.2
         version: 11.0.2
@@ -153,20 +153,20 @@ packages:
   '@atproto/common-web@0.4.2':
     resolution: {integrity: sha512-vrXwGNoFGogodjQvJDxAeP3QbGtawgZute2ed1XdRO0wMixLk3qewtikZm06H259QDJVu6voKC5mubml+WgQUw==}
 
-  '@atproto/lexicon@0.4.13':
-    resolution: {integrity: sha512-GtiNQz/cbGRCK0+uitWewx4tMyLEgQ8gTd118Ncl+gCbgcaFUPggi30NjEQNYg1DmCNUZNdrGsQfE97xNodouw==}
+  '@atproto/common-web@0.4.3':
+    resolution: {integrity: sha512-nRDINmSe4VycJzPo6fP/hEltBcULFxt9Kw7fQk6405FyAWZiTluYHlXOnU7GkQfeUK44OENG1qFTBcmCJ7e8pg==}
 
   '@atproto/lexicon@0.5.0':
     resolution: {integrity: sha512-3aAzEAy9EAPs3CxznzMhEcqDd7m3vz1eze/ya9/ThbB7yleqJIhz5GY2q76tCCwHPhn5qDDMhlA9kKV6fG23gA==}
 
+  '@atproto/lexicon@0.5.1':
+    resolution: {integrity: sha512-y8AEtYmfgVl4fqFxqXAeGvhesiGkxiy3CWoJIfsFDDdTlZUC8DFnZrYhcqkIop3OlCkkljvpSJi1hbeC1tbi8A==}
+
   '@atproto/syntax@0.4.1':
     resolution: {integrity: sha512-CJdImtLAiFO+0z3BWTtxwk6aY5w4t8orHTMVJgkf++QRJWTxPbIFko/0hrkADB7n2EruDxDSeAgfUGehpH6ngw==}
 
-  '@atproto/xrpc@0.7.2':
-    resolution: {integrity: sha512-cMF4J2EyRpZ3uYN7U5/0tIgRT5hLMlFfkgLzlg8OtQooAzOyC3iAZOsrv9ukexj0Jna/fzavbhlkrWqFSy39Fg==}
-
-  '@atproto/xrpc@0.7.4':
-    resolution: {integrity: sha512-sDi68+QE1XHegTaNAndlX41Gp827pouSzSs8CyAwhrqZdsJUxE3P7TMtrA0z+zAjvxVyvzscRc0TsN/fGUGrhw==}
+  '@atproto/xrpc@0.7.5':
+    resolution: {integrity: sha512-MUYNn5d2hv8yVegRL0ccHvTHAVj5JSnW07bkbiaz96UH45lvYNRVwt44z+yYVnb0/mvBzyD3/ZQ55TRGt7fHkA==}
 
   '@babel/code-frame@7.27.1':
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
@@ -1726,6 +1726,15 @@ packages:
 
   debug@4.4.1:
     resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
+  debug@4.4.3:
+    resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
     engines: {node: '>=6.0'}
     peerDependencies:
       supports-color: '*'
@@ -3720,7 +3729,7 @@ snapshots:
       '@atproto/common-web': 0.4.2
       '@atproto/lexicon': 0.5.0
       '@atproto/syntax': 0.4.1
-      '@atproto/xrpc': 0.7.4
+      '@atproto/xrpc': 0.7.5
       await-lock: 2.2.2
       multiformats: 9.9.0
       tlds: 1.260.0
@@ -3733,12 +3742,11 @@ snapshots:
       uint8arrays: 3.0.0
       zod: 3.25.76
 
-  '@atproto/lexicon@0.4.13':
+  '@atproto/common-web@0.4.3':
     dependencies:
-      '@atproto/common-web': 0.4.2
-      '@atproto/syntax': 0.4.1
-      iso-datestring-validator: 2.2.2
+      graphemer: 1.4.0
       multiformats: 9.9.0
+      uint8arrays: 3.0.0
       zod: 3.25.76
 
   '@atproto/lexicon@0.5.0':
@@ -3749,16 +3757,19 @@ snapshots:
       multiformats: 9.9.0
       zod: 3.25.76
 
-  '@atproto/syntax@0.4.1': {}
-
-  '@atproto/xrpc@0.7.2':
+  '@atproto/lexicon@0.5.1':
     dependencies:
-      '@atproto/lexicon': 0.4.13
+      '@atproto/common-web': 0.4.3
+      '@atproto/syntax': 0.4.1
+      iso-datestring-validator: 2.2.2
+      multiformats: 9.9.0
       zod: 3.25.76
 
-  '@atproto/xrpc@0.7.4':
+  '@atproto/syntax@0.4.1': {}
+
+  '@atproto/xrpc@0.7.5':
     dependencies:
-      '@atproto/lexicon': 0.5.0
+      '@atproto/lexicon': 0.5.1
       zod: 3.25.76
 
   '@babel/code-frame@7.27.1':
@@ -5292,6 +5303,11 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  debug@4.4.3:
+    dependencies:
+      ms: 2.1.3
+    optional: true
+
   deep-extend@0.6.0: {}
 
   deepmerge@4.3.1: {}
@@ -5693,7 +5709,7 @@ snapshots:
   gel@2.0.1:
     dependencies:
       '@petamoriken/float16': 3.9.2
-      debug: 4.4.1
+      debug: 4.4.3
       env-paths: 3.0.0
       semver: 7.7.2
       shell-quote: 1.8.3
