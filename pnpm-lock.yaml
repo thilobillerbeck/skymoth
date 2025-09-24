@@ -69,8 +69,8 @@ importers:
         specifier: ^8.16.3
         version: 8.16.3
       pino:
-        specifier: ^9.9.4
-        version: 9.9.4
+        specifier: ^9.11.0
+        version: 9.11.0
       pino-pretty:
         specifier: ^13.1.1
         version: 13.1.1
@@ -3225,8 +3225,8 @@ packages:
   pino-std-serializers@7.0.0:
     resolution: {integrity: sha512-e906FRY0+tV27iq4juKzSYPbUj2do2X2JX4EzSca1631EB2QJQUqGbDuERal7LCtOpxl6x3+nvo9NPZcmjkiFA==}
 
-  pino@9.9.4:
-    resolution: {integrity: sha512-d1XorUQ7sSKqVcYdXuEYs2h1LKxejSorMEJ76XoZ0pPDf8VzJMe7GlPXpMBZeQ9gE4ZPIp5uGD+5Nw7scxiigg==}
+  pino@9.11.0:
+    resolution: {integrity: sha512-+YIodBB9sxcWeR8PrXC2K3gEDyfkUuVEITOcbqrfcj+z5QW4ioIcqZfYFbrLTYLsmAwunbS7nfU/dpBB6PZc1g==}
     hasBin: true
 
   pkg-conf@2.1.0:
@@ -6063,7 +6063,7 @@ snapshots:
       fast-json-stringify: 6.0.1
       find-my-way: 9.3.0
       light-my-request: 6.6.0
-      pino: 9.9.4
+      pino: 9.11.0
       process-warning: 5.0.0
       rfdc: 1.4.1
       secure-json-parse: 4.0.0
@@ -6925,7 +6925,7 @@ snapshots:
 
   pino-std-serializers@7.0.0: {}
 
-  pino@9.9.4:
+  pino@9.11.0:
     dependencies:
       atomic-sleep: 1.0.0
       fast-redact: 3.5.0
