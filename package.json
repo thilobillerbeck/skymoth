@@ -28,7 +28,7 @@
 		"@sentry/node": "^10.17.0",
 		"@sentry/profiling-node": "^10.16.0",
 		"dotenv": "^17.2.2",
-		"drizzle-orm": "^0.44.5",
+		"drizzle-orm": "^0.44.6",
 		"fastify": "^5.6.1",
 		"html-to-text": "^9.0.5",
 		"liquidjs": "^10.21.1",
