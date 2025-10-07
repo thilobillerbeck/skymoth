@@ -45,7 +45,7 @@
 		"@biomejs/biome": "2.2.4",
 		"@codedependant/semantic-release-docker": "^5.1.1",
 		"@tailwindcss/cli": "^4.1.13",
-		"@tailwindcss/typography": "^0.5.16",
+		"@tailwindcss/typography": "^0.5.19",
 		"@types/html-to-text": "^9.0.4",
 		"@types/pg": "^8.15.5",
 		"autoprefixer": "^10.4.21",
