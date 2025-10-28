@@ -92,7 +92,7 @@ importers:
         version: 4.1.13
       '@tailwindcss/typography':
         specifier: ^0.5.19
-        version: 0.5.19(tailwindcss@4.1.15)
+        version: 0.5.19(tailwindcss@4.1.16)
       '@types/html-to-text':
         specifier: ^9.0.4
         version: 9.0.4
@@ -124,8 +124,8 @@ importers:
         specifier: ^25.0.1
         version: 25.0.1(typescript@5.9.3)
       tailwindcss:
-        specifier: ^4.1.15
-        version: 4.1.15
+        specifier: ^4.1.16
+        version: 4.1.16
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@24.9.1)(typescript@5.9.3)
@@ -3438,8 +3438,8 @@ packages:
   tailwindcss@4.1.13:
     resolution: {integrity: sha512-i+zidfmTqtwquj4hMEwdjshYYgMbOrPzb9a0M3ZgNa0JMoZeFC6bxZvO8yr8ozS6ix2SDz0+mvryPeBs2TFE+w==}
 
-  tailwindcss@4.1.15:
-    resolution: {integrity: sha512-k2WLnWkYFkdpRv+Oby3EBXIyQC8/s1HOFMBUViwtAh6Z5uAozeUSMQlIsn/c6Q2iJzqG6aJT3wdPaRNj70iYxQ==}
+  tailwindcss@4.1.16:
+    resolution: {integrity: sha512-pONL5awpaQX4LN5eiv7moSiSPd/DLDzKVRJz8Q9PgzmAdd1R4307GQS2ZpfiN7ZmekdQrfhZZiSE5jkLR4WNaA==}
 
   tapable@2.2.3:
     resolution: {integrity: sha512-ZL6DDuAlRlLGghwcfmSn9sK3Hr6ArtyudlSAiCqQ6IfE+b+HHbydbYDIG15IfS5do+7XQQBdBiubF/cV2dnDzg==}
@@ -4958,10 +4958,10 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.1.13
       '@tailwindcss/oxide-win32-x64-msvc': 4.1.13
 
-  '@tailwindcss/typography@0.5.19(tailwindcss@4.1.15)':
+  '@tailwindcss/typography@0.5.19(tailwindcss@4.1.16)':
     dependencies:
       postcss-selector-parser: 6.0.10
-      tailwindcss: 4.1.15
+      tailwindcss: 4.1.16
 
   '@tsconfig/node10@1.0.11': {}
 
@@ -6965,7 +6965,7 @@ snapshots:
 
   tailwindcss@4.1.13: {}
 
-  tailwindcss@4.1.15: {}
+  tailwindcss@4.1.16: {}
 
   tapable@2.2.3: {}
 
