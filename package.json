@@ -47,7 +47,7 @@
 		"@tailwindcss/cli": "^4.1.16",
 		"@tailwindcss/typography": "^0.5.19",
 		"@types/html-to-text": "^9.0.4",
-		"@types/pg": "^8.15.5",
+		"@types/pg": "^8.15.6",
 		"autoprefixer": "^10.4.21",
 		"concurrently": "^9.2.1",
 		"daisyui": "^5.3.10",
