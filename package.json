@@ -44,7 +44,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.4.7",
 		"@codedependant/semantic-release-docker": "^5.1.1",
-		"@tailwindcss/cli": "^4.2.1",
+		"@tailwindcss/cli": "^4.2.2",
 		"@tailwindcss/typography": "^0.5.19",
 		"@types/html-to-text": "^9.0.4",
 		"@types/pg": "^8.18.0",
