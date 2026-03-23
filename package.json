@@ -26,7 +26,7 @@
 		"@fastify/static": "^9.0.0",
 		"@fastify/view": "^11.1.1",
 		"@sentry/node": "^10.43.0",
-		"@sentry/profiling-node": "^10.43.0",
+		"@sentry/profiling-node": "^10.45.0",
 		"dotenv": "^17.3.1",
 		"drizzle-orm": "^0.45.1",
 		"fastify": "^5.8.2",
