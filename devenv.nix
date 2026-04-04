@@ -17,6 +17,7 @@
     javascript = {
       enable = true;
       pnpm = {
+        package = pkgs.pnpm;
         enable = true;
         install.enable = true;
       };
