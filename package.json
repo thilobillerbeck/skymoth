@@ -51,7 +51,7 @@
 		"autoprefixer": "^10.4.27",
 		"concurrently": "^9.2.1",
 		"daisyui": "^5.5.19",
-		"drizzle-kit": "^0.31.9",
+		"drizzle-kit": "^0.31.10",
 		"nodemon": "^3.1.14",
 		"postcss": "^8.5.8",
 		"postcss-cli": "^11.0.1",
