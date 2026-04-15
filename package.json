@@ -29,7 +29,7 @@
 		"@sentry/profiling-node": "^10.45.0",
 		"dotenv": "^17.3.1",
 		"drizzle-orm": "^0.45.1",
-		"fastify": "^5.8.4",
+		"fastify": "^5.8.5",
 		"html-to-text": "^9.0.5",
 		"liquidjs": "^10.25.1",
 		"megalodon": "^10.2.4",
