@@ -23,7 +23,7 @@
 		"@fastify/jwt": "^10.0.0",
 		"@fastify/schedule": "^6.0.0",
 		"@fastify/session": "^11.1.1",
-		"@fastify/static": "^9.0.0",
+		"@fastify/static": "^9.1.1",
 		"@fastify/view": "^11.1.1",
 		"@sentry/node": "^10.45.0",
 		"@sentry/profiling-node": "^10.45.0",
